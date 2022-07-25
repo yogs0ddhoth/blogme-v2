@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { getHello } from './api';
 
+interface hello {
+  key_1: string
+  key_2: string
+}
 function App() {
+  const [getAPI, setGetAPI] = useState({} as hello);
+
+  useEffect(() => {
+    try {
+      getHello().then(response => {
+        if (response !== undefined) {
+          setGetAPI(response.data);
+        }
+      });
+    } catch (error) {
+      console.log(error)
+    }
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -16,7 +35,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          {getAPI.key_1} {getAPI.key_2}!
         </a>
       </header>
     </div>
