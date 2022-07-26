@@ -1,4 +1,5 @@
 from flask import Flask
+from db import init_db
 # from flask_cors import CORS
 
 from api import api
@@ -10,8 +11,9 @@ def create_app(test_config = None):
 
   app.url_map.strict_slashes = False
   app.config.from_mapping(
-    SECRET_KEY='super_secret_key'
+    SECRET_KEY='TODO_change_this_to_something_secure'
   )
+  init_db(app)
   
   @app.route('/')
   def index():
