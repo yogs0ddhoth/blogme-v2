@@ -2,7 +2,7 @@ from flask import Flask
 from db import init_db
 # from flask_cors import CORS
 
-from api import api
+from controllers import api, user
 
 def create_app(test_config = None):
   # set up app:
@@ -14,7 +14,7 @@ def create_app(test_config = None):
     SECRET_KEY='TODO_change_this_to_something_secure'
   )
   init_db(app)
-  
+
   @app.route('/')
   def index():
     return app.send_static_file('index.html')
