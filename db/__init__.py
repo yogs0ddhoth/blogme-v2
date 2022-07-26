@@ -1,5 +1,5 @@
 from os import getenv
-from requests import session
+from flask import g
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -12,3 +12,19 @@ engine = create_engine(
 )
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
+
+def get_db():
+  if 'db' not in g:
+    g.db = Session()
+
+  return g.db
+
+def close_db(e=None):
+  db = g.pop('db', None)
+
+  if db is not None:
+    db.close()
+  
+def init_db(app):
+  Base.metadata.create_all(engine)
+  app.teardown_appcontext(close_db)
