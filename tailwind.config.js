@@ -4,7 +4,16 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'spin-slow': 'spin infinite 20s linear',
+      },
+      colors: {
+        'react-background': '#282c34',
+        'react-blue': '#61dafb',
+        'white': ''
+      },
+    },
   },
   plugins: [],
 }
