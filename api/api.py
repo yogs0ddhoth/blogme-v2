@@ -1,4 +1,3 @@
-
 from flask import Blueprint, request, jsonify, session
 
 bp = Blueprint('api', __name__, url_prefix='/api')
