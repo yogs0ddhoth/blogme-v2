@@ -2,7 +2,7 @@ from flask import Flask
 from db import init_db
 # from flask_cors import CORS
 
-from controllers import api, user
+from controllers import api, users
 
 def create_app(test_config = None):
   # set up app:
@@ -20,5 +20,6 @@ def create_app(test_config = None):
     return app.send_static_file('index.html')
 
   app.register_blueprint(api)
+  app.register_blueprint(users)
   
   return app
