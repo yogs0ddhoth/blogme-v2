@@ -8,12 +8,14 @@ salt = bcrypt.gensalt()
 
 class User(Base):
   __tablename__ = 'users'
-  id = Column(Integer, primary_key=True, autoincrement='auto')
+  id = Column(
+    Integer, 
+    primary_key=True, 
+    autoincrement='auto'
+  )
   name = Column(String(75), nullable=False)
   email = Column(String(75), nullable=False, unique=True)
   password = Column(String(100), nullable=False)
-
-  posts = relationship('Post', cascade='all,delete')
 
   @validates('email')
   def validate_email(self, key, email):
