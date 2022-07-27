@@ -11,6 +11,10 @@ engine = create_engine(getenv('DB_URL'), echo=True, pool_size=20, max_overflow=0
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
 
+def init_db(app):
+  Base.metadata.create_all(engine)
+  app.teardown_appcontext(close_db)
+
 def get_db():
   if 'db' not in g:
     g.db = Session()
@@ -22,7 +26,3 @@ def close_db(e=None):
 
   if db is not None:
     db.close()
-  
-def init_db(app):
-  Base.metadata.create_all(engine)
-  app.teardown_appcontext(close_db)
