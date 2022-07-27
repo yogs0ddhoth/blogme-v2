@@ -17,3 +17,11 @@
       monospace;
   }
 }
+@layer components {
+  .loader {
+    @apply 
+    w-[35px] h-[35px] border-[5px] border-solid border-[#282c34] 
+    border-t-[5px] border-t-[#61dafb] 
+    rounded-[50%] animate-loader-spin
+  }
+}
