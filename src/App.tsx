@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Layout from './components/layout/layout';
+import Layout from './components/layout';
 import { hello } from 'custom-types';
 import { getHello } from './api';
 import logo from './logo.svg'
@@ -16,7 +16,7 @@ function App() {
         }
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }, []);
 
