@@ -1,6 +1,7 @@
 import { hello } from "custom-types";
 import React from "react";
 import logo from '../../logo.svg'
+import Navbar from "../navbar";
 
 
 export default function Layout({children, hello}:{children?:React.ReactNode, hello: hello}) {
@@ -19,18 +20,7 @@ export default function Layout({children, hello}:{children?:React.ReactNode, hel
           text-[white] text-[calc(10px+2vmin)]
         "
       >
-        <h1 className='pt-5 text-3xl'>
-          <a href="/">Blogme</a>
-        </h1>
-        {/* <nav>
-          <!-- Conditionally render login or logout links -->
-          {{#if logged_in}}
-          <a href="/dashboard">dashboard</a> |
-          <button className="no-button" id="logout">logout</button>
-          {{else}}
-          <a href="/login">login</a>
-          {{/if}}
-        </nav> */}
+        <Navbar/>
         <img src={logo} alt="logo"
           className="App-logo 
             h-[30vmin] pointer-events-none 
