@@ -3,6 +3,10 @@ import Layout from './components/layout';
 import { hello } from 'custom-types';
 import { getHello } from './api';
 import logo from './logo.svg'
+import { Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import Post from './pages/Post';
 
 function App() {
   const [getAPI, setGetAPI] = useState({} as hello);
@@ -21,7 +25,13 @@ function App() {
   }, []);
 
   return (
-    <Layout hello={getAPI}></Layout>
+    <Layout hello={getAPI}>
+      <Routes>
+        <Route path='/' element={<Home/>} />
+        <Route path='/dashboard' element={<Dashboard/>} />
+        <Route path='/post' element={<Post/>} />
+      </Routes>
+    </Layout>
   );
 }
 
