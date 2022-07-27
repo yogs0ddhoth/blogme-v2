@@ -1,4 +1,4 @@
-export default function Home() {
+function Home() {
 
   return (
   <div className="mb-4 box-content text-center">
@@ -23,3 +23,4 @@ export default function Home() {
   </div>
   )
 }
+export default Home
