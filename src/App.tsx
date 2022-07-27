@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import Layout from './components/layout';
-import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
+import Home from './pages/home';
+import Dashboard from './pages/dashboard';
 import Post from './pages/Post';
 
 import { hello } from 'custom-types';
