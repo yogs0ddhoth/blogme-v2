@@ -19,3 +19,6 @@ class Comment(Base):
   updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
   user = relationship('User')
+
+  def as_dict(self):
+   return {c.name: getattr(self, c.name) for c in self.__table__.columns}

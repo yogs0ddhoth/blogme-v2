@@ -31,3 +31,6 @@ class User(Base):
     return bcrypt.checkpw(
       password.encode('utf-8'), self.password.encode('utf-8')
     )
+
+  def as_dict(self):
+   return {c.name: getattr(self, c.name) for c in self.__table__.columns}

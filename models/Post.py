@@ -26,3 +26,6 @@ class Post(Base):
   user = relationship('User')
   comments = relationship('Comment', cascade='all,delete')
   votes = relationship('Vote', cascade='all,delete')
+
+  def as_dict(self):
+   return {c.name: getattr(self, c.name) for c in self.__table__.columns}
