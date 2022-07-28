@@ -1,9 +1,11 @@
 import sys
+import json
 import sqlalchemy
 from flask import Blueprint, request, jsonify, session
-from models import User
+from models import User, Post
 from db import get_db
 from utils.auth import login_required
+from utils.filters import format_fields
 
 bp = Blueprint('users', __name__, url_prefix='/users')
 
@@ -62,3 +64,20 @@ def login(): # req: {email:string, password:string}
 def logout(): # remove session variables
   session.clear()
   return '', 204
+
+@bp.route('/posts', methods=['GET'])
+# @login_required
+def get_posts():
+  db = get_db() # connect to database
+  posts = []
+  for p in (
+    db.query(Post) # get posts by session user_id
+      .filter(Post.user_id == session.get('user_id'))
+      .order_by(Post.created_at.desc())
+      .all()
+  ):
+    post = format_fields(p.as_dict(), ['updated_at', 'created_at'])
+    posts.append(post)
+
+  print(json.dumps(posts))
+  return json.dumps(posts)
