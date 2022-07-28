@@ -13,7 +13,7 @@ def create_app(test_config = None):
   app.config.from_mapping(
     SECRET_KEY='TODO_change_this_to_something_secure'
   )
-  # init_db(app)
+  init_db(app)
 
   @app.route('/')
   def index():
