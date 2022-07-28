@@ -1,11 +1,32 @@
 import sys
-import sqlalchemy
+import json
 from flask import Blueprint, request, jsonify, session
-from models import Post, Comment
+from models import Post, Comment, Vote
 from db import get_db
 from utils.auth import login_required
+from utils.filters import format_date
 
 bp = Blueprint('posts', __name__, url_prefix='/posts')
+
+@bp.route('/', methods=['GET'])
+# @login_required
+def get_posts():
+  db = get_db() # connect to database
+  posts = []
+  for u in (
+    db.query(Post) # get posts by session user_id
+      .filter(Post.user_id == session.get('user_id'))
+      .order_by(Post.created_at.desc())
+      .all()
+  ):
+    post = u.__dict__
+    del post['_sa_instance_state']
+    post['updated_at'] = format_date(post['updated_at'])
+    post['created_at'] = format_date(post['created_at'])
+    posts.append(post)
+    
+  print(json.dumps(posts))
+  return json.dumps(posts)
 
 @bp.route('/', methods=['POST'])
 # @login_required
@@ -68,25 +89,25 @@ def delete(id):
   
   return '', 204
 
-@bp.route('/upvote', methods=['PUT'])
-# @login_required
-def upvote():
-  data = request.get_json()
-  db = get_db()
-  try:
-    newVote = Vote( # create new Vote 
-      post_id = data['post_id'],
-      user_id = session.get('user_id')
-    )
-    db.add(newVote)
-    db.commit()
-  except:
-    print(sys.exc_info()[0])
+# @bp.route('/upvote', methods=['PUT'])
+# # @login_required
+# def upvote():
+#   data = request.get_json()
+#   db = get_db()
+#   try:
+#     newVote = Vote( # create new Vote 
+#       post_id = data['post_id'],
+#       user_id = session.get('user_id')
+#     )
+#     db.add(newVote)
+#     db.commit()
+#   except:
+#     print(sys.exc_info()[0])
 
-    db.rollback()
-    return jsonify(message = 'Upvote failed'), 500
+#     db.rollback()
+#     return jsonify(message = 'Upvote failed'), 500
   
-  return '', 204
+#   return '', 204
 
 @bp.route('/comment', methods=['Post'])
 # @login_required
