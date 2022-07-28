@@ -19,12 +19,11 @@ def get_posts():
       .order_by(Post.created_at.desc())
       .all()
   ):
-    post = u.__dict__
-    del post['_sa_instance_state']
+    post = u.as_dict()
     post['updated_at'] = format_date(post['updated_at'])
     post['created_at'] = format_date(post['created_at'])
     posts.append(post)
-    
+
   print(json.dumps(posts))
   return json.dumps(posts)
 
@@ -48,6 +47,21 @@ def create():
     return jsonify(message = 'Post failed'), 500
 
   return jsonify(id = newPost.id)
+
+
+@bp.route('/<id>', methods=['GET'])
+# @login_required
+def edit(id):
+  db = get_db()
+  post = ( # get single post by id
+    db.query(Post)
+      .filter(Post.id == id)
+      .one()
+  ).as_dict()
+  
+  post['updated_at'] = format_date(post['updated_at'])
+  post['created_at'] = format_date(post['created_at'])
+  return json.dumps(post)
 
 @bp.route('/<id>', methods=['PUT'])
 # @login_required # require the user to be logged in
