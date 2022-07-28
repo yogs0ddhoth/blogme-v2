@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-import Layout from './components/layout';
-import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
-import Post from './pages/Post';
+import Layout from './components/Layout';
 
 import { hello } from 'custom-types';
 import { getHello } from './api';
@@ -27,11 +24,7 @@ function App() {
 
   return (
     <Layout hello={getAPI}>
-      <Routes>
-        <Route path='/' element={<Home/>} />
-        <Route path='/dashboard' element={<Dashboard/>} />
-        <Route path='/post' element={<Post/>} />
-      </Routes>
+      <Outlet/>
     </Layout>
   );
 }
