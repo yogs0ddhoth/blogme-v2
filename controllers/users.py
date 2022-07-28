@@ -34,7 +34,7 @@ def signup(): # req: {name:string, email:string, password:string}
   session.clear()
   session['user_id'] = newUser.id
   session['loggedIn'] = True
-  return jsonify(id=newUser.id)
+  return jsonify(id=session['user_id'], loggedIn=session['loggedIn'])
 
 @bp.route('/login', methods=['POST'])
 def login(): # req: {email:string, password:string}
@@ -56,7 +56,7 @@ def login(): # req: {email:string, password:string}
   session.clear()
   session['user_id'] = user.id
   session['loggedIn'] = True
-  return jsonify(id = user.id, loggedIn=session.get('loggedIn'))
+  return jsonify(id = session['user_id'], loggedIn=session['loggedIn'])
 
 @bp.route('/logout', methods=['POST'])
 def logout(): # remove session variables
