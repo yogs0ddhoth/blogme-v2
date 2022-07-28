@@ -1,6 +1,11 @@
 def format_date(date):
   return date.strftime('%m/%d/%y')
 
+def format_fields(dict, list):
+  for f in list:
+    dict[f] = format_date(dict[f])
+  return dict
+  
 def format_url(url): # url: string
   return (
     url # remove all parts of url that aren't the domain name
