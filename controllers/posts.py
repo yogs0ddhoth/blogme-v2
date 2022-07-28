@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify, session
 from models import Post, Comment, Vote
 from db import get_db
 from utils.auth import login_required
-from utils.filters import format_date
+from utils.filters import format_fields
 
 bp = Blueprint('posts', __name__, url_prefix='/posts')
 
@@ -13,15 +13,13 @@ bp = Blueprint('posts', __name__, url_prefix='/posts')
 def get_posts():
   db = get_db() # connect to database
   posts = []
-  for u in (
-    db.query(Post) # get posts by session user_id
-      .filter(Post.user_id == session.get('user_id'))
+  for p in (
+    db.query(Post) # get all posts
       .order_by(Post.created_at.desc())
       .all()
   ):
-    post = u.as_dict()
-    post['updated_at'] = format_date(post['updated_at'])
-    post['created_at'] = format_date(post['created_at'])
+    post = format_fields(p.as_dict(), ['updated_at', 'created_at'])
+    post['user']= p.user.__dict__['name']
     posts.append(post)
 
   print(json.dumps(posts))
@@ -48,20 +46,18 @@ def create():
 
   return jsonify(id = newPost.id)
 
-
 @bp.route('/<id>', methods=['GET'])
 # @login_required
 def edit(id):
   db = get_db()
-  post = ( # get single post by id
+  p = ( # get single post by id
     db.query(Post)
       .filter(Post.id == id)
       .one()
-  ).as_dict()
-  
-  post['updated_at'] = format_date(post['updated_at'])
-  post['created_at'] = format_date(post['created_at'])
-  return json.dumps(post)
+  )
+  post = format_fields(p.as_dict(), ['updated_at', 'created_at'])
+  post['user']= p.user.__dict__['name']
+  return jsonify(post)
 
 @bp.route('/<id>', methods=['PUT'])
 # @login_required # require the user to be logged in
@@ -69,13 +65,13 @@ def update(id):
   data = request.get_json()
   db = get_db()
   try:
-    post = ( # query Posts, retrieve single Post by id
+    post = ( # get single Post by id
       db.query(Post)
         .filter(Post.id == id)
         .one()
     )
     post.title = data['title'] # update title
-    db.commit()
+    db.commit() # update model
   except:
     print(sys.exc_info()[0])
 
