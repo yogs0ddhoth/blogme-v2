@@ -1,7 +1,7 @@
 export default function Home() {
-
+  // state: {allPosts:Post[]}
   return (
-  <div className="mb-4 box-content text-center">
+  <div className="mb-6 box-content text-center">
     <div className="bg-react-blue text-react-background">
       <h2>
         <a href="/post/{{post.id}}">
