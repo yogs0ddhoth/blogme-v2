@@ -21,11 +21,13 @@ def get_posts():
       .all()
   ):
     post = format_fields(p.as_dict(), ['updated_at', 'created_at'])
+    del post['user_id']
+    post['vote_count']=p.__dict__['vote_count']
     posts.append(post)
 
   print(json.dumps(posts))
   return json.dumps(posts)
-  
+
 @bp.route('/signup', methods=['POST'])
 def signup(): # req: {name:string, email:string, password:string}
   data = request.get_json()

@@ -19,7 +19,9 @@ def get_all_posts():
       .all()
   ):
     post = format_fields(p.as_dict(), ['updated_at', 'created_at'])
-    post['user']= p.user.__dict__['name']
+    del post['user_id']
+    post['user']= {'id': p.user.__dict__['id'], 'name': p.user.__dict__['name']}
+    post['vote_count']=p.__dict__['vote_count']
     posts.append(post)
 
   print(json.dumps(posts))
@@ -55,8 +57,11 @@ def edit(id):
       .filter(Post.id == id)
       .one()
   )
+  print(p.__dict__)
   post = format_fields(p.as_dict(), ['updated_at', 'created_at'])
-  post['user']= p.user.__dict__['name']
+  del post['user_id']
+  post['user']= {'id': p.user.__dict__['id'], 'name': p.user.__dict__['name']}
+  post['vote_count']=p.__dict__['vote_count']
   return jsonify(post)
 
 @bp.route('/<id>', methods=['PUT'])
