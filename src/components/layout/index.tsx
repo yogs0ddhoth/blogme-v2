@@ -3,13 +3,14 @@ import React from "react";
 import logo from '../../logo.svg'
 import Navbar from "./Navbar";
 
+
 export default function Layout({children, hello}:{children?:React.ReactNode, hello: hello}) {
   
   
   return (
     <div 
       className="App
-      bg-react-background min-h-screen
+       bg-react-background min-h-full
        text-center
       "
     >
