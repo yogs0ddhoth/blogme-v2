@@ -10,6 +10,7 @@ import Post from './pages/Post';
 import './index.css';
 
 import reportWebVitals from './reportWebVitals';
+import Login from './pages/Login';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -22,6 +23,7 @@ root.render(
           <Route index element={<Home/>} />
           <Route path='dashboard' element={<Dashboard/>} />
           <Route path=':postId' element={<Post/>} />
+          <Route path='login' element={<Login/>} />
         </Route>
       </Routes>
     </BrowserRouter>

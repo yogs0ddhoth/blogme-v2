@@ -1,4 +1,4 @@
-export default function Signup() {
+export default function SignupForm() {
 
   return (
     <div className="row">
