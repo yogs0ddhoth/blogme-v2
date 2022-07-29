@@ -9,7 +9,24 @@ from utils.filters import format_fields
 
 bp = Blueprint('users', __name__, url_prefix='/users')
 
-@bp.route('/', methods=['POST'])
+@bp.route('/', methods=['GET'])
+# @login_required
+def get_posts():
+  db = get_db() # connect to database
+  posts = []
+  for p in (
+    db.query(Post) # get posts by session user_id
+      .filter(Post.user_id == session.get('user_id'))
+      .order_by(Post.created_at.desc())
+      .all()
+  ):
+    post = format_fields(p.as_dict(), ['updated_at', 'created_at'])
+    posts.append(post)
+
+  print(json.dumps(posts))
+  return json.dumps(posts)
+  
+@bp.route('/signup', methods=['POST'])
 def signup(): # req: {name:string, email:string, password:string}
   data = request.get_json()
   db = get_db()
@@ -64,20 +81,3 @@ def login(): # req: {email:string, password:string}
 def logout(): # remove session variables
   session.clear()
   return '', 204
-
-@bp.route('/posts', methods=['GET'])
-# @login_required
-def get_posts():
-  db = get_db() # connect to database
-  posts = []
-  for p in (
-    db.query(Post) # get posts by session user_id
-      .filter(Post.user_id == session.get('user_id'))
-      .order_by(Post.created_at.desc())
-      .all()
-  ):
-    post = format_fields(p.as_dict(), ['updated_at', 'created_at'])
-    posts.append(post)
-
-  print(json.dumps(posts))
-  return json.dumps(posts)

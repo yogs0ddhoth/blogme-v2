@@ -10,7 +10,7 @@ bp = Blueprint('posts', __name__, url_prefix='/posts')
 
 @bp.route('/', methods=['GET'])
 # @login_required
-def get_posts():
+def get_all_posts():
   db = get_db() # connect to database
   posts = []
   for p in (
