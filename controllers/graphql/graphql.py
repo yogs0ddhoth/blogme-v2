@@ -3,9 +3,9 @@ import json
 from flask import Blueprint, request, jsonify, session
 from ariadne import ObjectType, graphql_sync, load_schema_from_path, make_executable_schema, snake_case_fallback_resolvers
 from ariadne.constants import PLAYGROUND_HTML
-from controllers.queries import get_all_posts_resolver, get_post_resolver
-from controllers.mutations import create_post_resolver
-from controllers.type_defs import type_defs
+from controllers.graphql.queries import get_all_posts_resolver, get_post_resolver
+from controllers.graphql.mutations import create_post_resolver
+from controllers.graphql.type_defs import type_defs
 from models import Post, Comment, Vote
 from db import get_db
 from utils.auth import login_required, pass_session
