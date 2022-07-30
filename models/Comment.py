@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 
 from db import Base
+from utils.filters import format_date
 
 class Comment(Base):
   __tablename__ = 'comments'
@@ -21,4 +22,10 @@ class Comment(Base):
   user = relationship('User')
 
   def as_dict(self):
-   return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+   return {
+    'id': self.id,
+    'text': self.text,
+    'post_id': self.post_id,
+    'created_at': format_date(self.created_at),
+    'updated_at': format_date(self.updated_at)
+   }
