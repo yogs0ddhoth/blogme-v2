@@ -14,7 +14,7 @@ class Post(Base):
   )
   title = Column(String(100), nullable=False)
   text = Column(String(300), nullable=False)
-  user_id = Column(Integer, ForeignKey('users.id'))
+  user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
   
   created_at = Column(DateTime, default=datetime.now)
   updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
