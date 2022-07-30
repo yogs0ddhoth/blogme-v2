@@ -13,18 +13,14 @@ bp = Blueprint('users', __name__, url_prefix='/users')
 # @login_required
 def get_posts():
   db = get_db() # connect to database
-  posts = []
-  for p in (
-    db.query(Post) # get posts by session user_id
-      .filter(Post.user_id == session.get('user_id'))
-      .order_by(Post.created_at.desc())
-      .all()
-  ):
-    post = format_fields(p.as_dict(), ['updated_at', 'created_at'])
-    del post['user_id']
-    post['vote_count']=p.__dict__['vote_count']
-    posts.append(post)
-
+  posts = [
+    p.as_dict() for p in (
+      db.query(Post) # get posts by session user_id
+        .filter(Post.user_id == session.get('user_id'))
+        .order_by(Post.created_at.desc())
+        .all()
+    )
+  ]
   print(json.dumps(posts))
   return json.dumps(posts)
 

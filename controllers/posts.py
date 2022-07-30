@@ -13,18 +13,13 @@ bp = Blueprint('posts', __name__, url_prefix='/posts')
 def get_all_posts():
   print(session.get('user_id'))
   db = get_db() # connect to database
-  posts = []
-  for p in (
-    db.query(Post) # get all posts
-      .order_by(Post.created_at.desc())
-      .all()
-  ):
-    post = format_fields(p.as_dict(), ['updated_at', 'created_at'])
-    del post['user_id']
-    post['user']= {'id': p.user.__dict__['id'], 'name': p.user.__dict__['name']}
-    post['vote_count']=p.__dict__['vote_count']
-    posts.append(post)
-
+  posts = [
+    p.as_dict() for p in (
+      db.query(Post) # get all posts
+        .order_by(Post.created_at.desc())
+        .all()
+    )
+  ]
   print(json.dumps(posts))
   return json.dumps(posts)
 
@@ -53,16 +48,12 @@ def create():
 # @login_required
 def get(id):
   db = get_db()
-  p = ( # get single post by id
+  post = ( # get single post by id
     db.query(Post)
       .filter(Post.id == id)
       .one()
-  )
-  print(p.__dict__)
-  post = format_fields(p.as_dict(), ['updated_at', 'created_at'])
-  del post['user_id']
-  post['user']= {'id': p.user.__dict__['id'], 'name': p.user.__dict__['name']}
-  post['vote_count']=p.__dict__['vote_count']
+  ).as_dict()
+  print(post)
   return jsonify(post)
 
 @bp.route('/<id>', methods=['PUT'])
@@ -145,17 +136,3 @@ def comment():
     return jsonify(message = 'Comment failed'), 500
 
   return jsonify(id = newComment.id)
-
-@bp.route('/graphql', methods=['GET'])
-def graphql_playground():
-  return PLAYGROUND_HTML, 200
-
-@bp.route('/graphql', methods=['POST'])
-@pass_session
-def graphql_server():
-  data = request.get_json()
-  success, result = graphql_sync(
-    schema, data, context_value=request
-  )
-  status_code = 200 if success else 400
-  return jsonify(result), status_code
