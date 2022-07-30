@@ -2,7 +2,7 @@ from flask import Flask
 from db import init_db
 # from flask_cors import CORS
 
-from controllers import api, users, posts
+from controllers import api, graphql, users, posts
 
 def create_app(test_config = None):
   # set up app:
@@ -22,5 +22,6 @@ def create_app(test_config = None):
   app.register_blueprint(api)
   app.register_blueprint(users)
   app.register_blueprint(posts)
+  app.register_blueprint(graphql)
   
   return app
