@@ -1,4 +1,15 @@
-import axios from "axios";
+import axios, { Axios, AxiosStatic } from "axios";
+
+export const api = async (func:any, url:string, id?:string) => {
+  try {
+    const response = await func(url+`${id !== undefined ? id : ''}`);
+
+    console.log('success', response);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export const getHello = async () => {
   try {
@@ -11,16 +22,6 @@ export const getHello = async () => {
   }
 };
 
-export const getPosts = async () => {
-  try {
-    const response = await axios.get('/users/');
-
-    console.log('success', response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
 export const signup = async () => {
   try {
     const response = await axios.post('/users/signup')
@@ -51,6 +52,16 @@ export const logout = async () => {
     console.log(error);
   }
 };
+export const getPosts = async () => {
+  try {
+    const response = await axios.get('/users/');
+
+    console.log('success', response);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getAllPosts = async () => {
   try {
@@ -73,7 +84,7 @@ export const createPost = async () => {
   }
 };
 
-export const editPost = async (id:string) => {
+export const getPost = async (id:string) => {
   try {
     const response = await axios.get(`/posts/${id}`)
 
