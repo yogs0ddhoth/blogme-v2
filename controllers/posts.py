@@ -11,6 +11,7 @@ bp = Blueprint('posts', __name__, url_prefix='/posts')
 @bp.route('/', methods=['GET'])
 # @login_required
 def get_all_posts():
+  print(session.get('user_id'))
   db = get_db() # connect to database
   posts = []
   for p in (
@@ -35,7 +36,7 @@ def create():
   try:
     newPost = Post( # create new Post
       title = data['title'],
-      post_url = data['post_url'],
+      text = data['text'],
       user_id = session.get('user_id')
     )
     db.add(newPost)
@@ -50,7 +51,7 @@ def create():
 
 @bp.route('/<id>', methods=['GET'])
 # @login_required
-def edit(id):
+def get(id):
   db = get_db()
   p = ( # get single post by id
     db.query(Post)
@@ -144,3 +145,17 @@ def comment():
     return jsonify(message = 'Comment failed'), 500
 
   return jsonify(id = newComment.id)
+
+@bp.route('/graphql', methods=['GET'])
+def graphql_playground():
+  return PLAYGROUND_HTML, 200
+
+@bp.route('/graphql', methods=['POST'])
+@pass_session
+def graphql_server():
+  data = request.get_json()
+  success, result = graphql_sync(
+    schema, data, context_value=request
+  )
+  status_code = 200 if success else 400
+  return jsonify(result), status_code
