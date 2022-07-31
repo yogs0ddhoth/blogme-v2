@@ -1,146 +1,45 @@
-import axios, { Axios, AxiosStatic } from "axios";
+import axios from "axios";
+import { Comment, Post, User, Vote } from "custom-types";
 
-export const api = async (func:any, url:string, id?:string) => {
+export const apiUsers = async (method:string, path?:string, data?:User) => {
   try {
-    const response = await func(url+`${id !== undefined ? id : ''}`);
-
-    console.log('success', response);
-    return response;
+    return await axios({
+      method: method,
+      url: '/users/' + `${(path !== undefined) ? path : ''}`,
+      data: data
+    });
   } catch (error) {
-    console.log(error);
-  }
-}
-
-export const getHello = async () => {
-  try {
-    const response = await axios.get('/api/hello');
-
-    console.log('success', response);
-    return response;
-  } catch (error) {
-    console.log(error);
+    throw new Error(`${error}`);
   }
 };
 
-export const signup = async () => {
+export const apiPosts = async (method:string, path?:string|number, data?:Post|Comment|Vote) => {
   try {
-    const response = await axios.post('/users/signup')
-
-    console.log('success', response);
-    return response;
+    return await axios({
+      method: method,
+      url: '/posts/' + `${(path !== undefined) ? path : ''}`,
+      data: data
+    });
   } catch (error) {
-    console.log(error);
-  }
-};
-export const login = async () => {
-  try {
-    const response = await axios.post('/users/login')
-
-    console.log('success', response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const logout = async () => {
-  try {
-    const response = await axios.post('/users/logout')
-
-    console.log('success', response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const getPosts = async () => {
-  try {
-    const response = await axios.get('/users/');
-
-    console.log('success', response);
-    return response;
-  } catch (error) {
-    console.log(error);
+    throw new Error(`${error}`);
   }
 };
 
-export const getAllPosts = async () => {
-  try {
-    const response = await axios.get('/posts/')
-
-    console.log('success', response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const createPost = async () => {
-  try {
-    const response = await axios.post('/posts/')
-
-    console.log('success', response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getPost = async (id:string) => {
-  try {
-    const response = await axios.get(`/posts/${id}`)
-
-    console.log('success', response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const updatePost = async (id:string) => {
-  try {
-    const response = await axios.put(`/posts/${id}`)
-
-    console.log('success', response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const deletePost = async (id:string) => {
-  try {
-    const response = await axios.delete(`/posts/${id}`)
-
-    console.log('success', response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-// export const upVote = async () => {
+// export const apiComments = async (method:string, path?:string|number, data?:Comment) => {
 //   try {
-//     const response = await axios.put('/posts/upVote')
-
-//     console.log('success', response);
-//     return response;
+//     return await axios({
+//       method: method,
+//       url: '/comment/' + `${(path !== undefined) ? path : ''}`,
+//       data: data
+//     });
 //   } catch (error) {
-//     console.log(error);
+//     throw new Error(`${error}`);
 //   }
 // };
-export const comment = async () => {
+export const getHello = async () => { // get('/api/hello')
   try {
-    const response = await axios.post('/posts/comment')
-
-    console.log('success', response);
-    return response;
+    return await axios.get('/api/hello');
   } catch (error) {
-    console.log(error);
+    throw new Error(`${error}`);
   }
-}
-// export const  = async () => {
-//   try {
-//     const response = await axios.
-
-//     console.log('success', response);
-//     return response;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+};
