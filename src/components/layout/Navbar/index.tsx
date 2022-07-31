@@ -1,6 +1,9 @@
 import { NavLink } from "react-router-dom";
+import Button from '@mui/material/Button';
+import { useLogout } from "../../../api/mutations";
 
 export default function Navbar() {
+  const logout = useLogout();
 
   return (
     <nav>
@@ -20,7 +23,11 @@ export default function Navbar() {
           </NavLink>
         </li>
         <li>
-          <button>Logout</button>
+          <Button variant="outlined"
+            onClick={() => logout.mutate()}
+          >
+            Logout
+          </Button> 
         </li>
         <li>
           <NavLink to="/login"
