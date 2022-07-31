@@ -1,5 +1,6 @@
 import sys
 import json
+from unicodedata import name
 import sqlalchemy
 from flask import Blueprint, request, jsonify, session
 from models import User, Post
@@ -13,16 +14,13 @@ bp = Blueprint('users', __name__, url_prefix='/users')
 # @login_required
 def get_posts():
   db = get_db() # connect to database
-  posts = [
-    p.as_dict() for p in (
-      db.query(Post) # get posts by session user_id
-        .filter(Post.user_id == session.get('user_id'))
-        .order_by(Post.created_at.desc())
-        .all()
-    )
-  ]
-  print(json.dumps(posts))
-  return json.dumps(posts)
+  user = (
+    db.query(User)
+    .filter(User.id == session.get('user_id'))
+    .one()
+  ).as_dict()
+  print(user)
+  return jsonify(user)
 
 @bp.route('/signup', methods=['POST'])
 def signup(): # req: {name:string, email:string, password:string}
