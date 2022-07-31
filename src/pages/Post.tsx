@@ -1,4 +1,4 @@
-export default function Post() {
+export default function PostPage() {
   // state: {Post}
   return (
     <div className="text-center text-[white] border-2 border-solid ">

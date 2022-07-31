@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from './App';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
-import Post from './pages/Post';
+import PostPage from './pages/Post';
 import Login from './pages/Login';
 import './index.css';
 
@@ -25,7 +25,7 @@ root.render(
           <Route path='/' element={<App/>}>
             <Route index element={<Home/>} />
             <Route path='dashboard' element={<Dashboard/>} />
-            <Route path=':postId' element={<Post/>} />
+            <Route path='post/:postId' element={<PostPage/>} />
             <Route path='login' element={<Login/>} />
           </Route>
         </Routes>
