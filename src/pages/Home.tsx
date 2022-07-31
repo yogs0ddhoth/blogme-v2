@@ -1,5 +1,18 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react"
+import { useAllPosts } from "../api/queries";
+
 export default function Home() {
   // state: {allPosts:Post[]}
+  const queryClient = useQueryClient();
+  const { status, data, error, isFetching } = useAllPosts();
+  if (status === 'loading') {
+    return <div className="loader"/>
+  };
+  if (status === 'error') {
+    return <span>Error: {`${error}`}</span>
+  };
+  console.log(data);
   return (
   <div className="mb-6 box-content text-center">
     <div className="bg-react-blue text-react-background">
