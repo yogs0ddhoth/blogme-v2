@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { usePosts } from "../api/queries";
 import CreatePostForm from "../components/CreatePost";
 

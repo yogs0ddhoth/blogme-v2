@@ -1,5 +1,4 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react"
 import { useAllPosts } from "../api/queries";
 
 export default function Home() {

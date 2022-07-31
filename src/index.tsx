@@ -6,13 +6,12 @@ import App from './App';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import Post from './pages/Post';
-
+import Login from './pages/Login';
 import './index.css';
 
 import reportWebVitals from './reportWebVitals';
-import Login from './pages/Login';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(

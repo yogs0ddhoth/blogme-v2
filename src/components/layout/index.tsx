@@ -1,8 +1,6 @@
-import { hello } from "custom-types";
 import React from "react";
 import logo from '../../logo.svg'
 import Navbar from "./Navbar";
-
 
 export default function Layout({children}:{children?:React.ReactNode}) {
   
