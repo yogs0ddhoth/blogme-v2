@@ -4,7 +4,7 @@ import logo from '../../logo.svg'
 import Navbar from "./Navbar";
 
 
-export default function Layout({children, hello}:{children?:React.ReactNode, hello: hello}) {
+export default function Layout({children}:{children?:React.ReactNode}) {
   
   
   return (
@@ -30,21 +30,16 @@ export default function Layout({children, hello}:{children?:React.ReactNode, hel
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
-        {
-          hello.key_1 ? (
-            <a href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="App-link text-react-blue"
-          >
-            {hello.key_1} {hello.key_2}!
-          </a>
-          ) :(
-            <div
-              className='loader'
-            />
-          )
-        }
+
+        <a href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="App-link text-react-blue"
+        >
+          Hello World!
+        </a>
+        <div className='loader'/>
+
       </header>
       <main className="container m-auto h-[70vmin]">
         {children !== undefined ? children : <></>}
