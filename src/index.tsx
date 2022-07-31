@@ -11,6 +11,9 @@ import './index.css';
 
 import reportWebVitals from './reportWebVitals';
 import Login from './pages/Login';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -18,14 +21,16 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<App/>}>
-          <Route index element={<Home/>} />
-          <Route path='dashboard' element={<Dashboard/>} />
-          <Route path=':postId' element={<Post/>} />
-          <Route path='login' element={<Login/>} />
-        </Route>
-      </Routes>
+      <QueryClientProvider client={queryClient}>
+        <Routes>
+          <Route path='/' element={<App/>}>
+            <Route index element={<Home/>} />
+            <Route path='dashboard' element={<Dashboard/>} />
+            <Route path=':postId' element={<Post/>} />
+            <Route path='login' element={<Login/>} />
+          </Route>
+        </Routes>
+      </QueryClientProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
