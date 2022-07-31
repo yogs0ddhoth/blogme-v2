@@ -47,14 +47,20 @@ def create():
 @bp.route('/<id>', methods=['GET'])
 # @login_required
 def get(id):
-  db = get_db()
-  post = ( # get single post by id
-    db.query(Post)
-      .filter(Post.id == id)
-      .one()
-  ).as_dict()
-  print(post)
-  return jsonify(post)
+  try:
+    db = get_db()
+    post = ( # get single post by id
+      db.query(Post)
+        .filter(Post.id == id)
+        .one()
+    ).as_dict()
+    print(post)
+    return jsonify(post)
+  except:
+    print(sys.exc_info()[0])
+
+    db.rollback()
+    return jsonify(message = 'Posts not found'), 404
 
 @bp.route('/<id>', methods=['PUT'])
 # @login_required # require the user to be logged in
@@ -67,7 +73,11 @@ def update(id):
         .filter(Post.id == id)
         .one()
     )
-    post.title = data['title'] # update title
+    if data['title']:
+      post.title = data['title']
+    if data['text']:
+      post.text = data['text']
+
     db.commit() # update model
   except:
     print(sys.exc_info()[0])
@@ -123,7 +133,7 @@ def comment():
   db = get_db()
   try:
     newComment = Comment( # create new Comment
-      comment_text = data['comment_text'],
+      text = data['text'],
       post_id = data['post_id'],
       user_id = session.get('user_id')
     )
