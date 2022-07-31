@@ -8,7 +8,7 @@ from controllers.graphql.mutations import create_post_resolver
 from controllers.graphql.type_defs import type_defs
 from models import Post, Comment, Vote
 from db import get_db
-from utils.auth import login_required, pass_session
+from utils.auth import login_required
 from utils.filters import format_fields
 
 bp = Blueprint('graphql', __name__, url_prefix='/graphql')
