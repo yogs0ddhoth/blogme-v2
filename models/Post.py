@@ -24,7 +24,7 @@ class Post(Base):
     select( [func.count(Vote.id)] ).where(Vote.post_id == id)
   )
 
-  user = relationship('User')
+  user = relationship('User', back_populates='posts')
   comments = relationship('Comment', cascade='all,delete')
   votes = relationship('Vote', cascade='all,delete')
 

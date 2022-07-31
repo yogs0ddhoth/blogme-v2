@@ -1,9 +1,11 @@
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
 
 from db import Base
 
 import bcrypt
+
+from utils.filters import format_date
 salt = bcrypt.gensalt()
 
 class User(Base):
@@ -17,6 +19,7 @@ class User(Base):
   email = Column(String(75), nullable=False, unique=True)
   password = Column(String(100), nullable=False)
 
+  posts = relationship('Post', back_populates='user')
   @validates('email')
   def validate_email(self, key, email):
     assert '@' in email
@@ -33,4 +36,16 @@ class User(Base):
     )
 
   def as_dict(self):
-   return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+   return {
+    'id': self.id,
+    'name': self.name,
+    'posts': [
+      {
+        'id': c.id,
+        'title': c.title,
+        'text': c.text,
+        'created_at': format_date(c.created_at),
+        'updated_at': format_date(c.updated_at)
+      } for c in self.posts
+    ]
+   }
