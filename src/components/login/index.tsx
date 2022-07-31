@@ -1,28 +1,95 @@
-export default function LoginForm() {
-  return (
-    <div className="row">
-      <div className="col-md-6">
-        <h2>Login</h2>
+import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 
-        <form className="form login-form">
-          <div className="form-group">
-            <label>
-              email:
-              <input className="form-input" type="text" id="email-login" />
-            </label>
-          </div>
-          <div className="form-group">
-            <label>
-              password:
-              <input className="form-input" type="password" id="password-login" />
-            </label>
-          </div>
-          <div className="form-group">
-            <button className="btn btn-primary" type="submit">login</button>
-          </div>
-        </form>
-        <a href="/signup" className="" id="">signup instead</a>
-      </div>
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
+import { useLogin } from "../../api/mutations"
+
+export default function LoginForm() {
+  const login = useLogin();
+  const {
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors }
+  } = useForm(
+    { defaultValues: {email: "", password: ""} }
+  );
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => event.preventDefault();
+ 
+  return (
+    <div className="col-md-6">
+      <h2>Login</h2>
+      <form 
+        className=""
+        onSubmit={ handleSubmit((data) => login.mutate(data)) }
+      >
+        <FormControl className="email"  
+          required error={errors.email?.message !== undefined}
+        >
+          <Controller
+            name="email"
+            control={control}
+            render={ ({field}) => {
+              return (
+                <TextField {...field} 
+                  label="Email:" color="primary" helperText={errors.email?.message}
+                />
+              )
+            }}
+            rules={{
+              pattern: {
+                value: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+                message: "Enter a valid email address."
+              }
+            }}
+          />
+        </FormControl>
+          
+        <FormControl className="password">
+          <Controller
+            name="password"
+            control={control}
+            render={ ({field}) => (
+              <>
+                <InputLabel htmlFor="password">Password:</InputLabel>
+                <OutlinedInput {...field}
+                  id="password1" color="primary" 
+                  label="Password:"
+                  type={showPassword ? 'text' : 'password'}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton 
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff/> : <Visibility/>}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </>
+            )}
+          />
+        </FormControl>
+          
+        <Button type="submit" variant="outlined">
+          Submit
+        </Button>     
+      </form>
+      <a href="/signup" className="" id="">signup instead</a>
     </div>
   )
 }
