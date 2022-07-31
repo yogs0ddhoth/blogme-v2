@@ -1,5 +1,18 @@
+import { useQuery } from "@tanstack/react-query";
+import { usePosts } from "../api/queries";
+import CreatePostForm from "../components/CreatePost";
+
 export default function Dashboard() {
-  // state: {userPosts: Post[]}
+  const { status, error, data, isFetching } = usePosts();
+
+  if (status === 'loading') {
+    return <div className="loader"/>
+  };
+  if (status === 'error') {
+    return <span>{`${error}`}</span>
+  };
+
+  console.log(data);
   return (
     <div className="grid grid-cols-6 text-[white]">
       <div className="col-span-6">
@@ -13,7 +26,7 @@ export default function Dashboard() {
       {/* <div className="row-span-4 mt-4"> */}
         <div className="col-span-6 md:col-span-3">
           <h3>Create a New Post:</h3>
-
+          <CreatePostForm />
           <form className="form new-post-form">
             <div className="block w-full m-3">
               <label>
@@ -41,7 +54,7 @@ export default function Dashboard() {
         </div>
 
         {/* {{#if posts.length}} */}
-        <div className="col-span-6 md:col-span-2 post-list">
+        <div className="col-span-6 md:col-span-3 post-list">
           <h3>Posts:</h3>
 
           {/* {{#each posts as |post|}} */}
@@ -66,7 +79,6 @@ export default function Dashboard() {
             </div>
           </div>
           {/* {{/each}} */}
-          
         </div>
         {/* {{/if}} */}
       </div>
