@@ -1,25 +1,29 @@
 import { useForm, Controller } from "react-hook-form";
-
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
-import { useCreatePost } from "../../api/mutations";
+import { useCreatePost, useUpdatePost } from "../../api/mutations";
 
-export default function CreatePostForm() {
-  const createPost = useCreatePost()
+export default function PostForm({id, post}:{id?:number, post?:{title:string, text:string}}) {
+  const create = useCreatePost();
+  const update = useUpdatePost();
+  const values = (post === undefined) ? {title: "", text: ""} : post
   const {
     handleSubmit,
     reset,
     control,
     formState: { errors }
   } = useForm(
-    { defaultValues: {title: "", text: ""} }
+    { defaultValues: values }
   );
 
   return (
     <form 
       className="form new-post-form"
-      onSubmit={ handleSubmit((data) => createPost.mutate(data)) }
+      onSubmit={handleSubmit(
+          (data) => (id === undefined) ? create.mutate(data) : update.mutate({id, data})
+        )
+      }
     >
       <FormControl className="w-full"  
         required error={errors.title?.message !== undefined}
@@ -41,7 +45,7 @@ export default function CreatePostForm() {
       </FormControl>
         
       <FormControl className="w-full"
-        required error={errors.title?.message !== undefined}
+        required error={errors.text?.message !== undefined}
       >
         <Controller
           name="text"
