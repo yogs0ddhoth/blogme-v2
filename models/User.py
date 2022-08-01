@@ -44,6 +44,16 @@ class User(Base):
         'id': c.id,
         'title': c.title,
         'text': c.text,
+        'comments': [
+          {
+            'id': d.id,
+            'text': d.text,
+            'user': {
+              'name': d.user.name
+            },
+            'created_at': format_date(c.created_at)
+          } for d in c.comments
+        ],
         'created_at': format_date(c.created_at),
         'updated_at': format_date(c.updated_at)
       } for c in self.posts
