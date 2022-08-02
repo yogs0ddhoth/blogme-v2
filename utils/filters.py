@@ -1,3 +1,7 @@
+def created_at(x):
+  return x.__dict__['created_at'] 
+  
+
 def format_date(date):
   return date.strftime('%m/%d/%y')
 

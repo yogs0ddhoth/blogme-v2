@@ -1,3 +1,4 @@
+from audioop import reverse
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import validates, relationship
 
@@ -5,7 +6,7 @@ from db import Base
 
 import bcrypt
 
-from utils.filters import format_date
+from utils.filters import created_at, format_date
 salt = bcrypt.gensalt()
 
 class User(Base):
@@ -36,26 +37,27 @@ class User(Base):
     )
 
   def as_dict(self):
-   return {
-    'id': self.id,
-    'name': self.name,
-    'posts': [
-      {
-        'id': c.id,
-        'title': c.title,
-        'text': c.text,
-        'comments': [
-          {
-            'id': d.id,
-            'text': d.text,
-            'user': {
-              'name': d.user.name
-            },
-            'created_at': format_date(c.created_at)
-          } for d in c.comments
-        ],
-        'created_at': format_date(c.created_at),
-        'updated_at': format_date(c.updated_at)
-      } for c in self.posts
-    ]
-   }
+    self.posts.sort(key=created_at, reverse=True)
+    return {
+     'id': self.id,
+     'name': self.name,
+     'posts': [
+       {
+         'id': c.id,
+         'title': c.title,
+         'text': c.text,
+         'comments': [
+           {
+             'id': d.id,
+             'text': d.text,
+             'user': {
+               'name': d.user.name
+             },
+             'created_at': format_date(c.created_at)
+           } for d in c.comments
+         ],
+         'created_at': format_date(c.created_at),
+         'updated_at': format_date(c.updated_at)
+       } for c in self.posts
+     ]
+    }
