@@ -29,6 +29,7 @@ import CommentCard from '../Comment';
 import PostForm from '../PostForm';
 import PostMenu from '../PostMenu';
 import CommentForm from '../CommentForm';
+import VoteButton from '../Vote';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -47,14 +48,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 export default function PostCard({post}:{post:Post}) {
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => setExpanded(!expanded);
-
-  const [actionOpen, setActionOpen] = React.useState(false);
-  const handleActionOpen = () => {
-    setActionOpen(true);
-  };
-  const handleActionClose = () => {
-    setActionOpen(false);
-  };
 
   return (
     <Card>
@@ -90,9 +83,7 @@ export default function PostCard({post}:{post:Post}) {
         <Divider variant='middle'/>
 
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
+          <VoteButton id={post.id as number} vote_count={post.vote_count as number}/>
           {post.comments !== undefined && post.comments.length 
             ? (
               <ExpandMore
