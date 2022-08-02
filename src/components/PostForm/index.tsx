@@ -1,13 +1,21 @@
 import { useForm, Controller } from "react-hook-form";
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import Button from '@mui/material/Button';
-import { useCreatePost, useUpdatePost } from "../../api/mutations";
 
-export default function PostForm({id, post}:{id?:number, post?:{title:string, text:string}}) {
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Divider from '@mui/material/Divider';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+
+import { useCreatePost, useUpdatePost } from "../../api/mutations";
+import { Post } from "custom-types";
+
+export default function PostForm({action, post}:{action?:React.ReactElement, post?:Post}) {
   const create = useCreatePost();
   const update = useUpdatePost();
-  const values = (post === undefined) ? {title: "", text: ""} : post
+  const values = (post !== undefined) ? {title: post.title, text: post.text} : {title: "", text: ""}
   const {
     handleSubmit,
     reset,
@@ -18,54 +26,60 @@ export default function PostForm({id, post}:{id?:number, post?:{title:string, te
   );
 
   return (
-    <form 
-      className="form new-post-form"
-      onSubmit={handleSubmit(
-          (data) => (id === undefined) ? create.mutate(data) : update.mutate({id, data})
-        )
-      }
-    >
-      <FormControl className="w-full"  
-        required error={errors.title?.message !== undefined}
+    <Card>
+      <form className="form new-post-form"
+        onSubmit={handleSubmit( data => 
+          (post !== undefined && post.id !== undefined) 
+            ? update.mutate({id: post.id, data}) 
+            : create.mutate(data)
+        )}
       >
-        <Controller
-          name="title"
-          control={control}
-          render={ ({field}) => {
-            return (
-              <TextField {...field} 
-                label="Title:" color="primary" helperText={errors.title?.message}
+        <CardHeader
+          title={
+            <FormControl className="w-full" 
+              required error={errors.title?.message !== undefined}
+            >
+              <Controller name="title" control={control}
+                render={ ({field}) => (
+                  <TextField {...field} 
+                    label="Title:" color="primary" 
+                    helperText={errors.title?.message}
+                  />
+                )}
+                rules={
+                  {required: "This field is required."}
+                }
               />
-            )
-          }}
-          rules={
-            {required: "This field is required."}
+            </FormControl>
           }
+          action={action}
         />
-      </FormControl>
-        
-      <FormControl className="w-full"
-        required error={errors.text?.message !== undefined}
-      >
-        <Controller
-          name="text"
-          control={control}
-          render={ ({field}) => {
-            return (
-              <TextField {...field} 
-                label="Post:" color="primary" multiline rows={4}
-              />
-            )
-          }}
-          rules={
-            {required: "This field is required."}
-          }
-        />
-      </FormControl>
-        
-      <Button type="submit" variant="outlined">
-        Submit
-      </Button>     
-    </form>
+
+        <CardContent> 
+          <FormControl className="w-full" 
+            required error={errors.text?.message !== undefined}
+          >
+            <Controller name="text" control={control}
+              render={ ({field}) => (
+                <TextField {...field} 
+                  label="Post:" color="primary" multiline rows={4}
+                />
+              )}
+              rules={
+                {required: "This field is required."}
+              }
+            />
+          </FormControl>
+        </CardContent>
+
+        <Divider variant='middle'/>
+
+        <CardActions>
+          <Button type="submit" variant="outlined">
+            Submit
+          </Button>
+        </CardActions>
+      </form>
+    </Card>
   )
 }
