@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { useForm, Controller } from "react-hook-form";
 
 import Avatar from '@mui/material/Avatar';
@@ -9,6 +10,7 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import { red } from '@mui/material/colors';
+import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
@@ -17,12 +19,15 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
+import EditOutlined from '@mui/icons-material/EditOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import EditOutlined from '@mui/icons-material/EditOutlined';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { Post } from 'custom-types';
+import CommentCard from '../Comment';
 import PostForm from '../PostForm';
+import PostMenu from '../PostMenu';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -40,37 +45,24 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export default function PostCard({post}:{post:Post}) {
   const [expanded, setExpanded] = React.useState(false);
-  const [editing, setEditing] = React.useState(false);
-
-  const handleOpen = () => setEditing(true);
-  const handleClose = () => setEditing(false);
   const handleExpandClick = () => setExpanded(!expanded);
+
+  const [actionOpen, setActionOpen] = React.useState(false);
+  const handleActionOpen = () => {
+    setActionOpen(true);
+  };
+  const handleActionClose = () => {
+    setActionOpen(false);
+  };
 
   return (
     <Card>
 
-      <form
+      {/* <form
         className="form new-post-form"
         // onSubmit={ handleSubmit((data) => createPost.mutate(data)) }
-      >
+      > */}
         <CardHeader
-          action={ // if dashboard/user logged in && editing === false
-            <>
-              <IconButton aria-label="edit"
-                onClick={handleOpen}
-              >
-                <EditOutlined />
-              </IconButton>
-              <Modal
-                open={editing}
-                onClose={handleClose}
-              >
-                <Card>
-                  <PostForm/>
-                </Card>
-              </Modal>
-            </>
-          }
           avatar={
             <>
               <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe"></Avatar>
@@ -80,12 +72,21 @@ export default function PostCard({post}:{post:Post}) {
               </Stack>
             </>
           }
-          title={post.title}
+          title={
+            <Link to={`/post/${post.id}`}>
+              {post.title}
+            </Link>
+          }
+          action={
+            <PostMenu post={post}/>
+          }
         />
 
         <CardContent>
           <Typography variant="body2" color="text.secondary">{post.text}</Typography>
         </CardContent>
+        
+        <Divider variant='middle'/>
 
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites">
@@ -101,7 +102,9 @@ export default function PostCard({post}:{post:Post}) {
               >
                 <ExpandMoreIcon />
                 {!expanded 
-                  ? <Typography>Comments</Typography> 
+                  ? <Typography>
+                      {post.comments.length} Comment{post.comments.length > 1 ? 's' : ''}
+                    </Typography> 
                   : <></>
                 }
               </ExpandMore>
@@ -109,33 +112,29 @@ export default function PostCard({post}:{post:Post}) {
               <></>
             )
           }
+          
         </CardActions>
-      </form>
-
+      {/* </form> */}
+      <Divider/>
       {post.comments !== undefined && post.comments.length
         ? (
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              {post.comments.map(comment => (
-                <Stack key={comment.id} direction="row">
-                  <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe"></Avatar>
-                  <Stack>
-                    <Card>
-                      <CardHeader title={comment.user !== undefined ? comment.user.name: ''} />
-                      <CardContent>
-                        <Typography>{comment.text}</Typography>
-                      </CardContent>
-                    </Card>
-                    <Typography>{comment.created_at}</Typography>
-                  </Stack>
-                </Stack>
-              ))}
+              {post.comments.map(comment => <CommentCard comment={comment} />)}
             </CardContent>
           </Collapse>
         ) : (
           <></>
         )
       }
+      <CardContent
+        // if the user is logged in
+      > 
+        <Stack direction={'row'}>
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />
+          <TextField />
+        </Stack>
+      </CardContent>
     </Card>
   );
 }
