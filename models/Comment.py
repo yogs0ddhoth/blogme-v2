@@ -13,8 +13,8 @@ class Comment(Base):
     autoincrement='auto'
   )
   text = Column(String(255), nullable=False)
-  user_id = Column(Integer, ForeignKey('users.id'))
-  post_id = Column(Integer, ForeignKey('posts.id'))
+  user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+  post_id = Column(Integer, ForeignKey('posts.id'), nullable=False)
   
   created_at = Column(DateTime, default=datetime.now)
   updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
