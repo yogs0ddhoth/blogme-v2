@@ -1,6 +1,7 @@
-import sys
 import json
+from datetime import datetime, timedelta, timezone
 from unicodedata import name
+from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, jwt_required, unset_jwt_cookies
 import sqlalchemy
 from flask import Blueprint, request, jsonify, session
 from models import User, Post
@@ -10,8 +11,24 @@ from utils.filters import format_fields
 
 bp = Blueprint('users', __name__, url_prefix='/users')
 
+@bp.after_request
+def refresh_expiring_jwt(response):
+  try:
+    exp_timestamp = get_jwt()['exp']
+    now = datetime.now(timezone.utc)
+    target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+    if target_timestamp > exp_timestamp:
+      access_token = create_access_token(identity=get_jwt_identity())
+      data = response.get_json()
+      if type(data) is dict:
+        data['access_token'] = access_token
+        response.data = json.dumps(data)
+    return response
+  except (RuntimeError, KeyError):
+    return response
+
 @bp.route('/', methods=['GET'])
-# @login_required
+@jwt_required()
 def get_posts():
   db = get_db() # connect to database
   user = (
@@ -46,10 +63,11 @@ def signup(): # req: {name:string, email:string, password:string}
     db.rollback()
     return jsonify(message='Signup Failed'), 500
 
+  access_token = create_access_token(identity=data['email'])
   session.clear()
   session['user_id'] = newUser.id
   session['loggedIn'] = True
-  return jsonify(id=session['user_id'], loggedIn=session['loggedIn'])
+  return jsonify(id=session['user_id'], loggedIn=session['loggedIn'], access_token=access_token)
 
 @bp.route('/login', methods=['POST'])
 def login(): # req: {email:string, password:string}
@@ -68,12 +86,15 @@ def login(): # req: {email:string, password:string}
   if user.verify_password(data['password']) == False:
     return jsonify(message = 'Incorrect credentials'), 400
   
+  access_token = create_access_token(identity=data['email'])
   session.clear()
   session['user_id'] = user.id
   session['loggedIn'] = True
-  return jsonify(id = session['user_id'], loggedIn=session['loggedIn'])
+  return jsonify(id = session['user_id'], loggedIn=session['loggedIn'], access_token=access_token)
 
 @bp.route('/logout', methods=['POST'])
 def logout(): # remove session variables
   session.clear()
-  return '', 204
+  response = jsonify({'message': 'logout successful'})
+  unset_jwt_cookies(response)
+  return response
