@@ -2,7 +2,7 @@ import React from "react";
 import logo from '../../logo.svg'
 import Navbar from "./Navbar";
 
-export default function Layout({children}:{children?:React.ReactNode}) {
+export default function Layout({children}:{children:React.ReactNode}) {
   
   
   return (
@@ -40,7 +40,7 @@ export default function Layout({children}:{children?:React.ReactNode}) {
 
       </header>
       <main className="container m-auto h-[70vmin]">
-        {children !== undefined ? children : <></>}
+        {children}
       </main>
     </div>
   )

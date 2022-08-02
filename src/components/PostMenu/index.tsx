@@ -27,7 +27,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PostForm from '../PostForm';
 
 import { Post } from 'custom-types';
-import DeleteCard from '../DeleteCard';
+import DeleteCard from '../Delete';
 
 export default function PostMenu({post}:{post:Post}) {
   // Menu state
