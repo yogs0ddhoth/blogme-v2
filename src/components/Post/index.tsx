@@ -28,6 +28,7 @@ import { Post } from 'custom-types';
 import CommentCard from '../Comment';
 import PostForm from '../PostForm';
 import PostMenu from '../PostMenu';
+import CommentForm from '../CommentForm';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -130,10 +131,7 @@ export default function PostCard({post}:{post:Post}) {
       <CardContent
         // if the user is logged in
       > 
-        <Stack direction={'row'}>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />
-          <TextField />
-        </Stack>
+        <CommentForm id={post.id as number}/>
       </CardContent>
     </Card>
   );
