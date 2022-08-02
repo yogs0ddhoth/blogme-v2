@@ -106,25 +106,25 @@ def delete(id):
   
   return '', 204
 
-# @bp.route('/upvote', methods=['PUT'])
-# # @login_required
-# def upvote():
-#   data = request.get_json()
-#   db = get_db()
-#   try:
-#     newVote = Vote( # create new Vote 
-#       post_id = data['post_id'],
-#       user_id = session.get('user_id')
-#     )
-#     db.add(newVote)
-#     db.commit()
-#   except:
-#     print(sys.exc_info()[0])
+@bp.route('/upvote', methods=['PUT'])
+# @login_required
+def upvote():
+  data = request.get_json()
+  db = get_db()
+  try:
+    newVote = Vote( # create new Vote 
+      post_id = data['post_id'],
+      user_id = session.get('user_id')
+    )
+    db.add(newVote)
+    db.commit()
+  except:
+    print(sys.exc_info()[0])
 
-#     db.rollback()
-#     return jsonify(message = 'Upvote failed'), 500
+    db.rollback()
+    return jsonify(message = 'Upvote failed'), 500
   
-#   return '', 204
+  return '', 204
 
 @bp.route('/comment', methods=['Post'])
 # @login_required
