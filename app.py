@@ -24,5 +24,9 @@ def create_app(test_config=None):
   @app.route('/<path>')
   def index(path):
     return app.send_static_file('index.html')
+
+  @app.route('/<path>/<id>')
+  def post(path, id):
+    return app.send_static_file('index.html')
   
   return app
