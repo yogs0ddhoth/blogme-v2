@@ -33,5 +33,11 @@ declare module "custom-types" {
 
   interface Action {
     type: string
+    payload?: AppContext
+  }
+
+  interface AppContext {
+    user?: string
+    auth?: string
   }
 }
