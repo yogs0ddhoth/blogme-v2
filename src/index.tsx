@@ -21,14 +21,15 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <Routes>
+        {/* <Routes>
           <Route path='/' element={<App/>}>
             <Route index element={<Home/>} />
             <Route path='dashboard' element={<Dashboard/>} />
             <Route path='post/:postId' element={<PostPage/>} />
             <Route path='login' element={<Login/>} />
           </Route>
-        </Routes>
+        </Routes> */}
+        <App/>
       </QueryClientProvider>
     </BrowserRouter>
   </React.StrictMode>
