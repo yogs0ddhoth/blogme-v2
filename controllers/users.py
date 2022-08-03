@@ -63,7 +63,7 @@ def signup(): # req: {name:string, email:string, password:string}
     db.rollback()
     return jsonify(message='Signup Failed'), 500
 
-  access_token = create_access_token(identity=data['email'])
+  access_token = create_access_token(identity=data['name'])
   session.clear()
   session['user_id'] = newUser.id
   session['loggedIn'] = True
@@ -86,7 +86,7 @@ def login(): # req: {email:string, password:string}
   if user.verify_password(data['password']) == False:
     return jsonify(message = 'Incorrect credentials'), 400
   
-  access_token = create_access_token(identity=data['email'])
+  access_token = create_access_token(identity=user.name)
   session.clear()
   session['user_id'] = user.id
   session['loggedIn'] = True
