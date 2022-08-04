@@ -30,10 +30,13 @@ def refresh_expiring_jwt(response):
 @bp.route('/', methods=['GET'])
 @jwt_required()
 def get_posts():
+  data = request.json.get('name')
+  identity = get_jwt()
+  print("!!!!!!!!!!!!!!!!!!!!!!!!!!", identity, "!!!!!!!!!!!!!!!!!!!!!!!!!!")
   db = get_db() # connect to database
-  user = (
+  user = ( # identity['sub']: {'name': 'seed1', 'email': 'seed1@cbc.ca'}
     db.query(User)
-    .filter(User.id == session.get('user_id'))
+    .filter(User.email == identity['sub']['email'])
     .one()
   ).as_dict()
   print(user)
@@ -63,11 +66,11 @@ def signup(): # req: {name:string, email:string, password:string}
     db.rollback()
     return jsonify(message='Signup Failed'), 500
 
-  access_token = create_access_token(identity=data['name'])
+  access_token = create_access_token(identity={'name': data['name'], 'email': data['email']})
   session.clear()
   session['user_id'] = newUser.id
   session['loggedIn'] = True
-  return jsonify(id=session['user_id'], loggedIn=session['loggedIn'], access_token=access_token)
+  return jsonify(id=newUser.id, name=newUser.name, access_token=access_token)
 
 @bp.route('/login', methods=['POST'])
 def login(): # req: {email:string, password:string}
@@ -86,11 +89,11 @@ def login(): # req: {email:string, password:string}
   if user.verify_password(data['password']) == False:
     return jsonify(message = 'Incorrect credentials'), 400
   
-  access_token = create_access_token(identity=user.name)
+  access_token = create_access_token(identity={'name': user.name, 'email': user.email})
   session.clear()
   session['user_id'] = user.id
   session['loggedIn'] = True
-  return jsonify(id = session['user_id'], loggedIn=session['loggedIn'], access_token=access_token)
+  return jsonify(id=user.id, name=user.name, access_token=access_token)
 
 @bp.route('/logout', methods=['POST'])
 def logout(): # remove session variables
