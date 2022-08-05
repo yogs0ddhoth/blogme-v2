@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta, timezone
+from os import getenv
+from dotenv import load_dotenv
 import sqlalchemy
 from flask import Flask, request, jsonify, session
 from models import User
@@ -8,6 +10,8 @@ from db import init_db, get_db
 
 from controllers import api, graphql, users, posts
 
+load_dotenv()
+
 def create_app(test_config=None):
   # set up app:
   app = Flask(__name__, static_folder='build', static_url_path='')
@@ -15,8 +19,8 @@ def create_app(test_config=None):
 
   app.url_map.strict_slashes = False
   app.config.from_mapping(
-    SECRET_KEY='t1od1o23cha5n8ge1321t34h55i89s14z233to377z10so987meth159zi258zng418z676zmor1094ze1771z2865zs4636zec12139zure',
-    JWT_SECRET_KEY='t1od1o23cha5n8ge1321t34h55i89s14z233to377z10so987meth159zi258zng418z676zmor1094ze1771z2865zs4636zec12139zure',
+    SECRET_KEY=getenv('SECRET_KEY'),
+    JWT_SECRET_KEY=getenv('SECRET_KEY'),
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
   )
   jwt = JWTManager(app)
