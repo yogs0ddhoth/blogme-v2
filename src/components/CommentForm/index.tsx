@@ -6,16 +6,20 @@ import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
 import Stack from "@mui/material/Stack";
 import TextField from '@mui/material/TextField';
+
 import { useComment } from '../../api/mutations';
+import { authContext } from '../../utils/context/contexts';
 
 export default function CommentForm({id}:{id:number}) {
-  const comment = useComment();
+  const {state, dispatch} = React.useContext(authContext);
+  const comment = useComment(state.auth);
   const [commentState, setCommentState] = React.useState('');
 
   const handleSubmit = (event:React.FormEvent) => {
     event.preventDefault();
-    console.log({post_id:id, text: commentState})
-    return comment.mutate({post_id:id, text: commentState});
+    return comment.mutate({post_id:id, text: commentState}, {
+      onError: () => window.location.assign('/login')
+    });
   };
 
   return (

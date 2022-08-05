@@ -3,15 +3,17 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import mutations from "../../api/mutations";
+import { authContext } from '../../utils/context/contexts';
+import {useVote} from "../../api/mutations";
 
 export default function VoteButton({id, vote_count}:{id:number, vote_count:number}) {
+  const {state, dispatch} = React.useContext(authContext);
   const [voteCount, setVoteCount] = React.useState(vote_count);
-  const upvote = mutations.useVote();
+  const upvote = useVote(state.auth);
   const handleClick = () => {
-    const newVoteCount = voteCount + 1
-    setVoteCount(newVoteCount)
-    upvote.mutate(id);
+    const newVoteCount = voteCount + 1;
+    setVoteCount(newVoteCount);
+    upvote.mutate({post_id: id});
   }
   return (
     <>

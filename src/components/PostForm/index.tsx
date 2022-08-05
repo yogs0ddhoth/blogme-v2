@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useForm, Controller } from "react-hook-form";
 
 import Button from '@mui/material/Button';
@@ -9,12 +10,15 @@ import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 
+import { authContext } from '../../utils/context/contexts';
 import { useCreatePost, useUpdatePost } from "../../api/mutations";
 import { Post } from "custom-types";
 
 export default function PostForm({action, post}:{action?:React.ReactElement, post?:Post}) {
-  const create = useCreatePost();
-  const update = useUpdatePost();
+  const {state, dispatch} = React.useContext(authContext);
+  const create = useCreatePost(state.auth);
+  const update = useUpdatePost(state.auth, (post !== undefined && post.id !== undefined) ? post.id : 0);
+
   const values = (post !== undefined) ? {title: post.title, text: post.text} : {title: "", text: ""}
   const {
     handleSubmit,
@@ -29,9 +33,13 @@ export default function PostForm({action, post}:{action?:React.ReactElement, pos
     <Card>
       <form className="form new-post-form"
         onSubmit={handleSubmit( data => 
-          (post !== undefined && post.id !== undefined) 
-            ? update.mutate({id: post.id, data}) 
-            : create.mutate(data)
+          (post !== undefined) 
+            ? update.mutate(data, {
+              onError: () => window.location.assign('/login')
+            }) 
+            : create.mutate(data, {
+              onError: () => window.location.assign('/login')
+            })
         )}
       >
         <CardHeader

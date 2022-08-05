@@ -6,11 +6,14 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Divider from '@mui/material/Divider';
-import { useDeletePost } from '../../api/mutations';
 import Typography from '@mui/material/Typography';
 
+import { authContext } from '../../utils/context/contexts';
+import { useDeletePost } from '../../api/mutations';
+
 export default function DeleteCard({id, action, cancel}:{id:number, action:React.ReactElement, cancel:()=>void}) {
-  const deletePost = useDeletePost();
+  const {state, dispatch} = React.useContext(authContext);
+  const deletePost = useDeletePost(state.auth, id);
   return (
     <Card>
       <CardHeader
@@ -33,7 +36,7 @@ export default function DeleteCard({id, action, cancel}:{id:number, action:React
           Cancel
         </Button>
         <Button variant='outlined'
-          onClick={() => deletePost.mutate(id)}
+          onClick={() => deletePost.mutate()}
         >
           Delete
         </Button>

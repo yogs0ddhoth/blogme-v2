@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiPosts, apiUsers } from ".";
 
-export function usePosts() {
-  return useQuery(['userPosts'], () => apiUsers('get'))
+export function usePosts(auth:string|null) { 
+  return useQuery(['userPosts'], () => apiUsers('get', undefined, auth), {retry:false})
 }
 
 export function useAllPosts() {

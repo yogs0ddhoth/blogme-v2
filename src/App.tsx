@@ -4,12 +4,10 @@ import Home from './pages/Home';
 import PostPage from './pages/Post';
 import Login from './pages/Login';
 import Layout from './components/Layout';
-import useAuth from './utils/auth';
 import { AppContext } from 'custom-types';
 import { AuthProvider } from './utils/context/contexts';
 
 export default function App() {
-  const {getUser, userAuth, saveUser, clearUser} = useAuth();
 
   return (
     <AuthProvider>
