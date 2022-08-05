@@ -1,16 +1,23 @@
+import * as React from 'react';
 import { Post } from "custom-types";
-import { usePosts } from "../api/queries";
-import { useCreatePost } from "../api/mutations";
+
+import { Link } from 'react-router-dom';
 import PostForm from "../components/PostForm";
 import PostCard from "../components/Post";
 
+import { usePosts } from "../api/queries";
+import { authContext } from '../utils/context/contexts';
+import { useCreatePost } from "../api/mutations";
+
 export default function Dashboard() {
-  const { status, error, data, isFetching } = usePosts();
+  const {state, dispatch} = React.useContext(authContext);
+  const { status, error, data, isFetching } = usePosts(state.auth);
   if (status === 'loading') {
     return <div className="loader"/>
   };
   if (status === 'error') {
-    return <span>{`${error}`}</span>
+    // window.location.assign('/login');
+    return <span>{`${error}`} <Link to='/login' className='text-react-blue hover:underline'>Login</Link></span>;
   };
   console.log(data);
   
@@ -72,7 +79,6 @@ export default function Dashboard() {
   //     ]
   //   }
   // }
-
   return (
     <div className="grid grid-cols-6 text-[white]">
 
