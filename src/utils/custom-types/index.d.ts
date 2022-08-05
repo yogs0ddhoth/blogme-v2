@@ -31,13 +31,13 @@ declare module "custom-types" {
     post_id: number
   }
 
-  interface Action {
+  interface AuthAction {
     type: string
     payload?: AppContext
   }
-
   interface AppContext {
-    user?: string
-    auth?: string
+    user: string
+    id: number
+    auth: string|null
   }
 }
