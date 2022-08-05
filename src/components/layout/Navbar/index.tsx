@@ -1,9 +1,14 @@
+import * as React from 'react';
 import { NavLink } from "react-router-dom";
 import Button from '@mui/material/Button';
+
+import { authContext } from '../../../utils/context/contexts';
 import { useLogout } from "../../../api/mutations";
+import { LOGOUT } from '../../../utils/context/actions';
 
 export default function Navbar() {
-  const logout = useLogout();
+  const {state, dispatch} = React.useContext(authContext);
+  const logout = useLogout(dispatch);
 
   return (
     <nav>
@@ -24,7 +29,7 @@ export default function Navbar() {
         </li>
         <li>
           <Button variant="outlined"
-            onClick={() => logout.mutate()}
+            onClick={ () => logout.mutate() }
           >
             Logout
           </Button> 

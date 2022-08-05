@@ -1,4 +1,4 @@
-import { useState } from "react";
+import * as React from 'react';
 import { useForm, Controller } from "react-hook-form";
 
 import TextField from '@mui/material/TextField';
@@ -12,9 +12,12 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { useSignup } from "../../api/mutations";
+import { authContext } from '../../utils/context/contexts';
+import { LOGIN } from '../../utils/context/actions';
 
 export default function SignupForm() {
-  const signup = useSignup()
+  const {state, dispatch} = React.useContext(authContext);
+  const signup = useSignup(dispatch)
   const {
     handleSubmit,
     reset,
@@ -24,7 +27,7 @@ export default function SignupForm() {
     { defaultValues: {name: "", email: "", password: ""} }
   );
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => event.preventDefault();
 
@@ -33,7 +36,7 @@ export default function SignupForm() {
       <h2>Signup</h2>
       <form 
         className=""
-        onSubmit={ handleSubmit((data) => signup.mutate(data)) }
+        onSubmit={ handleSubmit(data => signup.mutate(data)) }
       >
         <FormControl className="name" 
           required 

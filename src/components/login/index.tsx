@@ -12,9 +12,13 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { useLogin } from "../../api/mutations"
+import { authContext } from '../../utils/context/contexts';
+import { LOGIN } from '../../utils/context/actions';
 
 export default function LoginForm() {
-  const login = useLogin();
+  const {state, dispatch} = React.useContext(authContext);
+
+  const login = useLogin(dispatch);
   const {
     handleSubmit,
     reset,
@@ -32,7 +36,7 @@ export default function LoginForm() {
       <h2>Login</h2>
       <form 
         className=""
-        onSubmit={ handleSubmit((data) => login.mutate(data)) }
+        onSubmit={ handleSubmit(data => login.mutate(data)) }
       >
         <FormControl className="email"  
           required error={errors.email?.message !== undefined}
