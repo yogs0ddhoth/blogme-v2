@@ -26,10 +26,12 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import PostForm from '../PostForm';
 
+import { authContext } from '../../utils/context/contexts';
 import { Post } from 'custom-types';
 import DeleteCard from '../Delete';
 
 export default function PostMenu({post}:{post:Post}) {
+  const {state, dispatch} = React.useContext(authContext);
   // Menu state
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -64,12 +66,10 @@ export default function PostMenu({post}:{post:Post}) {
         MenuListProps={{'aria-labelledby': 'button'}}
       >
         <MenuItem 
-          onClick={
-            () => {
-              handleClose()
-              handleActionOpen()
-            }
-          }
+          onClick={() => {
+            handleClose();
+            handleActionOpen();
+          }}
         >
           <ListItemIcon>
             <EditOutlined fontSize="medium" />
@@ -78,12 +78,10 @@ export default function PostMenu({post}:{post:Post}) {
         </MenuItem>
 
         <MenuItem 
-          onClick={
-            () => {
-              handleClose();
-              handleDeleteOpen();
-            }
-          }
+          onClick={() => {
+            handleClose();
+            handleDeleteOpen();
+          }}
         >
           <ListItemIcon>
             <DeleteOutlinedIcon fontSize="medium" />

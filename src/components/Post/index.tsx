@@ -31,6 +31,8 @@ import PostMenu from '../PostMenu';
 import CommentForm from '../CommentForm';
 import VoteButton from '../Vote';
 
+import { authContext } from '../../utils/context/contexts';
+
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
@@ -46,6 +48,8 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 export default function PostCard({post}:{post:Post}) {
+  const {state, dispatch} = React.useContext(authContext);
+
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => setExpanded(!expanded);
 
@@ -72,7 +76,7 @@ export default function PostCard({post}:{post:Post}) {
             </Link>
           }
           action={
-            <PostMenu post={post}/>
+            (post.user !== undefined && post.user.id !== undefined && post.user.id == state.id) ? <PostMenu post={post}/> : <></>
           }
         />
 
