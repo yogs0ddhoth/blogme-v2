@@ -43,9 +43,11 @@ class Post(Base):
           'id': c.id,
           'text': c.text,
           'user': {
+            'id': c.user.id,
             'name': c.user.name
           },
-          'created_at': format_date(c.created_at)
+          'created_at': format_date(c.created_at),
+          'updated_at': format_date(c.updated_at)
         } for c in self.comments
       ],
       'created_at': format_date(self.created_at),
