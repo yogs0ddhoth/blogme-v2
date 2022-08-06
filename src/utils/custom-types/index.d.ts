@@ -1,29 +1,40 @@
 declare module "custom-types" {
+  interface Login {
+    email: string
+    password: string
+  }
+  interface Signup extends Login {
+    name: string
+  }
+
   interface User {
-    id?: number
-    name?: string
-    email?: string
-    password?: string
+    id: number
+    name: string
     posts?: Post[]
-  }
-  interface Post {
-    id?:number
-    title?: string
-    text?: string
-    user?: User
-    created_at?: string
-    updated_at?: string
-    comments?:Comment[]
-    vote_count?: number
-  }
-  interface Comment {
-    id?: number
+  }  
+
+  interface PostInput {
+    title: string
     text: string
-    user_id?: number
+  }
+  interface Post extends PostInput {
+    id: number
+    user: User
+    created_at: string
+    updated_at: string
+    comments: Comment[]
+    vote_count: number
+  }
+
+  interface CommentInput {
     post_id?: number
-    user?: User
-    created_at?: String
-    updated_at?: String
+    text: string
+  }
+  interface Comment extends CommentInput {
+    id: number
+    user: User
+    created_at: String
+    updated_at: String
   }
   interface Vote {
     id?: number
@@ -37,7 +48,7 @@ declare module "custom-types" {
       auth:string
     }
   }
-  interface AppContext {
+  interface AuthContext {
     user: string
     id: number
     auth: string|null

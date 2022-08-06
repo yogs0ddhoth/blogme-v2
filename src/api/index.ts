@@ -1,22 +1,17 @@
 import axios from "axios";
-import { Comment, Post, User, Vote } from "custom-types";
+import { Signup, Login, CommentInput, PostInput, Vote } from "custom-types";
 
-function api(input:string) {
-  return async (
-    method:string, 
-    path?:string|number, 
-    auth?:string|null, 
-    data?:User|Post|Comment|Vote
-  ) => {
+function api<PathType, DataType>(input:string) {
+  
+  return async (method:string, path?:PathType, data?:DataType, auth?:string|null) => {
     try {
       const url = input;
       return await axios({
         method: method,
         url: url + `${(path !== undefined) ? path : ''}`,
-        headers: (auth === undefined || auth === null) ? {} : {
+        headers: (typeof auth === 'string') ? {
           Authorization: "Bearer " + auth
-          // 'Content-type': 'application/json',
-        },
+        } : {},
         data: (data !== undefined) ? data : {}
       });
     } catch (error) {
@@ -25,5 +20,5 @@ function api(input:string) {
   };
 }
 
-export const apiUsers = api('/users/');
-export const apiPosts = api('/posts/');
+export const apiUsers = api<string, Signup|Login>('/users/');
+export const apiPosts = api<string|number, PostInput|CommentInput|Vote>('/posts/');
