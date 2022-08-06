@@ -124,9 +124,8 @@ export default function PostCard({post}:{post:Post}) {
         )
       }
       <CardContent
-        // if the user is logged in
       > 
-        <CommentForm id={post.id as number}/>
+        {state.auth !== null ? <CommentForm id={post.id as number}/> : <></>}
       </CardContent>
     </Card>
   );
