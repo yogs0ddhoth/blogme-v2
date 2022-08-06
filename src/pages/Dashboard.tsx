@@ -17,7 +17,7 @@ export default function Dashboard() {
   };
   if (status === 'error') {
     // window.location.assign('/login');
-    return <span>{`${error}`} <Link to='/login' className='text-react-blue hover:underline'>Login</Link></span>;
+    return <span>Your session has timed out. Redirecting to login..</span>;
   };
   console.log(data);
   
@@ -95,7 +95,7 @@ export default function Dashboard() {
         <h3>Posts:</h3>
         {
           data.data.posts.map(
-            (post:Post) => <PostCard post={{...post, user: {name: data.data.name}}}/>
+            (post:Post) => <PostCard post={{...post}}/>
           )
         }
       </div>
