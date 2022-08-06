@@ -2,7 +2,8 @@ import * as React from 'react';
 import decode, { JwtPayload } from "jwt-decode";
 
 type Token = {
-  user:string 
+  user:string
+  exp:number
   sub: {
     user:string
     id:number 
@@ -17,27 +18,15 @@ export default function Auth() {
   function getUser() {
     const token = getToken()
     if (token === null) {
-      return {user: '', id: 0, auth: null}
+      return {user: '', id: 0, auth: null};
     }
     const decodedToken = decode<Token>(token)
+
+    if (decodedToken.exp < Date.now()/1000) {
+      return {user: '', id: 0, auth: null}
+    }
     return {user:decodedToken.sub.user, id: decodedToken.sub.id, auth:token}
   };
-
-  // function isTokenExpired(token:string) {
-  //   try {
-  //     const decodedToken= decode<JwtPayload>(token);
-  //     if (decodedToken.exp !== undefined) {
-  //       // check if expiration time has passed
-  //       if (decodedToken.exp < Date.now()/1000) {
-  //         return true;
-  //     }
-  //     } else {
-  //       return false;
-  //     }
-  //   } catch (err) {
-  //     return false;
-  //   }
-  // };
 
   function saveUser(token:string) {
     localStorage.setItem('token', token);
