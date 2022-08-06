@@ -1,12 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
-import Dashboard from './pages/Dashboard';
-import Home from './pages/Home';
-import PostPage from './pages/Post';
-import Login from './pages/Login';
 import './index.css';
 
 import reportWebVitals from './reportWebVitals';
@@ -21,14 +17,6 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        {/* <Routes>
-          <Route path='/' element={<App/>}>
-            <Route index element={<Home/>} />
-            <Route path='dashboard' element={<Dashboard/>} />
-            <Route path='post/:postId' element={<PostPage/>} />
-            <Route path='login' element={<Login/>} />
-          </Route>
-        </Routes> */}
         <App/>
       </QueryClientProvider>
     </BrowserRouter>

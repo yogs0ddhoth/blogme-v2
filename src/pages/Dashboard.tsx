@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { Post } from "custom-types";
 
-import { Link } from 'react-router-dom';
 import PostForm from "../components/PostForm";
 import PostCard from "../components/Post";
 
 import { usePosts } from "../api/queries";
 import { authContext } from '../utils/context/contexts';
-import { useCreatePost } from "../api/mutations";
 
 export default function Dashboard() {
   const {state, dispatch} = React.useContext(authContext);
@@ -16,7 +14,6 @@ export default function Dashboard() {
     return <div className="loader"/>
   };
   if (status === 'error') {
-    // window.location.assign('/login');
     return <span>Your session has timed out. Redirecting to login..</span>;
   };
   console.log(data);

@@ -111,7 +111,9 @@ export default function Home() {
   // }
   return (
     <div className="mb-6 box-content text-center">
-      {data.data.map((post:Post) => <PostCard post={post}/>)}
+      {data.data.map(
+        (post:Post) => <PostCard post={post}/>
+      )}
     </div>
   )
 }

@@ -1,10 +1,9 @@
-import { BrowserRouter, Route, Routes, Outlet } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import PostPage from './pages/Post';
 import Login from './pages/Login';
 import Layout from './components/Layout';
-import { AppContext } from 'custom-types';
 import { AuthProvider } from './utils/context/contexts';
 
 export default function App() {
@@ -20,7 +19,6 @@ export default function App() {
             <Route path='login' element={<Login/>} />
           </Route>
         </Routes>
-        {/* <Outlet/> */}
       </Layout>
     </AuthProvider>
   );
