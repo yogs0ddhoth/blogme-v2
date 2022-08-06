@@ -76,7 +76,7 @@ export default function PostCard({post}:{post:Post}) {
             </Link>
           }
           action={
-            (post.user !== undefined && post.user.id !== undefined && post.user.id == state.id) ? <PostMenu post={post}/> : <></>
+            (post.user !== undefined && post.user.id == state.id) ? <PostMenu post={post}/> : <></>
           }
         />
 
