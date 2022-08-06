@@ -1,4 +1,3 @@
-import { AppContext } from 'custom-types';
 import * as React from 'react';
 import Auth from '../auth';
 import { authReducer } from './reducers';

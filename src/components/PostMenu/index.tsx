@@ -39,9 +39,9 @@ export default function PostMenu({post}:{post:Post}) {
   const handleClose = () => setAnchorEl(null);
 
   // Edit action state
-  const [actionOpen, setActionOpen] = React.useState(false);
-  const handleActionOpen = () => setActionOpen(true);
-  const handleActionClose = () => setActionOpen(false);
+  const [editOpen, setEditOpen] = React.useState(false);
+  const handleEditOpen = () => setEditOpen(true);
+  const handleEditClose = () => setEditOpen(false);
 
   // Delete action state
   const [deleteOpen, setDeleteOpen] = React.useState(false);
@@ -49,7 +49,7 @@ export default function PostMenu({post}:{post:Post}) {
   const handleDeleteClose = () => setDeleteOpen(false);
 
   return (
-    <div>
+    <>
       <IconButton
         id="button"
         aria-controls={open ? 'menu' : undefined}
@@ -68,7 +68,7 @@ export default function PostMenu({post}:{post:Post}) {
         <MenuItem 
           onClick={() => {
             handleClose();
-            handleActionOpen();
+            handleEditOpen();
           }}
         >
           <ListItemIcon>
@@ -91,17 +91,17 @@ export default function PostMenu({post}:{post:Post}) {
 
       </Menu>
 
-      <Modal open={actionOpen}>
+      <Modal open={editOpen}>
         <PostForm post={post}
           action={
-            <IconButton onClick={handleActionClose}>
+            <IconButton onClick={handleEditClose}>
               <ClearOutlinedIcon/>
             </IconButton>
           }
         />
       </Modal>
       <Modal open={deleteOpen} onClose={handleDeleteClose}>
-        <DeleteCard id={post.id !== undefined ? post.id : 0}
+        <DeleteCard id={post.id as number}
           action={
             <IconButton onClick={handleDeleteClose}>
               <ClearOutlinedIcon/>
@@ -110,6 +110,6 @@ export default function PostMenu({post}:{post:Post}) {
           cancel={handleDeleteClose}
         />
       </Modal>
-    </div>
+    </>
   );
 }

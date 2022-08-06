@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { apiPosts, apiUsers } from ".";
 
 export function usePosts(auth:string|null) { 
-  return useQuery(['userPosts'], () => apiUsers('get', undefined, auth), {
+  return useQuery(['userPosts'], () => apiUsers('get', undefined, undefined, auth), {
     retry:false, onError: () => window.location.assign('/login')
   })
 }

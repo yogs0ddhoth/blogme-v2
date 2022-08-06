@@ -1,4 +1,4 @@
-import { AppContext, AuthAction } from 'custom-types';
+import { AuthContext, AuthAction } from 'custom-types';
 import * as React from 'react';
 
 import Auth from '../auth';
@@ -6,7 +6,7 @@ import { LOGIN, LOGOUT } from './actions';
 
 const {getUser, saveUser, clearUser} = Auth();
 
-export const authReducer = (state:AppContext, action:AuthAction) => {
+export const authReducer = (state:AuthContext, action:AuthAction) => {
 
   switch (action.type) {
     case LOGIN:
