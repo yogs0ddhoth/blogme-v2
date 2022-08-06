@@ -35,7 +35,7 @@ def get_posts():
   db = get_db() # connect to database
   user = ( # identity['sub']: {'name': 'seed1', 'email': 'seed1@cbc.ca'}
     db.query(User)
-    .filter(User.email == identity['email'])
+    .filter(User.id == identity['id'])
     .one()
   ).as_dict()
   print(user)
@@ -65,10 +65,7 @@ def signup(): # req: {name:string, email:string, password:string}
     db.rollback()
     return jsonify(message='Signup Failed'), 500
 
-  access_token = create_access_token(identity={'id': newUser.id, 'user': newUser.name, 'email': newUser.email})
-  session.clear()
-  session['user_id'] = newUser.id
-  session['loggedIn'] = True
+  access_token = create_access_token(identity={'id': newUser.id, 'user': newUser.name})
   return jsonify(access_token=access_token)
 
 @bp.route('/login', methods=['POST'])
@@ -88,10 +85,7 @@ def login(): # req: {email:string, password:string}
   if user.verify_password(data['password']) == False:
     return jsonify(message = 'Incorrect credentials'), 400
   
-  access_token = create_access_token(identity={'id': user.id, 'user': user.name, 'email': user.email})
-  session.clear()
-  session['user_id'] = user.id
-  session['loggedIn'] = True
+  access_token = create_access_token(identity={'id': user.id, 'user': user.name})
   return jsonify(access_token=access_token)
 
 @bp.route('/logout', methods=['POST'])
