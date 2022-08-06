@@ -33,7 +33,9 @@ declare module "custom-types" {
 
   interface AuthAction {
     type: string
-    payload?: AppContext
+    payload?: {
+      auth:string
+    }
   }
   interface AppContext {
     user: string
