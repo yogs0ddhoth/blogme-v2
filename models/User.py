@@ -48,7 +48,8 @@ class User(Base):
          'text': c.text,
          'vote_count': c.vote_count,
          'user':{
-          'id': c.user.id
+          'id': c.user.id,
+          'name': c.user.name
          },
          'comments': [
            {

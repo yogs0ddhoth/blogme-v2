@@ -34,7 +34,7 @@ class Post(Base):
       'title': self.title,
       'text': self.text,
       'user': {
-        'user_id': self.user.id,
+        'id': self.user.id,
         'name': self.user.name
       },
       'vote_count': self.vote_count,
