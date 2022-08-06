@@ -10,9 +10,13 @@ export function useSignup(dispatch:React.Dispatch<AuthAction>) {
     onSuccess: ({data}) => {
       dispatch({
         type:LOGIN, 
-        payload:{user: data.user, id: data.id, auth: data.access_token}
+        payload:{
+          // user: data.user, 
+          // id: data.id, 
+          auth: data.access_token
+        }
       });
-      // window.location.assign('/dashboard');
+      window.location.assign('/dashboard');
     }
   });
 }
@@ -21,7 +25,11 @@ export function useLogin(dispatch:React.Dispatch<AuthAction>) {
     onSuccess: ({data}) => {
       dispatch({
         type:LOGIN, 
-        payload:{user: data.user, id: data.id, auth: data.access_token}
+        payload:{
+          // user: data.user, 
+          // id: data.id, 
+          auth: data.access_token
+        }
       });
       window.location.assign('/dashboard');
     }

@@ -20,6 +20,4 @@ const contextFactory = <StateType, ActionType>(
   return [context, Provider] as const;
 }
 
-export const [authContext, AuthProvider] = contextFactory(authReducer, 
-  {...getUser()}
-);
+export const [authContext, AuthProvider] = contextFactory(authReducer, {...getUser()});

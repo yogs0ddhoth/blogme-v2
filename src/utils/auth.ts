@@ -23,21 +23,21 @@ export default function Auth() {
     return {user:decodedToken.sub.user, id: decodedToken.sub.id, auth:token}
   };
 
-  function isTokenExpired(token:string) {
-    try {
-      const decodedToken= decode<JwtPayload>(token);
-      if (decodedToken.exp !== undefined) {
-        // check if expiration time has passed
-        if (decodedToken.exp < Date.now()/1000) {
-          return true;
-      }
-      } else {
-        return false;
-      }
-    } catch (err) {
-      return false;
-    }
-  };
+  // function isTokenExpired(token:string) {
+  //   try {
+  //     const decodedToken= decode<JwtPayload>(token);
+  //     if (decodedToken.exp !== undefined) {
+  //       // check if expiration time has passed
+  //       if (decodedToken.exp < Date.now()/1000) {
+  //         return true;
+  //     }
+  //     } else {
+  //       return false;
+  //     }
+  //   } catch (err) {
+  //     return false;
+  //   }
+  // };
 
   function saveUser(token:string) {
     localStorage.setItem('token', token);
@@ -49,7 +49,7 @@ export default function Auth() {
 
   return {
     saveUser,
-    isTokenExpired,
+    // isTokenExpired,
     getToken,
     clearUser,
     getUser
