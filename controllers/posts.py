@@ -11,7 +11,6 @@ bp = Blueprint('posts', __name__, url_prefix='/posts')
 
 @bp.route('/', methods=['GET'])
 def get_all_posts():
-  print(session.get('user_id'))
   db = get_db() # connect to database
   posts = [
     p.as_dict() for p in (
@@ -111,11 +110,12 @@ def delete(id):
 @jwt_required()
 def upvote():
   data = request.get_json()
+  identity = get_jwt_identity()
   db = get_db()
   try:
     newVote = Vote( # create new Vote 
       post_id = data['post_id'],
-      user_id = session.get('user_id')
+      user_id = identity['id']
     )
     db.add(newVote)
     db.commit()
@@ -137,7 +137,7 @@ def comment():
     newComment = Comment( # create new Comment
       text = data['text'],
       post_id = data['post_id'],
-      user_id = session.get('user_id')
+      user_id = identity['id']
     )
     db.add(newComment)
     db.commit()
