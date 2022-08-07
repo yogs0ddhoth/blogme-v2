@@ -115,7 +115,7 @@ export default function PostCard({post}:{post:Post}) {
         ? (
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              {post.comments.map(comment => <CommentCard comment={comment} />)}
+              {post.comments.map(comment => <CommentCard post={post} comment={comment} />)}
             </CardContent>
           </Collapse>
         ) : (

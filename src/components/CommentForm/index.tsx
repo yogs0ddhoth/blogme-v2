@@ -10,10 +10,10 @@ import TextField from '@mui/material/TextField';
 import { useComment } from '../../api/mutations';
 import { authContext } from '../../utils/context/contexts';
 
-export default function CommentForm({id}:{id:number}) {
+export default function CommentForm({id, commentText, closeEl}:{id:number, commentText?:string, closeEl?:React.ReactNode}) {
   const {state, dispatch} = React.useContext(authContext);
   const comment = useComment(state.auth);
-  const [commentState, setCommentState] = React.useState('');
+  const [commentState, setCommentState] = React.useState(commentText !== undefined ? commentText : '');
 
   const handleSubmit = (event:React.FormEvent) => {
     event.preventDefault();
@@ -26,10 +26,13 @@ export default function CommentForm({id}:{id:number}) {
     <form onSubmit={handleSubmit}>
       <Stack direction={'row'}>
         <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />
-        <TextField 
-          label='comment' variant='standard' multiline 
-          value={commentState} onChange={e => setCommentState(e.target.value)}
-        />
+        <Stack>
+          <TextField 
+            label='comment' variant='standard' multiline 
+            value={commentState} onChange={e => setCommentState(e.target.value)}
+          />
+          {closeEl}
+        </Stack>
         <IconButton type='submit'>
           <SendIcon/>
         </IconButton>
