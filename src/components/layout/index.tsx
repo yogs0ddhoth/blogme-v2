@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from 'react';
 import logo from '../../logo.svg'
 import Navbar from "./Navbar";
 
@@ -8,8 +8,8 @@ export default function Layout({children}:{children:React.ReactNode}) {
   return (
     <div 
       className="App
-       bg-react-background min-h-full
-       text-center
+       bg-react-background min-h-full min-w-full
+       text-center m-0 p-0
       "
     >
       <header 
@@ -25,18 +25,18 @@ export default function Layout({children}:{children:React.ReactNode}) {
             [@media(prefers-reduced-motion:no-preference)]:animate-spin-slow
           " 
         />
-        <p>
+        {/* <p>
           Edit <code>src/App.tsx</code> and save to reload.
-        </p>
+        </p> */}
 
         <a href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
-          className="App-link text-react-blue"
+          className="App-link text-react-blue text-[calc(5px+1vmin)] hover:underline"
         >
-          Hello World!
+          Powered by React
         </a>
-        <div className='loader'/>
+        {/* <div className='loader'/> */}
 
       </header>
       <main className="container m-auto h-[70vmin]">
