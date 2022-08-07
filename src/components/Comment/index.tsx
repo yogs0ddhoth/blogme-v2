@@ -14,7 +14,7 @@ export default function CommentCard({comment}: {comment:Comment}) {
       
       <Stack>
         <Avatar sx={{ bgcolor: blue[500] }} aria-label="recipe"/>
-        <Typography>{comment.user ? comment.user.name : ''}</Typography>
+        <Typography>{comment.user.name}</Typography>
         {/* <Typography>{comment.created_at}</Typography> */}
       </Stack>
       <Stack>

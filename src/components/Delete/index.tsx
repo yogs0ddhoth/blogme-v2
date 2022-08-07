@@ -12,7 +12,7 @@ import { authContext } from '../../utils/context/contexts';
 import { useDeletePost } from '../../api/mutations';
 
 export default function DeleteCard({id, action, cancel}:{id:number, action:React.ReactElement, cancel:()=>void}) {
-  const {state, dispatch} = React.useContext(authContext);
+  const {state} = React.useContext(authContext);
   const deletePost = useDeletePost(state.auth, id);
   return (
     <Card>

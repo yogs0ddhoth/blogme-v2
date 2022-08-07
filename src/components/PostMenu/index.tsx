@@ -31,7 +31,6 @@ import { Post } from 'custom-types';
 import DeleteCard from '../Delete';
 
 export default function PostMenu({post}:{post:Post}) {
-  const {state, dispatch} = React.useContext(authContext);
   // Menu state
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -47,6 +46,12 @@ export default function PostMenu({post}:{post:Post}) {
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const handleDeleteOpen = () => setDeleteOpen(true);
   const handleDeleteClose = () => setDeleteOpen(false);
+
+  const CloseButton = ({onClick}:{onClick:()=>void}) => (
+    <IconButton onClick={onClick}>
+      <ClearOutlinedIcon/>
+    </IconButton>
+  );
 
   return (
     <>
@@ -88,24 +93,22 @@ export default function PostMenu({post}:{post:Post}) {
           </ListItemIcon>
           <ListItemText>Delete</ListItemText>
         </MenuItem>
-
       </Menu>
 
       <Modal open={editOpen}>
-        <PostForm post={post}
+        <PostForm 
+          post={post}
           action={
-            <IconButton onClick={handleEditClose}>
-              <ClearOutlinedIcon/>
-            </IconButton>
+            <CloseButton onClick={handleEditClose} />
           }
         />
       </Modal>
+
       <Modal open={deleteOpen} onClose={handleDeleteClose}>
-        <DeleteCard id={post.id as number}
+        <DeleteCard
+          id={post.id}
           action={
-            <IconButton onClick={handleDeleteClose}>
-              <ClearOutlinedIcon/>
-            </IconButton>
+            <CloseButton onClick={handleDeleteClose} />
           }
           cancel={handleDeleteClose}
         />

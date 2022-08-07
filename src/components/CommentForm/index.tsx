@@ -17,7 +17,7 @@ export default function CommentForm({id}:{id:number}) {
 
   const handleSubmit = (event:React.FormEvent) => {
     event.preventDefault();
-    return comment.mutate({post_id:id, text: commentState}, {
+    return comment.mutate({post_id: id, text: commentState}, {
       onError: () => window.location.assign('/login')
     });
   };

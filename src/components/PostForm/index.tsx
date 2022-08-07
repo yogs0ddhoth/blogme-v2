@@ -44,40 +44,35 @@ export default function PostForm({action, post}:{action?:React.ReactElement, pos
       >
         <CardHeader
           title={
-            <FormControl className="w-full" 
-              required error={errors.title?.message !== undefined}
-            >
-              <Controller name="title" control={control}
-                render={ ({field}) => (
-                  <TextField {...field} 
-                    label="Title:" color="primary" 
-                    helperText={errors.title?.message}
-                  />
-                )}
-                rules={
-                  {required: "This field is required."}
-                }
-              />
-            </FormControl>
-          }
-          action={action}
-        />
-
-        <CardContent> 
-          <FormControl className="w-full" 
-            required error={errors.text?.message !== undefined}
-          >
-            <Controller name="text" control={control}
+            <Controller name="title" control={control}
               render={ ({field}) => (
-                <TextField {...field} 
-                  label="Post:" color="primary" multiline rows={4}
+                <TextField {...field} className="w-full" 
+                  label="Title:" color="primary" 
+                  error={errors.title?.message !== undefined}
+                  helperText={errors.title?.message}
                 />
               )}
               rules={
                 {required: "This field is required."}
               }
             />
-          </FormControl>
+          }
+          action={action}
+        />
+
+        <CardContent> 
+          <Controller name="text" control={control}
+            render={ ({field}) => (
+              <TextField {...field} className="w-full"
+                label="Post:" color="primary" multiline rows={4}
+                error={errors.text?.message !== undefined}
+                helperText={errors.text?.message}
+              />
+            )}
+            rules={
+              {required: "This field is required."}
+            }
+          />
         </CardContent>
 
         <Divider variant='middle'/>

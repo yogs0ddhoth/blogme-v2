@@ -10,6 +10,7 @@ export default function VoteButton({id, vote_count}:{id:number, vote_count:numbe
   const {state, dispatch} = React.useContext(authContext);
   const [voteCount, setVoteCount] = React.useState(vote_count);
   const upvote = useVote(state.auth);
+  
   const handleClick = () => {
     const newVoteCount = voteCount + 1;
     setVoteCount(newVoteCount);

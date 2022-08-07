@@ -53,66 +53,65 @@ export default function PostCard({post}:{post:Post}) {
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => setExpanded(!expanded);
 
+  const HeaderAvatar = ({name, created_at}:{name:string, created_at:string}) => (
+    <>
+      <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />
+      <Stack>
+        <Typography>{name}</Typography>
+        <Typography>{created_at}</Typography>
+      </Stack>
+    </>
+  )
+
   return (
     <Card>
 
-      {/* <form
-        className="form new-post-form"
-        // onSubmit={ handleSubmit((data) => createPost.mutate(data)) }
-      > */}
-        <CardHeader
-          avatar={
-            <>
-              <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe"></Avatar>
-              <Stack>
-                <Typography>{post.user ? post.user.name : ''}</Typography>
-                <Typography>{post.created_at}</Typography>
-              </Stack>
-            </>
-          }
-          title={
-            <Link to={`/post/${post.id}`}>
-              {post.title}
-            </Link>
-          }
-          action={
-            (post.user !== undefined && post.user.id == state.id) ? <PostMenu post={post}/> : <></>
-          }
-        />
+      <CardHeader
+        avatar={
+          <HeaderAvatar name={post.user.name} created_at={post.created_at} />
+        }
+        title={
+          <Link to={`/post/${post.id}`}>{post.title}</Link>
+        }
+        action={
+          (post.user.id == state.id) ? <PostMenu post={post}/> : <></>
+        }
+      />
 
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">{post.text}</Typography>
-        </CardContent>
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">{post.text}</Typography>
+      </CardContent>
+      
+      <Divider variant='middle'/>
+
+      <CardActions disableSpacing>
+        <VoteButton id={post.id} vote_count={post.vote_count} />
+        {post.comments.length 
+          ? (
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+              {!expanded 
+                ? <Typography>
+                    {post.comments.length} Comment{post.comments.length > 1 ? 's' : ''}
+                  </Typography> 
+                : <></>
+              }
+            </ExpandMore>
+          ) : (
+            <></>
+          )
+        }
         
-        <Divider variant='middle'/>
+      </CardActions>
 
-        <CardActions disableSpacing>
-          <VoteButton id={post.id as number} vote_count={post.vote_count as number}/>
-          {post.comments !== undefined && post.comments.length 
-            ? (
-              <ExpandMore
-                expand={expanded}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-                {!expanded 
-                  ? <Typography>
-                      {post.comments.length} Comment{post.comments.length > 1 ? 's' : ''}
-                    </Typography> 
-                  : <></>
-                }
-              </ExpandMore>
-            ) : (
-              <></>
-            )
-          }
-          
-        </CardActions>
-      {/* </form> */}
       <Divider/>
-      {post.comments !== undefined && post.comments.length
+
+      {post.comments.length
         ? (
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
@@ -123,8 +122,8 @@ export default function PostCard({post}:{post:Post}) {
           <></>
         )
       }
-      <CardContent
-      > 
+
+      <CardContent> 
         {state.auth !== null ? <CommentForm id={post.id as number}/> : <></>}
       </CardContent>
     </Card>
