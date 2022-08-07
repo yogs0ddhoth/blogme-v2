@@ -12,7 +12,7 @@ class Comment(Base):
     primary_key=True, 
     autoincrement='auto'
   )
-  text = Column(String(255), nullable=False)
+  text = Column(String(300), nullable=False)
   user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
   post_id = Column(Integer, ForeignKey('posts.id'), nullable=False)
   

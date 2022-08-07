@@ -13,8 +13,8 @@ class Post(Base):
     primary_key=True, 
     autoincrement='auto'
   )
-  title = Column(String(100), nullable=False)
-  text = Column(String(300), nullable=False)
+  title = Column(String(200), nullable=False)
+  text = Column(String, nullable=False)
   user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
   
   created_at = Column(DateTime, default=datetime.now)
