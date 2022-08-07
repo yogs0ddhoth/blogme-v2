@@ -13,7 +13,7 @@ import { authContext } from '../../utils/context/contexts';
 import CommentMenu from '../CommentMenu';
 import CommentForm from '../CommentForm';
 
-export default function CommentCard({post, comment}: {post:Post, comment:Comment}) {
+export default function CommentCard({user_id, comment}: {user_id:Post['user']['id'], comment:Comment}) {
   const {state, dispatch} = React.useContext(authContext);
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement|null>(null);
@@ -44,8 +44,11 @@ export default function CommentCard({post, comment}: {post:Post, comment:Comment
           </Card>
           <Typography>{comment.created_at}</Typography>
         </Stack>
-        {/* IF (comment.user.id === state.id && className='sm:') => render commentMenu onHover */}
-        <CommentMenu comment={comment} editOpen={handleEditOpen} hover={hover}/>
+        {/* IF className='sm:' <-- media query */}
+        {user_id === state.id || comment.user.id === state.id 
+          ? <CommentMenu comment={comment} editOpen={handleEditOpen} hover={hover}/>
+          : <></>
+        }
       </Stack>
     ) : (
       <CommentForm id={comment.id} commentText={comment.text} 

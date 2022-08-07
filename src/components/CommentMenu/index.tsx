@@ -72,18 +72,25 @@ export default function CommentMenu({comment, editOpen, hover}:{comment:Comment,
         onClose={handleClose}
         MenuListProps={{'aria-labelledby': 'button'}}
       >
-        <MenuItem 
-          onClick={() => {
-            handleClose();
-            editOpen();
-          }}
-        >
-          <ListItemIcon>
-            <EditOutlined fontSize="medium" />
-          </ListItemIcon>
-          <ListItemText>Edit</ListItemText>
-        </MenuItem>
-
+        {comment.user.id === state.id 
+          ? (
+            <MenuItem 
+              onClick={
+                () => {
+                  handleClose();
+                  editOpen();
+                }
+              }
+            >
+              <ListItemIcon>
+                <EditOutlined fontSize="medium" />
+              </ListItemIcon>
+              <ListItemText>Edit</ListItemText>
+            </MenuItem>            
+          ) : (
+            <></>
+          )
+        }
         <MenuItem 
           onClick={() => {
             handleClose();

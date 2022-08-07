@@ -115,7 +115,7 @@ export default function PostCard({post}:{post:Post}) {
         ? (
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              {post.comments.map(comment => <CommentCard post={post} comment={comment} />)}
+              {post.comments.map(comment => <CommentCard user_id={post.user.id} comment={comment} />)}
             </CardContent>
           </Collapse>
         ) : (
@@ -124,7 +124,10 @@ export default function PostCard({post}:{post:Post}) {
       }
 
       <CardContent> 
-        {state.auth !== null ? <CommentForm id={post.id as number}/> : <></>}
+        {state.auth !== null 
+          ? <CommentForm id={post.id as number}/> 
+          : <></>
+        }
       </CardContent>
     </Card>
   );

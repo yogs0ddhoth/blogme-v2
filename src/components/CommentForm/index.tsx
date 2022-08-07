@@ -26,7 +26,7 @@ export default function CommentForm({id, commentText, closeEl}:{id:number, comme
     <form onSubmit={handleSubmit}>
       <Stack direction={'row'}>
         <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />
-        <Stack>
+        <Stack className='w-5/6'>
           <TextField 
             label='comment' variant='standard' multiline 
             value={commentState} onChange={e => setCommentState(e.target.value)}
