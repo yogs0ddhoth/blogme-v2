@@ -2,37 +2,41 @@ import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { Comment, Post, User, AuthAction, Vote, Signup, Login, PostInput, CommentInput } from "custom-types";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { apiPosts, apiUsers } from ".";
 import { LOGIN, LOGOUT } from '../utils/context/actions';
 
 // data?:User => apiUsers(method:string, path:string, data)
 export function useSignup(dispatch:React.Dispatch<AuthAction>) {
+  const navigate = useNavigate();
   return useMutation( (data:Signup) => apiUsers('post', 'signup', data), {
     onSuccess: ({data}) => {
       dispatch({
         type: LOGIN, 
         payload: { auth: data.access_token }
       });
-      window.location.assign('/dashboard');
+      navigate('/dashboard');
     }
   });
 }
 export function useLogin(dispatch:React.Dispatch<AuthAction>) {
+  const navigate = useNavigate();
   return useMutation( (data:Login) => apiUsers('post', 'login', data), {
     onSuccess: ({data}) => {
       dispatch({
         type: LOGIN, 
         payload: { auth: data.access_token }
       });
-      window.location.assign('/dashboard');
+      navigate('/dashboard');
     }
   });
 }
 export function useLogout(dispatch:React.Dispatch<AuthAction>) {
+  const navigate = useNavigate();
   return useMutation( () => apiUsers('post', 'logout'), {
     onSuccess: () => {
       dispatch({type: LOGOUT});
-      window.location.assign('/');
+      navigate('/');
     }
   });
 }
