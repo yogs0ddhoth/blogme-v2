@@ -1,6 +1,19 @@
 import { createTheme } from "@mui/material";
+const rootElement = document.getElementById('root') as HTMLElement;
 
 const theme = createTheme({
+  components: {
+    MuiPopover: {
+      defaultProps: {
+        container: rootElement,
+      },
+    },
+    MuiPopper: {
+      defaultProps: {
+        container: rootElement,
+      },
+    },
+  },
   palette: {
     primary: {
       main: '#212121',

@@ -1,9 +1,10 @@
 import * as React from 'react';
 
-import Box from '@mui/material/Box';
-
+import { StyledEngineProvider } from '@mui/material/styles';
 import theme from '../../utils/mui-theme';
 import ThemeProvider from '@mui/system/ThemeProvider';
+
+import Box from '@mui/material/Box';
 
 import logo from '../../logo.svg'
 import Navbar from "./Navbar";
@@ -19,14 +20,15 @@ export default function Layout({children}:{children:React.ReactNode}) {
     //    text-center m-0 p-0
     //   "
     // >
+    <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         {/* <Paper className='min-h-[100%]'> */}
-          <header 
+          {/* <header 
             className="App-header container m-auto min-w-full
               flex flex-col items-center justify-center 
               text-[white] text-[calc(10px+2vmin)]
             "
-          >
+          > */}
             <Navbar/>
             {/* <img src={logo} alt="logo"
               className="App-logo 
@@ -47,12 +49,14 @@ export default function Layout({children}:{children:React.ReactNode}) {
             </a>
             {/* <div className='loader'/> */}
 
-          </header>
-          <main className="container m-auto h-[70vmin]">
+          {/* </header> */}
+          <main 
+            className="container m-auto h-[70vmin]"
+          >
             {children}
           </main>
         {/* </Paper> */}
       </ThemeProvider>
-    // </div>
+      </StyledEngineProvider>
   )
 }
