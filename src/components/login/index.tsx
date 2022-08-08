@@ -93,7 +93,7 @@ export default function LoginForm() {
           rules={ {required:'* This field is required'} }
         />
           
-        <Button type="submit" variant="outlined">
+        <Button type="submit" color="primary" variant="contained">
           Submit
         </Button>     
       </form>

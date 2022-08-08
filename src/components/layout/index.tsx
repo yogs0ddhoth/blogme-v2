@@ -1,12 +1,16 @@
-import { ThemeProvider } from '@mui/system';
 import * as React from 'react';
+
+import Box from '@mui/material/Box';
+
+import theme from '../../utils/mui-theme';
+import ThemeProvider from '@mui/system/ThemeProvider';
+
 import logo from '../../logo.svg'
 import Navbar from "./Navbar";
-import { theme } from '../../utils/mui-theme';
+
 import { Container, Paper } from '@mui/material';
 
 export default function Layout({children}:{children:React.ReactNode}) {
-  
   
   return (
     // <div 
@@ -16,20 +20,20 @@ export default function Layout({children}:{children:React.ReactNode}) {
     //   "
     // >
       <ThemeProvider theme={theme}>
-        <Paper>
+        {/* <Paper className='min-h-[100%]'> */}
           <header 
-            className="App-header container m-auto
+            className="App-header container m-auto min-w-full
               flex flex-col items-center justify-center 
               text-[white] text-[calc(10px+2vmin)]
             "
           >
             <Navbar/>
-            <img src={logo} alt="logo"
+            {/* <img src={logo} alt="logo"
               className="App-logo 
                 h-[30vmin] pointer-events-none 
                 [@media(prefers-reduced-motion:no-preference)]:animate-spin-slow
               " 
-            />
+            /> */}
             {/* <p>
               Edit <code>src/App.tsx</code> and save to reload.
             </p> */}
@@ -47,7 +51,7 @@ export default function Layout({children}:{children:React.ReactNode}) {
           <main className="container m-auto h-[70vmin]">
             {children}
           </main>
-        </Paper>
+        {/* </Paper> */}
       </ThemeProvider>
     // </div>
   )

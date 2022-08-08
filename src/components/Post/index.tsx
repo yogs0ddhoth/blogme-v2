@@ -74,7 +74,7 @@ export default function PostCard({post}:{post:Post}) {
         avatar={ <HeaderAvatar name={post.user.name} created_at={post.created_at} /> }
         title={ 
           <Link to={`/post/${post.id}`}>
-            {post.title}
+            <Typography variant='h6'>{post.title}</Typography>
           </Link> 
         }
         action={post.user.id == state.id
@@ -84,7 +84,7 @@ export default function PostCard({post}:{post:Post}) {
       />
 
       <CardContent>
-        <Typography variant="body2" color="text.secondary">{post.text}</Typography>
+        <Typography variant="body1">{post.text}</Typography>
       </CardContent>
       
       <Divider variant='middle'/>

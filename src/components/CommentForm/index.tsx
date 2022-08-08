@@ -29,9 +29,11 @@ export default function CommentForm({id, commentText, closeEl}:CommentFormProps)
 
   return (
     <form onSubmit={handleSubmit}>
-      <Stack direction={'row'} className='cols-6'>
+      <Stack direction='row' justifyContent='center'
+        spacing={2}
+      >
         <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />
-        <Stack className='w-5/6'>
+        <Stack className='w-[90%]'>
           <TextField 
             label='comment' variant='standard' multiline 
             value={commentState} onChange={e => setCommentState(e.target.value)}
