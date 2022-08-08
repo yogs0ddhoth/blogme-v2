@@ -11,7 +11,12 @@ import Typography from '@mui/material/Typography';
 import { authContext } from '../../utils/context/contexts';
 import { useDeletePost } from '../../api/mutations';
 
-export default function DeleteCard({id, action, cancel}:{id:number, action:React.ReactElement, cancel:()=>void}) {
+interface DeleteCardProps {
+  id:number;
+  action:React.ReactElement;
+  cancel:()=>void;
+}
+export default function DeleteCard({id, action, cancel}:DeleteCardProps) {
   const {state} = React.useContext(authContext);
   const deletePost = useDeletePost(state.auth, id);
   return (

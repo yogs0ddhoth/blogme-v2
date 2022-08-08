@@ -13,7 +13,11 @@ import { authContext } from '../../utils/context/contexts';
 import CommentMenu from '../CommentMenu';
 import CommentForm from '../CommentForm';
 
-export default function CommentCard({user_id, comment}: {user_id:Post['user']['id'], comment:Comment}) {
+interface CommentCardProps {
+  user_id:Post['user']['id'];
+  comment:Comment;
+}
+export default function CommentCard({user_id, comment}:CommentCardProps) {
   const {state, dispatch} = React.useContext(authContext);
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement|null>(null);
@@ -36,7 +40,7 @@ export default function CommentCard({user_id, comment}: {user_id:Post['user']['i
           {/* <Typography>{comment.created_at}</Typography> */}
         </Stack>
         <Stack>
-          <Card>
+          <Card color='secondary-light'>
             {/* <CardHeader title={comment.user !== undefined ? comment.user.name: ''} /> */}
             <CardContent>
               <Typography>{comment.text}</Typography>

@@ -6,7 +6,11 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { authContext } from '../../utils/context/contexts';
 import {useVote} from "../../api/mutations";
 
-export default function VoteButton({id, vote_count}:{id:number, vote_count:number}) {
+interface VoteButtonProps {
+  id:number;
+  vote_count:number;
+}
+export default function VoteButton({id, vote_count}:VoteButtonProps) {
   const {state, dispatch} = React.useContext(authContext);
   const [voteCount, setVoteCount] = React.useState(vote_count);
   const upvote = useVote(state.auth);

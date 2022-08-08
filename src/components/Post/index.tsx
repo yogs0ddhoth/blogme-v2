@@ -47,34 +47,39 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
+interface HeaderAvatarProps {
+  name:string;
+  created_at:string;
+}
+const HeaderAvatar = ({name, created_at}:HeaderAvatarProps) => (
+  <>
+    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />
+    <Stack>
+      <Typography>{name}</Typography>
+      <Typography>{created_at}</Typography>
+    </Stack>
+  </>
+)
+
 export default function PostCard({post}:{post:Post}) {
   const {state, dispatch} = React.useContext(authContext);
 
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => setExpanded(!expanded);
 
-  const HeaderAvatar = ({name, created_at}:{name:string, created_at:string}) => (
-    <>
-      <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />
-      <Stack>
-        <Typography>{name}</Typography>
-        <Typography>{created_at}</Typography>
-      </Stack>
-    </>
-  )
-
   return (
-    <Card>
+    <Card color='secondary'>
 
       <CardHeader
-        avatar={
-          <HeaderAvatar name={post.user.name} created_at={post.created_at} />
+        avatar={ <HeaderAvatar name={post.user.name} created_at={post.created_at} /> }
+        title={ 
+          <Link to={`/post/${post.id}`}>
+            {post.title}
+          </Link> 
         }
-        title={
-          <Link to={`/post/${post.id}`}>{post.title}</Link>
-        }
-        action={
-          (post.user.id == state.id) ? <PostMenu post={post}/> : <></>
+        action={post.user.id == state.id
+          ? <PostMenu post={post}/> 
+          : <></>
         }
       />
 
@@ -115,7 +120,9 @@ export default function PostCard({post}:{post:Post}) {
         ? (
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              {post.comments.map(comment => <CommentCard user_id={post.user.id} comment={comment} />)}
+              {post.comments.map(
+                comment => <CommentCard key={comment.id} user_id={post.user.id} comment={comment} />
+              )}
             </CardContent>
           </Collapse>
         ) : (

@@ -14,7 +14,11 @@ import { authContext } from '../../utils/context/contexts';
 import { useCreatePost, useUpdatePost } from "../../api/mutations";
 import { Post } from "custom-types";
 
-export default function PostForm({action, post}:{action?:React.ReactElement, post?:Post}) {
+interface PostFormProps {
+  action?:React.ReactElement;
+  post?:Post;
+}
+export default function PostForm({action, post}:PostFormProps) {
   const {state, dispatch} = React.useContext(authContext);
   const create = useCreatePost(state.auth);
   const update = useUpdatePost(state.auth, (post !== undefined && post.id !== undefined) ? post.id : 0);

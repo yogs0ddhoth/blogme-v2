@@ -30,7 +30,12 @@ import { authContext } from '../../utils/context/contexts';
 import { Comment, Post } from 'custom-types';
 import DeleteCard from '../Delete';
 
-export default function CommentMenu({comment, editOpen, hover}:{comment:Comment, editOpen:()=>void, hover:boolean}) {
+interface CommentMenuProps {
+  comment:Comment;
+  editOpen:()=>void;
+  hover:boolean;
+}
+export default function CommentMenu({comment, editOpen, hover}:CommentMenuProps) {
   const {state, dispatch} = React.useContext(authContext);
   
   // Menu state

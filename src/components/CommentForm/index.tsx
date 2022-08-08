@@ -10,7 +10,12 @@ import TextField from '@mui/material/TextField';
 import { useComment } from '../../api/mutations';
 import { authContext } from '../../utils/context/contexts';
 
-export default function CommentForm({id, commentText, closeEl}:{id:number, commentText?:string, closeEl?:React.ReactNode}) {
+interface CommentFormProps {
+  id:number;
+  commentText?:string;
+  closeEl?:React.ReactNode;
+}
+export default function CommentForm({id, commentText, closeEl}:CommentFormProps) {
   const {state, dispatch} = React.useContext(authContext);
   const comment = useComment(state.auth);
   const [commentState, setCommentState] = React.useState(commentText !== undefined ? commentText : '');
@@ -24,7 +29,7 @@ export default function CommentForm({id, commentText, closeEl}:{id:number, comme
 
   return (
     <form onSubmit={handleSubmit}>
-      <Stack direction={'row'}>
+      <Stack direction={'row'} className='cols-6'>
         <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />
         <Stack className='w-5/6'>
           <TextField 
