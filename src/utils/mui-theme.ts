@@ -1,32 +1,24 @@
 import { createTheme } from "@mui/material";
 
-export const theme = createTheme({
+const theme = createTheme({
   palette: {
-    mode: 'dark',
     primary: {
-      main: '#64ffda',
+      main: '#212121',
     },
     secondary: {
-      main: '#263238',
+      main: '#69f0ae',
     },
     info: {
       main: '#18ffff',
     },
     divider: '#f5f5f5',
-    text: {
-      primary: '#ffffff',
-    },
   },
   typography: {
-    // fontFamily: ,
+    // fontFamily: 'Lato',
   },
   shape: {
-    borderRadius: 4,
+    borderRadius: 0,
   },
-  spacing: 8,
-  // props: {
-  //   MuiAppBar: {
-  //     color: 'secondary',
-  //   },
-  // },  
-})
+  spacing: 8, 
+});
+export default theme;
