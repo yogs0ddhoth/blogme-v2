@@ -1,27 +1,25 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import { red } from '@mui/material/colors';
 import Divider from '@mui/material/Divider';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { Post } from 'custom-types';
 import CommentCard from '../Comment';
 import PostMenu from '../PostMenu';
 import CommentForm from '../CommentForm';
+import UserAvatar from '../../UserAvatar';
 import VoteButton from '../Vote';
 
+import { Post } from 'custom-types';
 import { authContext } from '../../utils/context/contexts';
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -38,28 +36,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-interface HeaderAvatarProps {
-  name:string;
-  created_at:string;
-  updated_at:string;
-}
-const HeaderAvatar = ({name, created_at, updated_at}:HeaderAvatarProps) => {
-  const date = Date.parse(updated_at) > Date.parse(created_at) 
-    ? 'edited '.concat(new Date(updated_at).toLocaleDateString('en-us')) 
-    : new Date(created_at).toLocaleDateString('en-us')
-  return (
-    <>
-      <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />
-      <Stack>
-        <Typography>{name}</Typography>
-        <Typography>
-          {date}
-        </Typography>
-      </Stack>
-    </>
-  )
-}
-
 export default function PostCard({post}:{post:Post}) {
   const {state, dispatch} = React.useContext(authContext);
 
@@ -70,7 +46,11 @@ export default function PostCard({post}:{post:Post}) {
     <Card color='secondary'>
 
       <CardHeader
-        avatar={ <HeaderAvatar name={post.user.name} created_at={post.created_at} updated_at={post.updated_at} /> }
+        avatar={ 
+          <UserAvatar name={post.user.name} color='#69f0ae'
+            timestamps={{ created_at: post.created_at, updated_at: post.updated_at }} 
+          /> 
+        }
         title={ 
           <Link to={`/post/${post.id}`}>
             <Typography variant='h6'>{post.title}</Typography>
