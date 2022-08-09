@@ -12,45 +12,44 @@ import TextField from '@mui/material/TextField';
 
 import { authContext } from '../../utils/context/contexts';
 import { useCreatePost, useUpdatePost } from "../../api/mutations";
-import { Post } from "custom-types";
+import { PostInput, Post } from "custom-types";
+import { UseMutateFunction, UseMutationResult } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
 
 interface PostFormProps {
   action?:React.ReactElement;
   post?:Post;
+  mutation:UseMutationResult<AxiosResponse<any, any>, unknown, PostInput, unknown>;
 }
-export default function PostForm({action, post}:PostFormProps) {
-  const {state, dispatch} = React.useContext(authContext);
-  const create = useCreatePost(state.auth);
-  const update = useUpdatePost(state.auth, (post !== undefined && post.id !== undefined) ? post.id : 0);
-
-  const values = (post !== undefined) ? {title: post.title, text: post.text} : {title: "", text: ""}
+export default function PostForm({action, post, mutation}:PostFormProps) {
   const {
     handleSubmit,
     reset,
     control,
     formState: { errors }
   } = useForm(
-    { defaultValues: values }
+    { defaultValues: (post !== undefined) ? {title: post.title, text: post.text} : {title: "", text: ""} }
   );
 
   return (
-    <Card>
-      <form className="form new-post-form"
-        onSubmit={handleSubmit( data => 
-          (post !== undefined) 
-            ? update.mutate(data, {
-              onError: () => window.location.assign('/login')
-            }) 
-            : create.mutate(data, {
-              onError: () => window.location.assign('/login')
-            })
-        )}
+    <Card className='w-full'>
+      <form className="flex flex-col gap-3 w-full"
+        onSubmit={
+          handleSubmit(data => mutation.mutate(data))
+        }
       >
         <CardHeader
-          title={
+          action={action}
+        />
+
+        {/* <Divider color='primary' variant='middle'/> */}
+
+        <CardContent> 
+          <div className=''>
             <Controller name="title" control={control}
               render={ ({field}) => (
-                <TextField {...field} className="w-full" 
+                <TextField {...field} 
+                  className="w-full" 
                   label="Title:" color="primary" 
                   error={errors.title?.message !== undefined}
                   helperText={errors.title?.message}
@@ -60,28 +59,25 @@ export default function PostForm({action, post}:PostFormProps) {
                 {required: "This field is required."}
               }
             />
-          }
-          action={action}
-        />
-
-        <CardContent> 
-          <Controller name="text" control={control}
-            render={ ({field}) => (
-              <TextField {...field} className="w-full"
-                label="Post:" color="primary" multiline rows={4}
-                error={errors.text?.message !== undefined}
-                helperText={errors.text?.message}
-              />
-            )}
-            rules={
-              {required: "This field is required."}
-            }
-          />
+            <Controller name="text" control={control}
+              render={ ({field}) => (
+                <TextField {...field} 
+                  className="w-full"
+                  label="Post:" color="primary" multiline rows={4}
+                  error={errors.text?.message !== undefined}
+                  helperText={errors.text?.message}
+                />
+              )}
+              rules={
+                {required: "This field is required."}
+              }
+            />
+          </div>
         </CardContent>
 
-        <Divider variant='middle'/>
+        <Divider color='primary' variant='middle'/>
 
-        <CardActions>
+        <CardActions className='flex flex-row justify-end'>
           <Button type="submit" variant="outlined">
             Submit
           </Button>
