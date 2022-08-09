@@ -38,50 +38,31 @@ export default function Navbar() {
 
   return (
     <AppBar position='static'>
-      <Toolbar>
-        <Typography>
+      <Toolbar className=''>
+        <Typography className='w-1/2'>
           BLOGME
         </Typography>
-        <Tabs 
-          value={value}
-          onChange={handleChange}
-          textColor='secondary'
-          indicatorColor='secondary'
-        >
-          <NavTab value='/' label='Home'/>
-          <NavTab value='/dashboard' label='Dashboard'/>
-          {state.auth === null 
-            ? (
-              <NavTab value='/login' label='Login'/>
-            ) : (
-              <IconButton>
-                <LogoutIcon className='text-[#fff]' onClick={() => logout.mutate()} />
-              </IconButton>
-            )
-          }
-        </Tabs>
+        <div className='w-1/2 flex flex-row justify-end'>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            textColor='secondary'
+            indicatorColor='secondary'
+          >
+            <NavTab value='/' label='Home'/>
+            <NavTab value='/dashboard' label='Dashboard'/>
+            {state.auth === null 
+              ? (
+                <NavTab value='/login' label='Login'/>
+              ) : (
+                <IconButton onClick={() => logout.mutate()} >
+                  <LogoutIcon className='text-[#fff]' />
+                </IconButton>
+              )
+            }
+          </Tabs>
+        </div>
       </Toolbar>
     </AppBar>
   )
-  // const [value, setValue] = React.useState('one');
-
-  // const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-  //   setValue(newValue);
-  // };
-
-  // return (
-  //   <Box sx={{ width: '100%' }}>
-  //     <Tabs
-  //       value={value}
-  //       onChange={handleChange}
-  //       textColor="secondary"
-  //       indicatorColor="secondary"
-  //       // aria-label="secondary tabs example"
-  //     >
-  //       <Tab value="one" label={<Link to='/'>Home</Link>} />
-  //       <Tab value="two" label="Item Two" />
-  //       <Tab value="three" label="Item Three" />
-  //     </Tabs>
-  //   </Box>
-  // );
 }
