@@ -59,12 +59,12 @@ class User(Base):
                'id': d.user.id,
                'name': d.user.name
              },
-             'created_at': format_date(c.created_at),
-             'updated_at': format_date(c.updated_at)
+             'created_at': c.created_at,
+             'updated_at': c.updated_at
            } for d in c.comments
          ],
-         'created_at': format_date(c.created_at),
-         'updated_at': format_date(c.updated_at)
+         'created_at': c.created_at,
+         'updated_at': c.updated_at
        } for c in self.posts
      ]
     }
