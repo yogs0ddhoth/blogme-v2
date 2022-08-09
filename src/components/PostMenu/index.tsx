@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -24,13 +25,17 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlined from '@mui/icons-material/EditOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
+import Popup from '../StyledModal';
 import PostForm from '../PostForm';
 
 import { authContext } from '../../utils/context/contexts';
 import { Post } from 'custom-types';
 import DeleteCard from '../Delete';
+import { useUpdatePost } from '../../api/mutations';
 
 export default function PostMenu({post}:{post:Post}) {
+  const {state, dispatch} = React.useContext(authContext);
+
   // Menu state
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -41,6 +46,8 @@ export default function PostMenu({post}:{post:Post}) {
   const [editOpen, setEditOpen] = React.useState(false);
   const handleEditOpen = () => setEditOpen(true);
   const handleEditClose = () => setEditOpen(false);
+
+  const editPost = useUpdatePost(state.auth, post.id);
 
   // Delete action state
   const [deleteOpen, setDeleteOpen] = React.useState(false);
@@ -95,24 +102,19 @@ export default function PostMenu({post}:{post:Post}) {
         </MenuItem>
       </Menu>
 
-      <Modal open={editOpen}>
-        <PostForm 
-          post={post}
-          action={
-            <CloseButton onClick={handleEditClose} />
-          }
+      <Popup open={editOpen}>
+        <PostForm post={post}
+          action={ <CloseButton onClick={handleEditClose} /> }
+          mutation={editPost}
         />
-      </Modal>
+      </Popup>
 
-      <Modal open={deleteOpen} onClose={handleDeleteClose}>
-        <DeleteCard
-          id={post.id}
-          action={
-            <CloseButton onClick={handleDeleteClose} />
-          }
+      <Popup open={deleteOpen} onClose={handleDeleteClose}>
+        <DeleteCard id={post.id}
+          action={ <CloseButton onClick={handleDeleteClose} /> }
           cancel={handleDeleteClose}
         />
-      </Modal>
+      </Popup>
     </>
   );
 }

@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -24,6 +25,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlined from '@mui/icons-material/EditOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
+import Popup from '../StyledModal';
 import PostForm from '../PostForm';
 
 import { authContext } from '../../utils/context/contexts';
@@ -118,15 +120,17 @@ export default function CommentMenu({comment, editOpen, hover}:CommentMenuProps)
         />
       </Modal> */}
 
-      <Modal open={deleteOpen} onClose={handleDeleteClose}>
-        <DeleteCard
-          id={comment.id}
-          action={
-            <CloseButton onClick={handleDeleteClose} />
-          }
-          cancel={handleDeleteClose}
-        />
-      </Modal>
+      <Popup open={deleteOpen} onClose={handleDeleteClose}>
+        {/* <Box sx={style}> */}
+          <DeleteCard
+            id={comment.id}
+            action={
+              <CloseButton onClick={handleDeleteClose} />
+            }
+            cancel={handleDeleteClose}
+          />
+        {/* </Box> */}
+      </Popup>
     </div>
   );
 }
