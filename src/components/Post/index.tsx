@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { useForm, Controller } from "react-hook-form";
 
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -11,22 +9,15 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import { red } from '@mui/material/colors';
 import Divider from '@mui/material/Divider';
-import FormControl from '@mui/material/FormControl';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Modal from '@mui/material/Modal';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import EditOutlined from '@mui/icons-material/EditOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { Post } from 'custom-types';
 import CommentCard from '../Comment';
-import PostForm from '../PostForm';
 import PostMenu from '../PostMenu';
 import CommentForm from '../CommentForm';
 import VoteButton from '../Vote';
@@ -50,16 +41,24 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 interface HeaderAvatarProps {
   name:string;
   created_at:string;
+  updated_at:string;
 }
-const HeaderAvatar = ({name, created_at}:HeaderAvatarProps) => (
-  <>
-    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />
-    <Stack>
-      <Typography>{name}</Typography>
-      <Typography>{created_at}</Typography>
-    </Stack>
-  </>
-)
+const HeaderAvatar = ({name, created_at, updated_at}:HeaderAvatarProps) => {
+  const date = Date.parse(updated_at) > Date.parse(created_at) 
+    ? 'edited '.concat(new Date(updated_at).toLocaleDateString('en-us')) 
+    : new Date(created_at).toLocaleDateString('en-us')
+  return (
+    <>
+      <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />
+      <Stack>
+        <Typography>{name}</Typography>
+        <Typography>
+          {date}
+        </Typography>
+      </Stack>
+    </>
+  )
+}
 
 export default function PostCard({post}:{post:Post}) {
   const {state, dispatch} = React.useContext(authContext);
@@ -71,7 +70,7 @@ export default function PostCard({post}:{post:Post}) {
     <Card color='secondary'>
 
       <CardHeader
-        avatar={ <HeaderAvatar name={post.user.name} created_at={post.created_at} /> }
+        avatar={ <HeaderAvatar name={post.user.name} created_at={post.created_at} updated_at={post.updated_at} /> }
         title={ 
           <Link to={`/post/${post.id}`}>
             <Typography variant='h6'>{post.title}</Typography>
