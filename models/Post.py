@@ -46,10 +46,10 @@ class Post(Base):
             'id': c.user.id,
             'name': c.user.name
           },
-          'created_at': c.created_at,
-          'updated_at': c.updated_at
+          'created_at': c.created_at.isoformat(),
+          'updated_at': c.updated_at.isoformat()
         } for c in self.comments
       ],
-      'created_at': self.created_at,
-      'updated_at': self.updated_at
+      'created_at': self.created_at.isoformat(),
+      'updated_at': self.updated_at.isoformat()
     }
