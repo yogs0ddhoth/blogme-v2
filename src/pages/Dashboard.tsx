@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Post } from "custom-types";
 
-import PostForm from "../components/PostForm";
+import PostForm from "../components/Forms/PostForm";
 import PostCard from "../components/Post";
 
 import { usePosts } from "../api/queries";
@@ -23,10 +23,10 @@ export default function Dashboard() {
   console.log(data);
   
   return (
-    <div className="grid grid-cols-6">
+    <div className="grid grid-cols-6 gap-3">
 
       <div className="col-span-6">
-        <h2>Welcome, {"INSER_NAME"}!</h2>
+        <h2>Welcome, {data.data.name}!</h2>
       </div>
 
       <div className="col-span-6 md:col-span-3">
@@ -34,7 +34,7 @@ export default function Dashboard() {
         <PostForm mutation={createPost} />
       </div> 
 
-      <div className="col-span-6 md:col-span-3 post-list">
+      <div className="col-span-6 md:col-span-3 ">
         <h3>Posts:</h3>
         {
           data.data.posts.map(

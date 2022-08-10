@@ -1,9 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
+
+import Layout from './components/Layout';
+
 import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
 import PostPage from './pages/Post';
 import Login from './pages/Login';
-import Layout from './components/Layout';
+
 import { AuthProvider } from './utils/context/contexts';
 
 export default function App() {

@@ -56,7 +56,6 @@ export default function PostPage() {
   // }
 
   return (
-
     <PostCard post={data.data}/>
   )
 }
