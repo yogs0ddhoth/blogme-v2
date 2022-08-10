@@ -10,10 +10,10 @@ import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 
-import { authContext } from '../../utils/context/contexts';
-import { useCreatePost, useUpdatePost } from "../../api/mutations";
+import { authContext } from '../../../utils/context/contexts';
+import { useCreatePost, useUpdatePost } from "../../../api/mutations";
 import { PostInput, Post } from "custom-types";
-import { UseMutateFunction, UseMutationResult } from '@tanstack/react-query';
+import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 
 interface PostFormProps {
