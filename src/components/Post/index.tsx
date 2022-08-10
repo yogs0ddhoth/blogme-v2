@@ -14,13 +14,14 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import CommentCard from '../Comment';
-import PostMenu from '../PostMenu';
-import CommentForm from '../CommentForm';
-import UserAvatar from '../../UserAvatar';
+import PostMenu from '../Menus/PostMenu';
+import CommentForm from '../Forms/CommentForm';
+import UserAvatar from '../UserAvatar';
 import VoteButton from '../Vote';
 
 import { Post } from 'custom-types';
 import { authContext } from '../../utils/context/contexts';
+import { useCreateComment } from '../../api/mutations';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -38,6 +39,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export default function PostCard({post}:{post:Post}) {
   const {state, dispatch} = React.useContext(authContext);
+  const createComment = useCreateComment(state.auth)
 
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => setExpanded(!expanded);
@@ -100,7 +102,7 @@ export default function PostCard({post}:{post:Post}) {
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
               {post.comments.map(
-                comment => <CommentCard key={comment.id} user_id={post.user.id} comment={comment} />
+                comment => <CommentCard key={comment.id} post_user_id={post.user.id} comment={comment} />
               )}
             </CardContent>
           </Collapse>
@@ -111,7 +113,7 @@ export default function PostCard({post}:{post:Post}) {
 
       <CardContent> 
         {state.auth !== null 
-          ? <CommentForm id={post.id as number}/> 
+          ? <CommentForm id={post.id as number} mutation={createComment}/> 
           : <></>
         }
       </CardContent>
