@@ -21,4 +21,5 @@ function api<PathType, DataType>(input:string) {
 }
 
 export const apiUsers = api<string, Signup|Login>('/users/');
-export const apiPosts = api<string|number, PostInput|CommentInput|Vote>('/posts/');
+export const apiPosts = api<string|number, PostInput|Vote>('/posts/');
+export const apiComments = api<string|number, CommentInput>('/comments/');
