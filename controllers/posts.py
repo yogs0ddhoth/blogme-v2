@@ -1,22 +1,19 @@
 import sys
 import json
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from models import Post, Comment, Vote
 from db import get_db
-from utils.auth import login_required
-from utils.filters import format_fields
 
 bp = Blueprint('posts', __name__, url_prefix='/posts')
 
 @bp.route('/', methods=['GET'])
-def get_all_posts():
+def get_all():
   db = get_db() # connect to database
   posts = [
     p.as_dict() for p in (
       db.query(Post) # get all posts
-        .order_by(Post.created_at.desc())
-        .all()
+        .order_by(Post.created_at.desc()).all()
     )
   ]
   print(json.dumps(posts))
@@ -50,9 +47,7 @@ def get(id):
   try:
     db = get_db()
     post = ( # get single post by id
-      db.query(Post)
-        .filter(Post.id == id)
-        .one()
+      db.query(Post).filter(Post.id == id).one()
     ).as_dict()
     print(post)
     return jsonify(post)
@@ -69,9 +64,7 @@ def update(id):
   db = get_db()
   try:
     post = ( # get single Post by id
-      db.query(Post)
-        .filter(Post.id == id)
-        .one()
+      db.query(Post).filter(Post.id == id).one()
     )
     if data['title']:
       post.title = data['title']
@@ -92,10 +85,8 @@ def update(id):
 def delete(id):
   db = get_db()
   try:
-    db.delete( # delete:
-      db.query(Post) # single Post by id
-        .filter(Post.id == id)
-        .one()
+    db.delete( # delete single Post by id
+      db.query(Post).filter(Post.id == id).one()
     )
     db.commit()
   except:
@@ -126,25 +117,3 @@ def upvote():
     return jsonify(message = 'Upvote failed'), 500
   
   return '', 204
-
-@bp.route('/comment', methods=['Post'])
-@jwt_required()
-def comment():
-  data = request.get_json()
-  identity = get_jwt_identity()
-  db = get_db()
-  try:
-    newComment = Comment( # create new Comment
-      text = data['text'],
-      post_id = data['post_id'],
-      user_id = identity['id']
-    )
-    db.add(newComment)
-    db.commit()
-  except:
-    print(sys.exc_info()[0])
-
-    db.rollback()
-    return jsonify(message = 'Comment failed'), 500
-
-  return jsonify(id = newComment.id)
