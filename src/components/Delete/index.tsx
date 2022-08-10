@@ -11,14 +11,18 @@ import Typography from '@mui/material/Typography';
 import { authContext } from '../../utils/context/contexts';
 import { useDeletePost } from '../../api/mutations';
 
+import { AxiosResponse } from 'axios';
+import { UseMutationResult } from '@tanstack/react-query';
+
 interface DeleteCardProps {
   id:number;
   action:React.ReactElement;
   cancel:()=>void;
+  mutation: UseMutationResult<AxiosResponse<any, any>, unknown, void, unknown>
 }
-export default function DeleteCard({id, action, cancel}:DeleteCardProps) {
+export default function DeleteCard({id, action, cancel, mutation}:DeleteCardProps) {
   const {state} = React.useContext(authContext);
-  const deletePost = useDeletePost(state.auth, id);
+  
   return (
     <Card>
       <CardHeader
@@ -41,7 +45,7 @@ export default function DeleteCard({id, action, cancel}:DeleteCardProps) {
           Cancel
         </Button>
         <Button variant='outlined'
-          onClick={() => deletePost.mutate()}
+          onClick={() => mutation.mutate()}
         >
           Delete
         </Button>
