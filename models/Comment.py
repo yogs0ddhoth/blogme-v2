@@ -26,8 +26,8 @@ class Comment(Base):
     'id': self.id,
     'text': self.text,
     'post_id': self.post_id,
-    'created_at': self.created_at,
-    'updated_at': self.updated_at,
+    'created_at': self.created_at.isoformat(),
+    'updated_at': self.updated_at.isoformat(),
     "user": {
       "id": self.user.id,
       "name": self.user.name

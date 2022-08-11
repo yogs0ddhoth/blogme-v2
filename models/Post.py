@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, select, fu
 from sqlalchemy.orm import relationship, column_property
 
 from db import Base
-from utils.filters import format_date
+from utils.filters import created_at, format_date
 from .Vote import Vote
 
 class Post(Base):
@@ -29,6 +29,7 @@ class Post(Base):
   votes = relationship('Vote', cascade='all,delete')
 
   def as_dict(self):
+    self.comments.sort(key=created_at, reverse=True)
     return {
       'id': self.id,
       'title': self.title,
@@ -38,18 +39,8 @@ class Post(Base):
         'name': self.user.name
       },
       'vote_count': self.vote_count,
-      'comments': [
-        {
-          'id': c.id,
-          'text': c.text,
-          'user': {
-            'id': c.user.id,
-            'name': c.user.name
-          },
-          'created_at': c.created_at.isoformat(),
-          'updated_at': c.updated_at.isoformat()
-        } for c in self.comments
-      ],
+      'votes': [v.as_dict().pop('post') for v in self.votes],
+      'comments': [c.as_dict().pop('post_id') for c in self.comments],
       'created_at': self.created_at.isoformat(),
       'updated_at': self.updated_at.isoformat()
     }

@@ -41,30 +41,5 @@ class User(Base):
     return {
      'id': self.id,
      'name': self.name,
-     'posts': [
-       {
-         'id': c.id,
-         'title': c.title,
-         'text': c.text,
-         'user':{
-          'id': c.user.id,
-          'name': c.user.name
-         },
-         'vote_count': c.vote_count,
-         'comments': [
-           {
-             'id': d.id,
-             'text': d.text,
-             'user': {
-               'id': d.user.id,
-               'name': d.user.name
-             },
-             'created_at': c.created_at.isoformat(),
-             'updated_at': c.updated_at.isoformat()
-           } for d in c.comments
-         ],
-         'created_at': c.created_at.isoformat(),
-         'updated_at': c.updated_at.isoformat()
-       } for c in self.posts
-     ]
+     'posts': [p.as_dict() for p in self.posts]
     }
