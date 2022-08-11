@@ -1,10 +1,9 @@
-import { useQueryClient } from '@tanstack/react-query'
 import { Post } from 'custom-types'
-import { useAllPosts } from '../api/queries'
 import PostCard from '../components/Post'
+import useControllers from '../controllers'
 
 export default function Home() {
-  const queryClient = useQueryClient()
+  const { useAllPosts } = useControllers();
   const { status, data, error } = useAllPosts()
   if (status === 'loading') {
     return <div className="loader" />

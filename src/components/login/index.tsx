@@ -17,15 +17,15 @@ import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
-import { useLogin } from '../../api/mutations'
 import { authContext } from '../../utils/context/contexts'
 import { LOGIN } from '../../utils/context/actions'
 import theme from '../../utils/mui-theme'
 import { Container } from '@mui/material'
+import useControllers from '../../controllers'
 
 export default function LoginForm() {
   const { state, dispatch } = React.useContext(authContext)
-
+  const { useLogin } = useControllers();
   const login = useLogin(dispatch)
   const {
     handleSubmit,

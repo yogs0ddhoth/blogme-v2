@@ -12,7 +12,7 @@ import Timestamp from '../Timestamp'
 
 import { Comment, Post } from 'custom-types'
 import { authContext } from '../../utils/context/contexts'
-import { useUpdateComment } from '../../api/mutations'
+import useControllers from '../../controllers'
 
 interface CommentCardProps {
   post_user_id: Post['user']['id']
@@ -73,6 +73,7 @@ export default function CommentCard({
   comment,
 }: CommentCardProps) {
   const { state, dispatch } = React.useContext(authContext)
+  const { useUpdateComment } = useControllers();
   const updateComment = useUpdateComment(state.auth, comment.id)
 
   // edit state

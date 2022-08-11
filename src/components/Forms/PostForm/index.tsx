@@ -11,10 +11,10 @@ import FormControl from '@mui/material/FormControl'
 import TextField from '@mui/material/TextField'
 
 import { authContext } from '../../../utils/context/contexts'
-import { useCreatePost, useUpdatePost } from '../../../api/mutations'
 import { PostInput, Post } from 'custom-types'
 import { UseMutationResult } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
+import useControllers from '../../../controllers'
 
 interface PostFormProps {
   action?: React.ReactElement
@@ -27,6 +27,8 @@ interface PostFormProps {
   >
 }
 export default function PostForm({ action, post, mutation }: PostFormProps) {
+  const { useCreatePost, useUpdatePost } = useControllers();
+
   const {
     handleSubmit,
     reset,

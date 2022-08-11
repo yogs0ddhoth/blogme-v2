@@ -9,7 +9,6 @@ import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 
 import { authContext } from '../../utils/context/contexts'
-import { useDeletePost } from '../../api/mutations'
 
 import { AxiosResponse } from 'axios'
 import { UseMutationResult } from '@tanstack/react-query'

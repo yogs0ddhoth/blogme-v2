@@ -11,8 +11,8 @@ import Typography from '@mui/material/Typography'
 import { LogoutButton } from '../../Buttons'
 
 import { authContext } from '../../../utils/context/contexts'
-import { useLogout } from '../../../api/mutations'
 import theme from '../../../utils/mui-theme'
+import useControllers from '../../../controllers'
 
 interface NavTabProps {
   label: string
@@ -34,9 +34,9 @@ export default function Navbar() {
 
   const { pathname } = useLocation()
   const [value, setValue] = React.useState(pathname)
-  const handleChange = (event: React.SyntheticEvent, newValue: string) =>
-    setValue(newValue)
-
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => setValue(newValue);
+  
+  const { useLogout } = useControllers();
   const logout = useLogout(dispatch)
 
   return (

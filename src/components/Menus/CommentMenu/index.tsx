@@ -10,7 +10,7 @@ import Popup from '../../StyledModal'
 
 import { authContext } from '../../../utils/context/contexts'
 import { Comment } from 'custom-types'
-import { useDeleteComment, useDeletePost } from '../../../api/mutations'
+import useControllers from '../../../controllers'
 
 interface CommentMenuProps {
   comment: Comment
@@ -23,6 +23,7 @@ export default function CommentMenu({
   hover,
 }: CommentMenuProps) {
   const { state, dispatch } = React.useContext(authContext)
+  const { useDeleteComment, useDeletePost } = useControllers();
   const deleteComment = useDeleteComment(state.auth, comment.id)
   // Delete action state
   const [deleteOpen, setDeleteOpen] = React.useState(false)
@@ -50,7 +51,7 @@ export default function CommentMenu({
           action={editOpen}
         />
       ) : (
-        <></>
+        <div></div>
       )}
       <MenuAction
         label="Delete"

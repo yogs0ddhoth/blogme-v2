@@ -16,12 +16,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
-import { useSignup } from '../../api/mutations'
 import { authContext } from '../../utils/context/contexts'
-import { LOGIN } from '../../utils/context/actions'
+import useControllers from '../../controllers'
 
 export default function SignupForm() {
   const { state, dispatch } = React.useContext(authContext)
+  const { useSignup } = useControllers();
   const signup = useSignup(dispatch)
   const {
     handleSubmit,

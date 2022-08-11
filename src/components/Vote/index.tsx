@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography'
 
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { authContext } from '../../utils/context/contexts'
-import { useVote } from '../../api/mutations'
+import useControllers from '../../controllers'
 
 interface VoteButtonProps {
   id: number
@@ -13,7 +13,8 @@ interface VoteButtonProps {
 export default function VoteButton({ id, vote_count }: VoteButtonProps) {
   const { state, dispatch } = React.useContext(authContext)
   const [voteCount, setVoteCount] = React.useState(vote_count)
-  const upvote = useVote(state.auth)
+  const { useUpVote } = useControllers()
+  const upvote = useUpVote(state.auth)
 
   const handleClick = () => {
     const newVoteCount = voteCount + 1

@@ -20,8 +20,8 @@ import UserAvatar from '../UserAvatar'
 import VoteButton from '../Vote'
 
 import { Post } from 'custom-types'
-import { authContext } from '../../utils/context/contexts'
-import { useCreateComment } from '../../api/mutations'
+import { authContext } from '../../utils/context/contexts';
+import useControllers from '../../controllers' 
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean
@@ -39,6 +39,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export default function PostCard({ post }: { post: Post }) {
   const { state, dispatch } = React.useContext(authContext)
+  const { useCreateComment } = useControllers()
   const createComment = useCreateComment(state.auth)
 
   const [expanded, setExpanded] = React.useState(false)

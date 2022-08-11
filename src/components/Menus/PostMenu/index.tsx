@@ -10,10 +10,11 @@ import PostForm from '../../Forms/PostForm'
 
 import { authContext } from '../../../utils/context/contexts'
 import { Post } from 'custom-types'
-import { useDeletePost, useUpdatePost } from '../../../api/mutations'
 import { ActionsMenu, MenuAction } from '..'
+import useControllers from '../../../controllers'
 
 export default function PostMenu({ post }: { post: Post }) {
+  const { useDeletePost, useUpdatePost } = useControllers()
   const { state, dispatch } = React.useContext(authContext)
 
   // Edit action state

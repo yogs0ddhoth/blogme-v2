@@ -4,13 +4,13 @@ import { Post } from 'custom-types'
 import PostForm from '../components/Forms/PostForm'
 import PostCard from '../components/Post'
 
-import { usePosts } from '../api/queries'
 import { authContext } from '../utils/context/contexts'
-import { useCreatePost } from '../api/mutations'
+import useControllers from '../controllers'
 
 export default function Dashboard() {
   const { state, dispatch } = React.useContext(authContext)
 
+  const { usePosts, useCreatePost }  = useControllers();
   const createPost = useCreatePost(state.auth)
 
   const { status, error, data } = usePosts(state.auth)
