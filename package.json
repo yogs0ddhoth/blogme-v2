@@ -2,6 +2,7 @@
   "name": "blogme-v2",
   "version": "0.0.0",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
@@ -20,6 +21,8 @@
   "scripts": {
     "start": "react-scripts start",
     "dev": "npm run build && python -m flask run",
+    "lint": "npx eslint src",
+    "prettier": "npx prettier --write src",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -53,9 +56,19 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
     "autoprefixer": "^10.4.7",
+    "eslint": "^8.21.0",
     "postcss": "^8.4.14",
+    "prettier": "2.7.1",
     "tailwindcss": "^3.1.6",
     "typescript": "^4.7.4"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
   }
 }

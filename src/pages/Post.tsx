@@ -1,20 +1,20 @@
-import { useParams } from "react-router-dom"
-import { usePost } from "../api/queries";
-import PostCard from "../components/Post";
+import { useParams } from 'react-router-dom'
+import { usePost } from '../api/queries'
+import PostCard from '../components/Post'
 
 export default function PostPage() {
   // data: {postId:string}
 
-  const id = useParams().postId;
-  const { status, data, error, isFetching } = usePost(parseInt(id as string));
+  const id = useParams().postId
+  const { status, data, error, isFetching } = usePost(parseInt(id as string))
   if (status === 'loading') {
-    return <div className="loader"/>
-  };
+    return <div className="loader" />
+  }
   if (status === 'error') {
     return <span>Error: {`${error}`}</span>
-  };
-  console.log(data);
-  
+  }
+  console.log(data)
+
   // const data = {
   //   data: {
   //     "comments": [
@@ -55,7 +55,5 @@ export default function PostPage() {
   //   }
   // }
 
-  return (
-    <PostCard post={data.data}/>
-  )
+  return <PostCard post={data.data} />
 }
