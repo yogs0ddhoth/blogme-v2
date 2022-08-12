@@ -29,7 +29,7 @@ class Post(Base):
   votes = relationship('Vote', cascade='all,delete')
 
   def as_dict(self):
-    self.comments.sort(key=created_at, reverse=True)
+    self.comments.sort(key=created_at)
     return {
       'id': self.id,
       'title': self.title,
@@ -39,8 +39,8 @@ class Post(Base):
         'name': self.user.name
       },
       'vote_count': self.vote_count,
-      'votes': [v.as_dict().pop('post') for v in self.votes],
-      'comments': [c.as_dict().pop('post_id') for c in self.comments],
+      'votes': [v.as_dict() for v in self.votes],
+      'comments': [c.as_dict() for c in self.comments],
       'created_at': self.created_at.isoformat(),
       'updated_at': self.updated_at.isoformat()
     }

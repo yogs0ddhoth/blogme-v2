@@ -31,8 +31,13 @@
 }
 @layer components {
   .loader {
-    @apply w-[35px] h-[35px] border-[5px] border-solid border-[#282c34] 
-    border-t-[5px] border-t-[#61dafb] 
+    @apply w-[35px] h-[35px] border-[5px] 
+    border-solid border-[#0000] border-t-[5px] border-t-[#61dafb] 
     rounded-[50%] animate-loader-spin;
+  }
+  .styled-modal {
+    @apply absolute top-1/2 left-1/2 w-[75vw]
+    translate-x-[-50%] translate-y-[-50%]
+    shadow-md
   }
 }
