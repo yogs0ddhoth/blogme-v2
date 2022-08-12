@@ -15,7 +15,7 @@ const contextFactory = <StateType, ActionType>(
     dispatch: defaultDispatch,
   })
 
-  function Provider(props: React.PropsWithChildren<{}>) {
+  function Provider(props: React.PropsWithChildren) {
     const [state, dispatch] = React.useReducer<
       React.Reducer<StateType, ActionType>
     >(reducer, initialState)
