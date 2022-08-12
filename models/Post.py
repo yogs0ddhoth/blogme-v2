@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, select, func
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime, select, func
 from sqlalchemy.orm import relationship, column_property
 
 from db import Base
@@ -14,7 +14,7 @@ class Post(Base):
     autoincrement='auto'
   )
   title = Column(String(200), nullable=False)
-  text = Column(String, nullable=False)
+  text = Column(Text(60000), nullable=False)
   user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
   
   created_at = Column(DateTime, default=datetime.now)
