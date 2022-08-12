@@ -117,3 +117,8 @@ def upvote():
     return jsonify(message = 'Upvote failed'), 500
   
   return '', 204
+
+@bp.route('/upvote', methods=['DELETE'])
+@jwt_required()
+def delete_vote(): 
+  data = request.get_json()
