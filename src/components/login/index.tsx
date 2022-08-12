@@ -18,9 +18,6 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 import { authContext } from '../../utils/context/contexts'
-import { LOGIN } from '../../utils/context/actions'
-import theme from '../../utils/mui-theme'
-import { Container } from '@mui/material'
 import useControllers from '../../controllers'
 
 export default function LoginForm() {
@@ -71,7 +68,7 @@ export default function LoginForm() {
           )}
           rules={{
             pattern: {
-              value: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+              value: /^([a-z0-9_.-]+)@([\da-z.-]+)\.([a-z.]{2,6})$/,
               message: '* Enter a valid email address.',
             },
             required: '* This field is required',

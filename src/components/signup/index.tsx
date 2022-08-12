@@ -83,7 +83,7 @@ export default function SignupForm() {
           )}
           rules={{
             pattern: {
-              value: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+              value: /^([a-z0-9_.-]+)@([\da-z.-]+)\.([a-z.]{2,6})$/,
               message: '* Enter a valid email address.',
             },
             required: '* This field is required',
