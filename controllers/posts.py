@@ -120,5 +120,20 @@ def upvote():
 
 @bp.route('/upvote', methods=['DELETE'])
 @jwt_required()
-def delete_vote(): 
+def delete_vote(): # data: { post: number, user:{id: number, name: string} }
   data = request.get_json()
+  identity = get_jwt_identity()
+  db = get_db()
+  try:
+    db.delete(
+      db.query(Vote).filter(Vote.id == data['id'])
+    )
+    db.commit()
+
+    return '', 204
+  
+  except:
+    print(sys.exc_info()[0])
+
+    db.rollback()
+    return jsonify(message = 'Delete failed'), 500
