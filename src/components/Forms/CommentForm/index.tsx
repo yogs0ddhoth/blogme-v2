@@ -11,31 +11,44 @@ import theme from '../../../utils/mui-theme'
 import { CommentInput } from 'custom-types'
 import { UseMutationResult } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
+import useControllers from '../../../controllers'
 
 interface CommentFormProps {
-  id: number
-  commentText?: string
-  closeEl?: React.ReactNode
+  id: number;
+  commentText?: string;
+  closeEl?: React.ReactNode;
+  handleClose?: () => void;
   mutation: UseMutationResult<
     AxiosResponse<any, any>,
     unknown,
     CommentInput,
     unknown
-  >
+  >;
 }
 export default function CommentForm({
   id,
   commentText,
   closeEl,
+  handleClose,
   mutation,
 }: CommentFormProps) {
+  const {refetchLastQuery} = useControllers();
   const [commentState, setCommentState] = React.useState(
     commentText !== undefined ? commentText : '',
   )
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    mutation.mutate({ post_id: id, text: commentState })
+    mutation.mutate({ post_id: id, text: commentState }, {
+      onSuccess: async () => {
+        setCommentState('');
+        await refetchLastQuery();
+        if (handleClose) {
+          handleClose();
+        }
+      }
+    });
+
   }
 
   return (

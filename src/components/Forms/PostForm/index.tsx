@@ -17,18 +17,18 @@ import { AxiosResponse } from 'axios'
 import useControllers from '../../../controllers'
 
 interface PostFormProps {
-  action?: React.ReactElement
-  post?: Post
+  action?: React.ReactElement;
+  post?: Post;
+  handleClose?: () => void;
   mutation: UseMutationResult<
     AxiosResponse<any, any>,
     unknown,
     PostInput,
     unknown
-  >
+  >;
 }
-export default function PostForm({ action, post, mutation }: PostFormProps) {
-  const { useCreatePost, useUpdatePost } = useControllers();
-
+export default function PostForm({ action, post, handleClose, mutation }: PostFormProps) {
+  const {refetchLastQuery} = useControllers();
   const {
     handleSubmit,
     reset,
@@ -38,14 +38,24 @@ export default function PostForm({ action, post, mutation }: PostFormProps) {
     defaultValues:
       post !== undefined
         ? { title: post.title, text: post.text }
-        : { title: '', text: '' },
+        : { title: '', text: '' }
   })
 
   return (
     <Card className="w-full">
       <form
         className="flex flex-col gap-3 w-full"
-        onSubmit={handleSubmit((data) => mutation.mutate(data))}
+        onSubmit={handleSubmit(
+          (data) => mutation.mutate(data, {
+            onSuccess: () => {
+              refetchLastQuery();
+              reset();
+              if (handleClose) {
+                handleClose();
+              }
+            }
+          })
+        )}
       >
         <CardHeader action={action} />
 

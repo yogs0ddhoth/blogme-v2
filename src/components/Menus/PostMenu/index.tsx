@@ -36,6 +36,7 @@ export default function PostMenu({ post }: { post: Post }) {
           <PostForm
             post={post}
             action={<CloseButton onClick={handleEditClose} />}
+            handleClose={handleEditClose}
             mutation={editPost}
           />
         </Popup>,

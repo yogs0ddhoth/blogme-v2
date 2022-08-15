@@ -34,8 +34,7 @@ const CommentView = ({
 }: CommentViewProps) => {
   // hover state - for rendering menu
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
-  const handleMouseEnter = (e: React.MouseEvent<HTMLElement | null>) =>
-    setAnchorEl(e.currentTarget)
+  const handleMouseEnter = (e: React.MouseEvent<HTMLElement | null>) => setAnchorEl(e.currentTarget)
   const handleMouseLeave = () => setAnchorEl(null)
   const hover = Boolean(anchorEl)
 
@@ -101,6 +100,7 @@ export default function CommentCard({
           Cancel
         </Typography>
       }
+      handleClose={handleEditClose}
     />
   )
 }
