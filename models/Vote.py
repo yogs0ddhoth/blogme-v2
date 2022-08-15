@@ -14,7 +14,7 @@ class Vote(Base):
 
   def as_dict(self):
     return {
-      'post': self.post_id,
+      'post_id': self.post_id,
       'user': {
         'id': self.user.id,
         'name': self.user.name
