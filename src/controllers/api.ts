@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Signup, Login, CommentInput, PostInput, Vote } from 'custom-types'
 
 function api<PathType, DataType>(input: string) {
-  return async (
+  return async <ResponseData>(
     method: string,
     path?: PathType,
     data?: DataType,
@@ -10,7 +10,7 @@ function api<PathType, DataType>(input: string) {
   ) => {
     try {
       const url = input
-      return await axios({
+      return await axios.request<ResponseData>({
         method: method,
         url: url + `${path !== undefined ? path : ''}`,
         headers:
