@@ -7,10 +7,18 @@ from db import get_db
 
 bp = Blueprint('comments', __name__, url_prefix='/comments')
 
+# 'comments/' route 
 @bp.route('/', methods=['Post'])
 @jwt_required()
 def create(): # {post_id: int, text: string}
   data = request.get_json()
+  '''
+  @expect:
+    data: {
+      post_id: string,
+      test: string
+    }
+  '''
   identity = get_jwt_identity()
   db = get_db()
   try:
@@ -29,13 +37,25 @@ def create(): # {post_id: int, text: string}
     db.rollback()
     return jsonify(message = 'Comment failed'), 500
 
+# '/comments/<id>' routes
+  '''
+  @expect:
+    data: {
+      text: string
+    }
+  '''
 @bp.route('/<id>', methods=['PUT'])
 @jwt_required()
 def update(id): # {text: string}
   data = request.get_json()
+  identity = get_jwt_identity()
   db = get_db()
   try:
     comment = db.query(Comment).filter(Comment.id == id).one()
+
+    if comment.user_id != identity['id']:
+      return jsonify(message = 'Comment failed, User unauthorized.'), 401
+      
     comment.text = data['text']
 
     db.commit()
