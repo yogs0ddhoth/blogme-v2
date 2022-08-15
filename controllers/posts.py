@@ -7,6 +7,7 @@ from db import get_db
 
 bp = Blueprint('posts', __name__, url_prefix='/posts')
 
+# '/posts/' routes 
 @bp.route('/', methods=['GET'])
 def get_all():
   db = get_db() # connect to database
@@ -19,6 +20,13 @@ def get_all():
   print(json.dumps(posts))
   return json.dumps(posts)
 
+  '''
+  @expect:
+    data: {
+      title: string,
+      text: string
+    }
+  '''
 @bp.route('/', methods=['POST'])
 @jwt_required()
 def create():
@@ -26,7 +34,6 @@ def create():
   identity = get_jwt_identity()
   db = get_db()
   try:
-    print(identity)
     newPost = Post( # create new Post
       title = data['title'],
       text = data['text'],
@@ -42,6 +49,14 @@ def create():
 
   return jsonify(id = newPost.id), 201
 
+# '/posts/<id>' routes
+  '''
+  @expect:
+    data: {
+      title: string,
+      text: string
+    }
+  '''
 @bp.route('/<id>', methods=['GET'])
 def get(id):
   try:
@@ -61,11 +76,14 @@ def get(id):
 @jwt_required()
 def update(id):
   data = request.get_json()
+  identity = get_jwt_identity()
   db = get_db()
   try:
-    post = ( # get single Post by id
-      db.query(Post).filter(Post.id == id).one()
-    )
+    post = db.query(Post).filter(Post.id == id).one()
+
+    if post.user_id != identity['id']:
+      return jsonify(message = 'Update failed, User is not authorized.'), 401
+
     if data['title']:
       post.title = data['title']
     if data['text']:
@@ -83,11 +101,15 @@ def update(id):
 @bp.route('/<id>', methods=['DELETE'])
 @jwt_required()
 def delete(id):
+  identity = get_jwt_identity()
   db = get_db()
   try:
-    db.delete( # delete single Post by id
-      db.query(Post).filter(Post.id == id).one()
-    )
+    post = db.query(Post).filter(Post.id == id).one()
+
+    if post.user_id != identity['id']:
+      return jsonify(message = 'Update failed, User is not authorized.'), 401
+
+    db.delete(post)
     db.commit()
   except:
     print(sys.exc_info()[0])
@@ -97,6 +119,17 @@ def delete(id):
   
   return '', 204
 
+# '/posts/upVote' routes
+  '''
+  @expect:
+    data: { 
+      post: int, 
+      user: { 
+        id: int, 
+        name: string 
+      } 
+    }
+  '''
 @bp.route('/upvote', methods=['PUT'])
 @jwt_required()
 def upvote():
@@ -120,9 +153,13 @@ def upvote():
 
 @bp.route('/upvote', methods=['DELETE'])
 @jwt_required()
-def delete_vote(): # data: { post: number, user:{id: number, name: string} }
+def delete_vote():
   data = request.get_json()
   identity = get_jwt_identity()
+  
+  if data['user']['id'] != identity['id']:
+    return jsonify(message = 'Update failed, User is unauthorized.'), 401
+
   db = get_db()
   try:
     db.delete(
