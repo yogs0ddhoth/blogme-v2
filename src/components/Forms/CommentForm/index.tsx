@@ -40,9 +40,9 @@ export default function CommentForm({
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     mutation.mutate({ post_id: id, text: commentState }, {
-      onSuccess: async () => {
+      onSuccess: () => {
+        refetchLastQuery();
         setCommentState('');
-        await refetchLastQuery();
         if (handleClose) {
           handleClose();
         }
