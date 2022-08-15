@@ -17,9 +17,9 @@ export default function VoteButton({ id, vote_count }: VoteButtonProps) {
   const upvote = useUpVote(state.auth)
 
   const handleClick = () => {
-    const newVoteCount = voteCount + 1
-    setVoteCount(newVoteCount)
-    upvote.mutate({ post_id: id })
+    // const newVoteCount = voteCount + 1
+    // setVoteCount(newVoteCount)
+    upvote.mutate({ post_id: id, user: {id: state.id, name: state.user} })
   }
   return (
     <>
