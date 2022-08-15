@@ -54,7 +54,7 @@ def update(id): # {text: string}
     comment = db.query(Comment).filter(Comment.id == id).one()
 
     if comment.user_id != identity['id']:
-      return jsonify(message = 'Comment failed, User unauthorized.'), 401
+      return jsonify(message = 'Update failed, User is not authorized.'), 401
       
     comment.text = data['text']
 
@@ -70,11 +70,15 @@ def update(id): # {text: string}
 @jwt_required()
 def delete(id):
   data = request.get_json()
+  identity = get_jwt_identity()
   db = get_db()
   try:
-    db.delete(
-      db.query(Comment).filter(Comment.id == id).one()
-    )
+    comment = db.query(Comment).filter(Comment.id == id).one()
+    
+    if comment.user_id != identity['id']:
+      return jsonify(message = 'Update failed, User is not authorized.'), 401
+
+    db.delete(comment)
     db.commit()
     return '', 204
   except:
