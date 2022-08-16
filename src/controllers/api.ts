@@ -1,15 +1,15 @@
-import axios from 'axios'
-import { Signup, Login, CommentInput, PostInput, Vote } from 'custom-types'
+import axios from 'axios';
+import { Signup, Login, CommentInput, PostInput, Vote } from 'custom-types';
 
 export default function api<PathType, DataType>(input: string) {
   return async <ResponseData>(
     method: string,
     path?: PathType,
     data?: DataType,
-    auth?: string | null,
+    auth?: string | null
   ) => {
     try {
-      const url = input
+      const url = input;
       return await axios.request<ResponseData>({
         method: method,
         url: url + `${path ? path : ''}`,
@@ -24,5 +24,5 @@ export default function api<PathType, DataType>(input: string) {
     } catch (error) {
       throw new Error(`${error}`);
     }
-  }
+  };
 }

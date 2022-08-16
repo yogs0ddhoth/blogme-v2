@@ -1,40 +1,40 @@
-import * as React from 'react'
-import { useForm, Controller } from 'react-hook-form'
+import * as React from 'react';
+import { useForm, Controller } from 'react-hook-form';
 
-import Avatar from '@mui/material/Avatar'
-import FormControl from '@mui/material/FormControl'
-import Button from '@mui/material/Button'
-import FormHelperText from '@mui/material/FormHelperText'
-import Grid from '@mui/material/Grid'
-import InputLabel from '@mui/material/InputLabel'
-import InputAdornment from '@mui/material/InputAdornment'
-import IconButton from '@mui/material/IconButton'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
+import Avatar from '@mui/material/Avatar';
+import FormControl from '@mui/material/FormControl';
+import Button from '@mui/material/Button';
+import FormHelperText from '@mui/material/FormHelperText';
+import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
-import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined'
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { authContext } from '../../utils/context/contexts'
-import useControllers from '../../controllers'
+import { authContext } from '../../utils/context/contexts';
+import useControllers from '../../controllers';
 
 export default function LoginForm() {
-  const { state, dispatch } = React.useContext(authContext)
+  const { state, dispatch } = React.useContext(authContext);
   const { useLogin } = useControllers();
-  const login = useLogin(dispatch)
+  const login = useLogin(dispatch);
   const {
     handleSubmit,
     reset,
     control,
     formState: { errors },
-  } = useForm({ defaultValues: { email: '', password: '' } })
-  const [showPassword, setShowPassword] = React.useState(false)
-  const handleClickShowPassword = () => setShowPassword(!showPassword)
+  } = useForm({ defaultValues: { email: '', password: '' } });
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => event.preventDefault()
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => event.preventDefault();
 
   return (
     <div className="container flex flex-col gap-3 justify-center items-center">
@@ -116,5 +116,5 @@ export default function LoginForm() {
         signup instead
       </a>
     </div>
-  )
+  );
 }

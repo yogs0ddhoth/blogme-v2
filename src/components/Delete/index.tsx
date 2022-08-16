@@ -1,23 +1,23 @@
-import * as React from 'react'
+import * as React from 'react';
 
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
-import CardActions from '@mui/material/CardActions'
-import Divider from '@mui/material/Divider'
-import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 
-import { authContext } from '../../utils/context/contexts'
+import { authContext } from '../../utils/context/contexts';
 
-import { AxiosResponse } from 'axios'
-import { UseMutationResult } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios';
+import { UseMutationResult } from '@tanstack/react-query';
 
 interface DeleteCardProps {
-  id: number
-  action: React.ReactElement
-  cancel: () => void
-  mutation: UseMutationResult<AxiosResponse<any, any>, unknown, void, unknown>
+  id: number;
+  action: React.ReactElement;
+  cancel: () => void;
+  mutation: UseMutationResult<AxiosResponse<any, any>, unknown, void, unknown>;
 }
 export default function DeleteCard({
   id,
@@ -25,7 +25,7 @@ export default function DeleteCard({
   cancel,
   mutation,
 }: DeleteCardProps) {
-  const { state } = React.useContext(authContext)
+  const { state } = React.useContext(authContext);
 
   return (
     <Card>
@@ -47,5 +47,5 @@ export default function DeleteCard({
         </Button>
       </CardActions>
     </Card>
-  )
+  );
 }

@@ -1,20 +1,20 @@
-import * as React from 'react'
-import { useForm, Controller } from 'react-hook-form'
+import * as React from 'react';
+import { useForm, Controller } from 'react-hook-form';
 
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
-import CardActions from '@mui/material/CardActions'
-import Divider from '@mui/material/Divider'
-import FormControl from '@mui/material/FormControl'
-import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Divider from '@mui/material/Divider';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
 
-import { authContext } from '../../../utils/context/contexts'
-import { PostInput, Post } from 'custom-types'
-import { UseMutationResult } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
-import useControllers from '../../../controllers'
+import { authContext } from '../../../utils/context/contexts';
+import { PostInput, Post } from 'custom-types';
+import { UseMutationResult } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
+import useControllers from '../../../controllers';
 
 interface PostFormProps {
   action?: React.ReactElement;
@@ -27,8 +27,13 @@ interface PostFormProps {
     unknown
   >;
 }
-export default function PostForm({ action, post, handleClose, mutation }: PostFormProps) {
-  const {refetchLastQuery} = useControllers();
+export default function PostForm({
+  action,
+  post,
+  handleClose,
+  mutation,
+}: PostFormProps) {
+  const { refreshCache } = useControllers();
   const {
     handleSubmit,
     reset,
@@ -38,22 +43,22 @@ export default function PostForm({ action, post, handleClose, mutation }: PostFo
     defaultValues:
       post !== undefined
         ? { title: post.title, text: post.text }
-        : { title: '', text: '' }
-  })
+        : { title: '', text: '' },
+  });
 
   return (
     <Card className="w-full">
       <form
         className="flex flex-col gap-3 w-full"
-        onSubmit={handleSubmit(
-          (data) => mutation.mutate(data, {
+        onSubmit={handleSubmit((data) =>
+          mutation.mutate(data, {
             onSuccess: () => {
-              refetchLastQuery();
+              refreshCache();
               reset();
               if (handleClose) {
                 handleClose();
               }
-            }
+            },
           })
         )}
       >
@@ -107,5 +112,5 @@ export default function PostForm({ action, post, handleClose, mutation }: PostFo
         </CardActions>
       </form>
     </Card>
-  )
+  );
 }

@@ -1,49 +1,49 @@
-import * as React from 'react'
-import { Link } from 'react-router-dom'
+import * as React from 'react';
+import { Link } from 'react-router-dom';
 
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
-import CardActions from '@mui/material/CardActions'
-import Collapse from '@mui/material/Collapse'
-import Divider from '@mui/material/Divider'
-import IconButton, { IconButtonProps } from '@mui/material/IconButton'
-import { styled } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Divider from '@mui/material/Divider';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import CommentCard from '../Comment'
-import PostMenu from '../Menus/PostMenu'
-import CommentForm from '../Forms/CommentForm'
-import UserAvatar from '../UserAvatar'
-import Votes from '../Vote'
+import CommentCard from '../Comment';
+import PostMenu from '../Menus/PostMenu';
+import CommentForm from '../Forms/CommentForm';
+import UserAvatar from '../UserAvatar';
+import Votes from '../Vote';
 
-import { Post } from 'custom-types'
+import { Post } from 'custom-types';
 import { authContext } from '../../utils/context/contexts';
-import useControllers from '../../controllers' 
+import useControllers from '../../controllers';
 
 interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean
+  expand: boolean;
 }
 const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props
-  return <IconButton {...other} />
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
 })(({ theme, expand }) => ({
   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
   marginLeft: 'auto',
   transition: theme.transitions.create('transform', {
     duration: theme.transitions.duration.shortest,
   }),
-}))
+}));
 
 export default function PostCard({ post }: { post: Post }) {
-  const { state, dispatch } = React.useContext(authContext)
-  const { useCreateComment } = useControllers()
-  const createComment = useCreateComment(state.auth)
+  const { state, dispatch } = React.useContext(authContext);
+  const { useCreateComment } = useControllers();
+  const createComment = useCreateComment(state.auth);
 
-  const [expanded, setExpanded] = React.useState(false)
-  const handleExpandClick = () => setExpanded(!expanded)
+  const [expanded, setExpanded] = React.useState(false);
+  const handleExpandClick = () => setExpanded(!expanded);
 
   return (
     <Card color="secondary">
@@ -73,7 +73,11 @@ export default function PostCard({ post }: { post: Post }) {
       <Divider variant="middle" />
 
       <CardActions disableSpacing>
-        <Votes post_id={post.id} vote_count={post.vote_count} votes={post.votes} />
+        <Votes
+          post_id={post.id}
+          vote_count={post.vote_count}
+          votes={post.votes}
+        />
         {post.comments.length ? (
           <ExpandMore
             expand={expanded}
@@ -122,5 +126,5 @@ export default function PostCard({ post }: { post: Post }) {
         )}
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -1,17 +1,17 @@
-import * as React from 'react'
+import * as React from 'react';
 
-import Avatar from '@mui/material/Avatar'
-import IconButton from '@mui/material/IconButton'
-import SendIcon from '@mui/icons-material/Send'
-import Stack from '@mui/material/Stack'
-import TextField from '@mui/material/TextField'
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import SendIcon from '@mui/icons-material/Send';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 
-import theme from '../../../utils/mui-theme'
+import theme from '../../../utils/mui-theme';
 
-import { CommentInput } from 'custom-types'
-import { UseMutationResult } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
-import useControllers from '../../../controllers'
+import { CommentInput } from 'custom-types';
+import { UseMutationResult } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
+import useControllers from '../../../controllers';
 
 interface CommentFormProps {
   id: number;
@@ -32,24 +32,26 @@ export default function CommentForm({
   handleClose,
   mutation,
 }: CommentFormProps) {
-  const {refetchLastQuery} = useControllers();
+  const { refreshCache } = useControllers();
   const [commentState, setCommentState] = React.useState(
-    commentText !== undefined ? commentText : '',
-  )
+    commentText !== undefined ? commentText : ''
+  );
 
   const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
-    mutation.mutate({ post_id: id, text: commentState }, {
-      onSuccess: () => {
-        refetchLastQuery();
-        setCommentState('');
-        if (handleClose) {
-          handleClose();
-        }
+    event.preventDefault();
+    mutation.mutate(
+      { post_id: id, text: commentState },
+      {
+        onSuccess: () => {
+          refreshCache();
+          setCommentState('');
+          if (handleClose) {
+            handleClose();
+          }
+        },
       }
-    });
-
-  }
+    );
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -70,5 +72,5 @@ export default function CommentForm({
         </IconButton>
       </Stack>
     </form>
-  )
+  );
 }

@@ -1,27 +1,28 @@
-import * as React from 'react'
-import { Post } from 'custom-types'
+import * as React from 'react';
+import { Post } from 'custom-types';
 
-import PostForm from '../components/Forms/PostForm'
-import PostCard from '../components/Post'
+import PostForm from '../components/Forms/PostForm';
+import PostCard from '../components/Post';
 
-import { authContext } from '../utils/context/contexts'
-import useControllers from '../controllers'
+import { authContext } from '../utils/context/contexts';
+import useControllers from '../controllers';
 
 export default function Dashboard() {
-  const { state, dispatch } = React.useContext(authContext)
+  const { state, dispatch } = React.useContext(authContext);
 
-  const { usePosts, useCreatePost }  = useControllers();
-  const createPost = useCreatePost(state.auth)
+  const { usePosts, useCreatePost } = useControllers();
+  const createPost = useCreatePost(state.auth);
 
-  const { status, error, data } = usePosts(state.auth)
+  const { status, error, data } = usePosts(state.auth);
   if (status === 'loading') {
-    return <div className="loader" />
+    return <div className="loader" />;
   }
   if (status === 'error') {
-    return <span>Your session has timed out. Redirecting to login..</span>
+    return <span>Your session has timed out. Redirecting to login..</span>;
   }
-  console.log(data)
+  console.log(data);
 
+  // TODO: create loading spinner modal for refetching
   return (
     <div className="grid grid-cols-6 gap-3">
       <div className="col-span-6">
@@ -40,5 +41,5 @@ export default function Dashboard() {
         ))}
       </div>
     </div>
-  )
+  );
 }

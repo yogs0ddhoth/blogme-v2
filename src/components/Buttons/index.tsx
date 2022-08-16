@@ -13,7 +13,7 @@ export const CloseButton = (props: { onClick: () => void }) => (
   <IconButton onClick={props.onClick}>
     <ClearOutlinedIcon />
   </IconButton>
-)
+);
 
 interface LogoutButtonProps {
   className: string;
@@ -23,7 +23,7 @@ export const LogoutButton = (props: LogoutButtonProps) => (
   <IconButton onClick={props.onClick}>
     <LogoutIcon className={props.className} />
   </IconButton>
-)
+);
 
 interface MenuButtonProps {
   className: string;
@@ -33,14 +33,14 @@ export const MenuButton = (props: MenuButtonProps) => (
   <IconButton id="button" className={props.className} onClick={props.onClick}>
     <MoreVertIcon />
   </IconButton>
-)
+);
 
 interface VoteButtonProps {
   onClick: () => void;
   upVoted: boolean;
 }
-export const VoteButton = ({onClick, upVoted}: VoteButtonProps) => (
+export const VoteButton = ({ onClick, upVoted }: VoteButtonProps) => (
   <IconButton onClick={onClick}>
-    <FavoriteIcon sx={upVoted ? {color: theme.palette.error.light} : {}} />
+    <FavoriteIcon sx={upVoted ? { color: theme.palette.error.light } : {}} />
   </IconButton>
-)
+);

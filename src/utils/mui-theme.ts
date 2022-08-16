@@ -1,5 +1,5 @@
-import { createTheme } from '@mui/material'
-const rootElement = document.getElementById('root') as HTMLElement
+import { createTheme } from '@mui/material';
+const rootElement = document.getElementById('root') as HTMLElement;
 
 const theme = createTheme({
   components: {
@@ -33,5 +33,5 @@ const theme = createTheme({
     borderRadius: 0,
   },
   spacing: 8,
-})
-export default theme
+});
+export default theme;

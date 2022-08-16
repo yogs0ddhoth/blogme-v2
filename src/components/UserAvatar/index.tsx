@@ -1,16 +1,16 @@
-import Avatar from '@mui/material/Avatar'
-import Stack from '@mui/material/Stack'
-import Typography from '@mui/material/Typography'
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
-import Timestamp from '../Timestamp'
+import Timestamp from '../Timestamp';
 
 interface UserAvatarProps {
-  name: string
-  color: string
+  name: string;
+  color: string;
   timestamps?: {
-    created_at: string
-    updated_at: string
-  }
+    created_at: string;
+    updated_at: string;
+  };
 }
 const UserAvatar = ({ name, color, timestamps }: UserAvatarProps) => (
   <>
@@ -31,5 +31,5 @@ const UserAvatar = ({ name, color, timestamps }: UserAvatarProps) => (
       <></>
     )}
   </>
-)
-export default UserAvatar
+);
+export default UserAvatar;

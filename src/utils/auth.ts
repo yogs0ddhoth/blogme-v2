@@ -1,43 +1,43 @@
-import * as React from 'react'
-import decode, { JwtPayload } from 'jwt-decode'
+import * as React from 'react';
+import decode, { JwtPayload } from 'jwt-decode';
 
 type Token = {
-  user: string
-  exp: number
+  user: string;
+  exp: number;
   sub: {
-    user: string
-    id: number
-    email: string
-  }
-}
+    user: string;
+    id: number;
+    email: string;
+  };
+};
 export default function Auth() {
   function getToken() {
-    const token = localStorage.getItem('token')
-    return token !== null ? token : null
+    const token = localStorage.getItem('token');
+    return token !== null ? token : null;
   }
   function getUser() {
-    const token = getToken()
+    const token = getToken();
     if (token === null) {
-      return { user: '', id: 0, auth: null }
+      return { user: '', id: 0, auth: null };
     }
-    const decodedToken = decode<Token>(token)
+    const decodedToken = decode<Token>(token);
 
     if (decodedToken.exp < Date.now() / 1000) {
-      return { user: '', id: 0, auth: null }
+      return { user: '', id: 0, auth: null };
     }
     return {
       user: decodedToken.sub.user,
       id: decodedToken.sub.id,
       auth: token,
-    }
+    };
   }
 
   function saveUser(token: string) {
-    localStorage.setItem('token', token)
+    localStorage.setItem('token', token);
   }
 
   function clearUser() {
-    localStorage.removeItem('token')
+    localStorage.removeItem('token');
   }
 
   return {
@@ -46,5 +46,5 @@ export default function Auth() {
     getToken,
     clearUser,
     getUser,
-  }
+  };
 }

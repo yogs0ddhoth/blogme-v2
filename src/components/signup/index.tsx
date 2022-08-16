@@ -1,40 +1,40 @@
-import * as React from 'react'
-import { useForm, Controller } from 'react-hook-form'
+import * as React from 'react';
+import { useForm, Controller } from 'react-hook-form';
 
-import Avatar from '@mui/material/Avatar'
-import FormControl from '@mui/material/FormControl'
-import Button from '@mui/material/Button'
-import FormHelperText from '@mui/material/FormHelperText'
-import InputLabel from '@mui/material/InputLabel'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import InputAdornment from '@mui/material/InputAdornment'
-import IconButton from '@mui/material/IconButton'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
+import Avatar from '@mui/material/Avatar';
+import FormControl from '@mui/material/FormControl';
+import Button from '@mui/material/Button';
+import FormHelperText from '@mui/material/FormHelperText';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { authContext } from '../../utils/context/contexts'
-import useControllers from '../../controllers'
+import { authContext } from '../../utils/context/contexts';
+import useControllers from '../../controllers';
 
 export default function SignupForm() {
-  const { state, dispatch } = React.useContext(authContext)
+  const { state, dispatch } = React.useContext(authContext);
   const { useSignup } = useControllers();
-  const signup = useSignup(dispatch)
+  const signup = useSignup(dispatch);
   const {
     handleSubmit,
     reset,
     control,
     formState: { errors },
-  } = useForm({ defaultValues: { name: '', email: '', password: '' } })
+  } = useForm({ defaultValues: { name: '', email: '', password: '' } });
 
-  const [showPassword, setShowPassword] = React.useState(false)
-  const handleClickShowPassword = () => setShowPassword(!showPassword)
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => event.preventDefault()
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => event.preventDefault();
 
   return (
     <div className="container flex flex-col gap-3 justify-center items-center">
@@ -128,5 +128,5 @@ export default function SignupForm() {
         </Button>
       </form>
     </div>
-  )
+  );
 }
