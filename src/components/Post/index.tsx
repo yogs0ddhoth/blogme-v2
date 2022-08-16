@@ -17,7 +17,7 @@ import CommentCard from '../Comment'
 import PostMenu from '../Menus/PostMenu'
 import CommentForm from '../Forms/CommentForm'
 import UserAvatar from '../UserAvatar'
-import VoteButton from '../Vote'
+import Votes from '../Vote'
 
 import { Post } from 'custom-types'
 import { authContext } from '../../utils/context/contexts';
@@ -73,7 +73,7 @@ export default function PostCard({ post }: { post: Post }) {
       <Divider variant="middle" />
 
       <CardActions disableSpacing>
-        <VoteButton id={post.id} vote_count={post.vote_count} />
+        <Votes post_id={post.id} vote_count={post.vote_count} votes={post.votes} />
         {post.comments.length ? (
           <ExpandMore
             expand={expanded}
