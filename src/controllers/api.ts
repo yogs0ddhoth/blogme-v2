@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Signup, Login, CommentInput, PostInput, Vote } from 'custom-types'
 
-function api<PathType, DataType>(input: string) {
+export default function api<PathType, DataType>(input: string) {
   return async <ResponseData>(
     method: string,
     path?: PathType,
@@ -12,21 +12,17 @@ function api<PathType, DataType>(input: string) {
       const url = input
       return await axios.request<ResponseData>({
         method: method,
-        url: url + `${path !== undefined ? path : ''}`,
+        url: url + `${path ? path : ''}`,
         headers:
           typeof auth === 'string'
             ? {
                 Authorization: 'Bearer ' + auth,
               }
             : {},
-        data: data !== undefined ? data : {},
-      })
+        data: data ? data : {},
+      });
     } catch (error) {
-      throw new Error(`${error}`)
+      throw new Error(`${error}`);
     }
   }
 }
-
-export const apiUsers = api<string, Signup | Login>('/users/')
-export const apiPosts = api<string | number, PostInput | Vote>('/posts/')
-export const apiComments = api<string | number, CommentInput>('/comments/')
