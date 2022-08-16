@@ -11,6 +11,15 @@ from utils.filters import format_fields
 
 bp = Blueprint('users', __name__, url_prefix='/users')
 
+# auth
+'''
+@expect:
+  get_jwt_identity() = {
+    'id': int,
+    'user': string
+  }
+'''
+
 @bp.after_request
 def refresh_expiring_jwt(response):
   try:
@@ -27,13 +36,13 @@ def refresh_expiring_jwt(response):
   except (RuntimeError, KeyError):
     return response
 
+# '/users' routes
 @bp.route('/', methods=['GET'])
 @jwt_required()
 def get_posts():
   identity = get_jwt_identity()
-  print("!!!!!!!!!!!!!!!!!!!!!!!!!!", identity, "!!!!!!!!!!!!!!!!!!!!!!!!!!")
-  db = get_db() # connect to database
-  user = ( # identity['sub']: {'name': 'seed1', 'email': 'seed1@cbc.ca'}
+  db = get_db()
+  user = (
     db.query(User)
     .filter(User.id == identity['id'])
     .one()
@@ -41,8 +50,17 @@ def get_posts():
   print(user)
   return jsonify(user)
 
+# '/signup'
+  '''
+  @expect:
+    data: {
+      name: string,
+      email: string,
+      password: string
+    }
+  '''
 @bp.route('/signup', methods=['POST'])
-def signup(): # req: {name:string, email:string, password:string}
+def signup():
   data = request.get_json()
   db = get_db()
   try:
@@ -68,8 +86,16 @@ def signup(): # req: {name:string, email:string, password:string}
   access_token = create_access_token(identity={'id': newUser.id, 'user': newUser.name})
   return jsonify(access_token=access_token)
 
+# '/login'
+  '''
+  @expect:
+    data: {
+      email: string,
+      password: string
+    }
+  '''
 @bp.route('/login', methods=['POST'])
-def login(): # req: {email:string, password:string}
+def login():
   data = request.get_json()
   db = get_db()
   try:

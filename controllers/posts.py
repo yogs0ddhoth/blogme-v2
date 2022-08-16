@@ -41,13 +41,12 @@ def create():
     )
     db.add(newPost)
     db.commit()
+    return jsonify(id = newPost.id), 201
   except:
     print(sys.exc_info()[0])
 
     db.rollback()
     return jsonify(message = 'Post failed'), 500
-
-  return jsonify(id = newPost.id), 201
 
 # '/posts/<id>' routes
   '''
@@ -64,7 +63,7 @@ def get(id):
     post = ( # get single post by id
       db.query(Post).filter(Post.id == id).one()
     ).as_dict()
-    print(post)
+
     return jsonify(post)
   except:
     print(sys.exc_info()[0])
@@ -90,13 +89,12 @@ def update(id):
       post.text = data['text']
 
     db.commit() # update model
+    return '', 204
   except:
     print(sys.exc_info()[0])
 
     db.rollback()
     return jsonify(message = 'Post not found'), 404
-  
-  return '', 204
 
 @bp.route('/<id>', methods=['DELETE'])
 @jwt_required()
@@ -111,19 +109,18 @@ def delete(id):
 
     db.delete(post)
     db.commit()
+    return '', 204
   except:
     print(sys.exc_info()[0])
 
     db.rollback()
     return jsonify(message = 'Post not found'), 404
-  
-  return '', 204
 
 # '/posts/upVote' routes
   '''
   @expect:
     data: { 
-      post: int, 
+      post_id: int, 
       user: { 
         id: int, 
         name: string 
@@ -143,13 +140,12 @@ def upvote():
     )
     db.add(newVote)
     db.commit()
+    return '', 204
   except:
     print(sys.exc_info()[0])
 
     db.rollback()
     return jsonify(message = 'Upvote failed'), 500
-  
-  return '', 204
 
 @bp.route('/upvote', methods=['DELETE'])
 @jwt_required()
@@ -163,12 +159,12 @@ def delete_vote():
   db = get_db()
   try:
     db.delete(
-      db.query(Vote).filter(Vote.id == data['id'])
+      db.query(Vote)
+        .filter(Vote.post_id == data['post_id'], Vote.user_id == data['user']['id'])
+        .one()
     )
     db.commit()
-
     return '', 204
-  
   except:
     print(sys.exc_info()[0])
 
