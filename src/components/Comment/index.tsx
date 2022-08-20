@@ -74,7 +74,7 @@ export default function CommentCard({
 }: CommentCardProps) {
   const { state, dispatch } = React.useContext(authContext);
   const { useUpdateComment } = useControllers();
-  const updateComment = useUpdateComment(state.auth, comment.id);
+  const updateComment = useUpdateComment({ auth: state.auth, id: comment.id });
 
   // edit state
   const [editOpen, setEditOpen] = React.useState(false);

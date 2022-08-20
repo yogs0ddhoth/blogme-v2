@@ -8,16 +8,13 @@ import CardActions from '@mui/material/CardActions';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
-import { authContext } from '../../utils/context/contexts';
-
-import { AxiosResponse } from 'axios';
-import { UseMutationResult } from '@tanstack/react-query';
+import { MutationInstance } from 'custom-types';
 
 interface DeleteCardProps {
   id: number;
   action: React.ReactElement;
   cancel: () => void;
-  mutation: UseMutationResult<AxiosResponse<any, any>, unknown, void, unknown>;
+  mutation: MutationInstance<void>;
 }
 export default function DeleteCard({
   id,
@@ -25,8 +22,6 @@ export default function DeleteCard({
   cancel,
   mutation,
 }: DeleteCardProps) {
-  const { state } = React.useContext(authContext);
-
   return (
     <Card>
       <CardHeader

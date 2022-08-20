@@ -40,47 +40,46 @@ export default function useControllers() {
       return null;
     }
     return [queries[index].key];
-  }
+  };
   const refreshCache = async () => {
     const lastQuery = getLastQuery();
     lastQuery !== null
       ? await queryClient.refetchQueries(lastQuery)
       : window.location.reload();
-  }
+  };
 
   /**
    * Api Factory
    * @param url root api path
    * @returns further config
    */
-  const apiQuery = (url: string) => 
-  /**
-   * Query Factory
-   * @param key queryKey - see react-query docs
-   * @returns Query Hook
-   */
-  <ResponseData>(key: string) => {
-    interface QueryArgs {
-      auth?: string;
-      id?: number;
-    }
-    return ({auth, id}: QueryArgs) => useQuery(
-      [key], 
-      () => api<number, void, ResponseData>(
-        'get',
-        url,
-        id ? id : undefined,
-        undefined,
-        auth ? auth : undefined
-      ),
-      {
-        retry: false,
-        onError: 
-          key === 'allPosts' 
-            ? undefined 
-            : () => window.location.assign('/login')
+  const apiQuery = (url: string) => {
+    /**
+     * Query Factory
+     * @param key queryKey - see react-query docs
+     * @returns Query Hook
+     */
+    return <ResponseData>(key: string) => {
+      interface QueryArgs {
+        auth?: string;
+        id?: number;
       }
-    );
+      return ({ auth, id }: QueryArgs) => useQuery(
+        [key],
+        () =>
+          api<number, void, ResponseData>(
+            'get',
+            url,
+            id ? id : undefined,
+            undefined,
+            auth ? auth : undefined
+          ),
+        {
+          retry: false,
+          onError: () => window.location.assign('/login'),
+        }
+      );
+    }
   };
   const userQuery = apiQuery('/users/');
   const postQuery = apiQuery('/posts/');
@@ -90,46 +89,46 @@ export default function useControllers() {
    * @param url root api path
    * @returns further config
    */
-  const apiMutation = (url: string) => 
-  /**
-   * Mutation Factory
-   * @param method request method
-   * @param path optional additional path 
-   * @returns Mutation Hook
-   */
-  <DataType>(method: string, path?: string) => {
-    interface MutationArgs {
-      id?: number;
-      auth?: string;
-      dispatch?: React.Dispatch<AuthAction>;
-      onMutate?: () => void;
-    }
-    return ({id, auth, dispatch, onMutate}: MutationArgs) => useMutation(
-      (data: DataType) => api<string | number, DataType, any>(
-        method, 
-        url, 
-        path ? path : id ? id : undefined, 
-        data, 
-        auth ? auth : undefined
-      ), 
-      {
-        onMutate: onMutate ? () => onMutate() : undefined,
-        onSuccess: 
-          dispatch 
-            ? ({ data }) => {
-                dispatch(path === 'logout'
-                  ? { type: LOGOUT } 
-                  : {
-                      type: LOGIN,
-                      payload: { auth: data.access_token },
-                    }
-                );
-                window.location.assign('/dashboard');
-              } 
-            : () => refreshCache(),
-        onError: () => window.location.assign('/login')
+  const apiMutation = (url: string) => {
+    /**
+     * Mutation Factory
+     * @param method request method
+     * @param path optional additional path
+     * @returns Mutation Hook
+     */
+    return <DataType>(method: string, path?: string) => {
+      interface MutationArgs {
+        id?: number;
+        auth?: string;
+        dispatch?: React.Dispatch<AuthAction>;
+        onMutate?: () => void;
       }
-    );
+      return ({ id, auth, dispatch, onMutate }: MutationArgs) => useMutation(
+        (data: DataType) =>
+          api<string | number, DataType, any>(
+            method,
+            url,
+            path ? path : id ? id : undefined,
+            data,
+            auth ? auth : undefined
+          ),
+        {
+          onMutate: onMutate ? () => onMutate() : undefined,
+          onSuccess: dispatch ? ({ data }) => {
+            dispatch(
+              path === 'logout'
+                ? { type: LOGOUT }
+                : {
+                    type: LOGIN,
+                    payload: { auth: data.access_token },
+                  }
+            );
+            (path === 'logout') ? window.location.assign('/login') : window.location.assign('/dashboard');
+          } : () => refreshCache(),
+          onError: () => window.location.assign('/login'),
+        }
+      );
+    }
   };
   const userMutation = apiMutation('/users/');
   const postMutation = apiMutation('/posts/');

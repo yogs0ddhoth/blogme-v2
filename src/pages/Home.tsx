@@ -4,7 +4,7 @@ import useControllers from '../controllers';
 
 export default function Home() {
   const { useAllPosts } = useControllers();
-  const { status, data, error } = useAllPosts();
+  const { status, data, error } = useAllPosts({});
 
   if (status === 'loading') {
     return <div className="loader" />;
@@ -16,7 +16,7 @@ export default function Home() {
 
   // TODO: create loading spinner modal for refetching
   return (
-    <div className="mb-6 box-content text-center min-h-full bg-react-background">
+    <div className="mb-6 box-content text-center min-h-full bg-react-background flex flex-col">
       {data.data.map((post: Post) => (
         <PostCard key={post.id} post={post} />
       ))}

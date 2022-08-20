@@ -7,33 +7,23 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Divider from '@mui/material/Divider';
-import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 
-import { authContext } from '../../../utils/context/contexts';
-import { PostInput, Post } from 'custom-types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
-import useControllers from '../../../controllers';
+import { PostInput, Post, MutationInstance } from 'custom-types';
 
 interface PostFormProps {
   action?: React.ReactElement;
   post?: Post;
   handleClose?: () => void;
-  mutation: UseMutationResult<
-    AxiosResponse<any, any>,
-    unknown,
-    PostInput,
-    unknown
-  >;
+  mutation: MutationInstance<PostInput>
 }
+
 export default function PostForm({
   action,
   post,
   handleClose,
   mutation,
 }: PostFormProps) {
-  const { refreshCache } = useControllers();
   const {
     handleSubmit,
     reset,
@@ -53,7 +43,6 @@ export default function PostForm({
         onSubmit={handleSubmit((data) =>
           mutation.mutate(data, {
             onSuccess: () => {
-              refreshCache();
               reset();
               if (handleClose) {
                 handleClose();

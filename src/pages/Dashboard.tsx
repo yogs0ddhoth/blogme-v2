@@ -8,12 +8,12 @@ import { authContext } from '../utils/context/contexts';
 import useControllers from '../controllers';
 
 export default function Dashboard() {
-  const { state, dispatch } = React.useContext(authContext);
+  const { state } = React.useContext(authContext);
 
   const { usePosts, useCreatePost } = useControllers();
-  const createPost = useCreatePost(state.auth);
+  const createPost = useCreatePost({ auth: state.auth });
 
-  const { status, error, data } = usePosts(state.auth);
+  const { status, data } = usePosts({ auth: state.auth });
   if (status === 'loading') {
     return <div className="loader" />;
   }
@@ -34,10 +34,10 @@ export default function Dashboard() {
         <PostForm mutation={createPost} />
       </div>
 
-      <div className="col-span-6 md:col-span-3 ">
+      <div className="col-span-6 md:col-span-3 flex flex-col">
         <h3>Posts:</h3>
         {data.data.posts.map((post: Post) => (
-          <PostCard key={post.id} post={{ ...post }} />
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
     </div>

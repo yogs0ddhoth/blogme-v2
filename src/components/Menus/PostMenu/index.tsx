@@ -22,8 +22,9 @@ export default function PostMenu({ post }: { post: Post }) {
   const handleEditOpen = () => setEditOpen(true);
   const handleEditClose = () => setEditOpen(false);
 
-  const editPost = useUpdatePost(state.auth, post.id);
-  const deletePost = useDeletePost(state.auth, post.id);
+  const mutationArgs = { auth: state.auth, id: post.id };
+  const editPost = useUpdatePost(mutationArgs);
+  const deletePost = useDeletePost(mutationArgs);
   // Delete action state
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const handleDeleteOpen = () => setDeleteOpen(true);

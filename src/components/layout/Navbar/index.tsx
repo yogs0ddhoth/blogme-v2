@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
-import IconButton from '@mui/material/IconButton';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Toolbar from '@mui/material/Toolbar';
@@ -38,7 +37,7 @@ export default function Navbar() {
     setValue(newValue);
 
   const { useLogout } = useControllers();
-  const logout = useLogout({dispatch: dispatch});
+  const logout = useLogout({ dispatch: dispatch });
 
   return (
     <AppBar position="static">

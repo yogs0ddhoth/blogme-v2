@@ -19,7 +19,7 @@ import CommentForm from '../Forms/CommentForm';
 import UserAvatar from '../UserAvatar';
 import Votes from '../Vote';
 
-import { CommentInput, MutationResponse, Post } from 'custom-types';
+import { Post } from 'custom-types';
 import { authContext } from '../../utils/context/contexts';
 import useControllers from '../../controllers';
 
@@ -39,12 +39,14 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 interface PostCardProps {
   post: Post;
+  menu?: JSX.Element;
+  comment?: JSX.Element;
   // commentFormMutation?: UseMutationResult<AxiosResponse<any, any>, unknown, CommentInput, void>
 }
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, menu, comment }: PostCardProps) {
   const { state, dispatch } = React.useContext(authContext);
   const { useCreateComment } = useControllers();
-  const createComment = useCreateComment({auth: state.auth});
+  const createComment = useCreateComment({ auth: state.auth });
 
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => setExpanded(!expanded);
@@ -64,12 +66,12 @@ export default function PostCard({ post }: PostCardProps) {
         }
         action={post.user.id == state.id ? <PostMenu post={post} /> : <></>}
       />
-      <Divider color='primary' />
+      <Divider color="primary" />
       <CardContent>
         <Link to={`/post/${post.id}`}>
           <Typography variant="h5">{post.title}</Typography>
         </Link>
-        
+
         <Typography variant="body1">{post.text}</Typography>
       </CardContent>
 
@@ -123,7 +125,9 @@ export default function PostCard({ post }: PostCardProps) {
 
       <CardContent>
         {state.auth !== null ? (
-          <CommentForm id={post.id as number} mutation={createComment} />
+          <CommentForm id={post.id as number} 
+            mutation={createComment} 
+          />
         ) : (
           <></>
         )}

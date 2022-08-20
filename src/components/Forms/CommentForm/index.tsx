@@ -8,17 +8,14 @@ import TextField from '@mui/material/TextField';
 
 import theme from '../../../utils/mui-theme';
 
-import { CommentInput } from 'custom-types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
-import useControllers from '../../../controllers';
+import { CommentInput, MutationInstance } from 'custom-types';
 
 interface CommentFormProps {
   id: number;
   commentText?: string;
   closeEl?: React.ReactNode;
   handleClose?: () => void;
-  mutation: UseMutationResult<AxiosResponse<any, any>, unknown, CommentInput, void>;
+  mutation: MutationInstance<CommentInput>;
 }
 export default function CommentForm({
   id,
@@ -36,7 +33,8 @@ export default function CommentForm({
     mutation.mutate(
       { post_id: id, text: commentState },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
+          console.log(data);
           setCommentState('');
           if (handleClose) {
             handleClose();

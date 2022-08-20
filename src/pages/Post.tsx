@@ -5,15 +5,17 @@ import useControllers from '../controllers';
 export default function PostPage() {
   const id = useParams().postId as string;
   const { usePost } = useControllers();
-  const { status, data, error, isFetching } = usePost({id: parseInt(id)});
+  const { status, data, error } = usePost({ id: parseInt(id) });
   if (status === 'loading') {
     return <div className="loader" />;
   }
   if (status === 'error') {
     return <span>Error: {`${error}`}</span>;
   }
-  console.log(data);
+  const post = data.data;
 
   // TODO: create loading spinner modal for refetching
-  return <PostCard post={data.data} />;
+  return (
+    <PostCard post={post} />
+  );
 }
