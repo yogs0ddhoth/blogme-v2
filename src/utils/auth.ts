@@ -1,5 +1,4 @@
-import * as React from 'react';
-import decode, { JwtPayload } from 'jwt-decode';
+import decode from 'jwt-decode';
 
 type Token = {
   user: string;
@@ -11,12 +10,8 @@ type Token = {
   };
 };
 export default function Auth() {
-  function getToken() {
-    const token = localStorage.getItem('token');
-    return token !== null ? token : '';
-  }
   function getUser() {
-    const token = getToken();
+    const token = localStorage.getItem('token');
     if (token === null) {
       return { user: '', id: 0, auth: '' };
     }
@@ -42,7 +37,6 @@ export default function Auth() {
 
   return {
     saveUser,
-    getToken,
     clearUser,
     getUser,
   };
