@@ -19,7 +19,7 @@ import CommentForm from '../Forms/CommentForm';
 import UserAvatar from '../UserAvatar';
 import Votes from '../Vote';
 
-import { Post } from 'custom-types';
+import { CommentInput, MutationResponse, Post } from 'custom-types';
 import { authContext } from '../../utils/context/contexts';
 import useControllers from '../../controllers';
 
@@ -37,10 +37,14 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export default function PostCard({ post }: { post: Post }) {
+interface PostCardProps {
+  post: Post;
+  // commentFormMutation?: UseMutationResult<AxiosResponse<any, any>, unknown, CommentInput, void>
+}
+export default function PostCard({ post }: PostCardProps) {
   const { state, dispatch } = React.useContext(authContext);
   const { useCreateComment } = useControllers();
-  const createComment = useCreateComment(state.auth);
+  const createComment = useCreateComment({auth: state.auth});
 
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => setExpanded(!expanded);
@@ -58,15 +62,14 @@ export default function PostCard({ post }: { post: Post }) {
             }}
           />
         }
-        title={
-          <Link to={`/post/${post.id}`}>
-            <Typography variant="h6">{post.title}</Typography>
-          </Link>
-        }
         action={post.user.id == state.id ? <PostMenu post={post} /> : <></>}
       />
-
+      <Divider color='primary' />
       <CardContent>
+        <Link to={`/post/${post.id}`}>
+          <Typography variant="h5">{post.title}</Typography>
+        </Link>
+        
         <Typography variant="body1">{post.text}</Typography>
       </CardContent>
 

@@ -3,9 +3,9 @@ import PostCard from '../components/Post';
 import useControllers from '../controllers';
 
 export default function PostPage() {
-  const id = useParams().postId;
+  const id = useParams().postId as string;
   const { usePost } = useControllers();
-  const { status, data, error, isFetching } = usePost(parseInt(id as string));
+  const { status, data, error, isFetching } = usePost({id: parseInt(id)});
   if (status === 'loading') {
     return <div className="loader" />;
   }

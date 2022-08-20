@@ -13,17 +13,17 @@ type Token = {
 export default function Auth() {
   function getToken() {
     const token = localStorage.getItem('token');
-    return token !== null ? token : null;
+    return token !== null ? token : '';
   }
   function getUser() {
     const token = getToken();
     if (token === null) {
-      return { user: '', id: 0, auth: null };
+      return { user: '', id: 0, auth: '' };
     }
     const decodedToken = decode<Token>(token);
 
     if (decodedToken.exp < Date.now() / 1000) {
-      return { user: '', id: 0, auth: null };
+      return { user: '', id: 0, auth: '' };
     }
     return {
       user: decodedToken.sub.user,
@@ -42,7 +42,6 @@ export default function Auth() {
 
   return {
     saveUser,
-    // isTokenExpired,
     getToken,
     clearUser,
     getUser,

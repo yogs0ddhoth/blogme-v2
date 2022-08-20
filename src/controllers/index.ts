@@ -1,34 +1,22 @@
 import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
 import {
-  Comment,
   Post,
-  User,
   AuthAction,
   Vote,
   Signup,
   Login,
   PostInput,
   CommentInput,
+  UserPosts,
 } from 'custom-types';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import api from './api';
 import { LOGIN, LOGOUT } from '../utils/context/actions';
-
-interface UserPosts {
-  id: number;
-  name: string;
-  posts: Post[];
-}
-const apiUsers = api<string, Signup | Login>('/users/');
-const apiPosts = api<string | number, PostInput | Vote>('/posts/');
-const apiComments = api<string | number, CommentInput>('/comments/');
 
 export default function useControllers() {
   const queryClient = useQueryClient();
 
-  function getLastQuery() {
+  const getLastQuery = () => {
     // get the last updated query data - corresponds to current page
     const keys = ['userPosts', 'allPosts', 'post'];
     const queries = keys.map((query) => ({
@@ -53,146 +41,120 @@ export default function useControllers() {
     }
     return [queries[index].key];
   }
-  async function refreshCache() {
+  const refreshCache = async () => {
     const lastQuery = getLastQuery();
     lastQuery !== null
       ? await queryClient.refetchQueries(lastQuery)
       : window.location.reload();
   }
 
+  /**
+   * Api Factory
+   * @param url root api path
+   * @returns further config
+   */
+  const apiQuery = (url: string) => 
+  /**
+   * Query Factory
+   * @param key queryKey - see react-query docs
+   * @returns Query Hook
+   */
+  <ResponseData>(key: string) => {
+    interface QueryArgs {
+      auth?: string;
+      id?: number;
+    }
+    return ({auth, id}: QueryArgs) => useQuery(
+      [key], 
+      () => api<number, void, ResponseData>(
+        'get',
+        url,
+        id ? id : undefined,
+        undefined,
+        auth ? auth : undefined
+      ),
+      {
+        retry: false,
+        onError: 
+          key === 'allPosts' 
+            ? undefined 
+            : () => window.location.assign('/login')
+      }
+    );
+  };
+  const userQuery = apiQuery('/users/');
+  const postQuery = apiQuery('/posts/');
+
+  /**
+   * Api Factory
+   * @param url root api path
+   * @returns further config
+   */
+  const apiMutation = (url: string) => 
+  /**
+   * Mutation Factory
+   * @param method request method
+   * @param path optional additional path 
+   * @returns Mutation Hook
+   */
+  <DataType>(method: string, path?: string) => {
+    interface MutationArgs {
+      id?: number;
+      auth?: string;
+      dispatch?: React.Dispatch<AuthAction>;
+      onMutate?: () => void;
+    }
+    return ({id, auth, dispatch, onMutate}: MutationArgs) => useMutation(
+      (data: DataType) => api<string | number, DataType, any>(
+        method, 
+        url, 
+        path ? path : id ? id : undefined, 
+        data, 
+        auth ? auth : undefined
+      ), 
+      {
+        onMutate: onMutate ? () => onMutate() : undefined,
+        onSuccess: 
+          dispatch 
+            ? ({ data }) => {
+                dispatch(path === 'logout'
+                  ? { type: LOGOUT } 
+                  : {
+                      type: LOGIN,
+                      payload: { auth: data.access_token },
+                    }
+                );
+                window.location.assign('/dashboard');
+              } 
+            : () => refreshCache(),
+        onError: () => window.location.assign('/login')
+      }
+    );
+  };
+  const userMutation = apiMutation('/users/');
+  const postMutation = apiMutation('/posts/');
+  const commentMutation = apiMutation('/comments/');
+
   return {
-    usePosts: function (auth: string | null) {
-      return useQuery(
-        ['userPosts'],
-        () => apiUsers<UserPosts>('get', undefined, undefined, auth),
-        {
-          retry: false,
-          onError: () => window.location.assign('/login'),
-        }
-      );
-    },
+    usePosts: userQuery<UserPosts>('userPosts'),
 
-    useAllPosts: function () {
-      return useQuery(['allPosts'], () => apiPosts<Post[]>('get'), {
-        retry: false,
-      });
-    },
+    useAllPosts: postQuery<Post[]>('allPosts'),
+    usePost: postQuery<Post>('post'),
 
-    usePost(id: number) {
-      return useQuery(['post'], () => apiPosts<Post>('get', id), {
-        retry: false,
-        onError: () => window.location.assign('/login'),
-      });
-    },
+    useSignup: userMutation<Signup>('post', 'signup'),
+    useLogin: userMutation<Login>('post', 'login'),
+    useLogout: userMutation<void>('post', 'logout'),
 
-    useSignup: function (dispatch: React.Dispatch<AuthAction>) {
-      return useMutation(
-        (data: Signup) => apiUsers<any>('post', 'signup', data),
-        {
-          onSuccess: ({ data }) => {
-            dispatch({
-              type: LOGIN,
-              payload: { auth: data.access_token },
-            });
-            window.location.assign('/dashboard');
-          },
-        }
-      );
-    },
-    useLogin: function (dispatch: React.Dispatch<AuthAction>) {
-      return useMutation(
-        (data: Login) => apiUsers<any>('post', 'login', data),
-        {
-          onSuccess: ({ data }) => {
-            dispatch({
-              type: LOGIN,
-              payload: { auth: data.access_token },
-            });
-            window.location.assign('/dashboard');
-          },
-        }
-      );
-    },
-    useLogout: function (dispatch: React.Dispatch<AuthAction>) {
-      return useMutation(() => apiUsers<any>('post', 'logout'), {
-        onSuccess: () => {
-          dispatch({ type: LOGOUT });
-          window.location.assign('/');
-        },
-      });
-    },
+    useCreatePost: postMutation<PostInput>('post'),
+    useUpdatePost: postMutation<PostInput>('put'),
+    useDeletePost: postMutation<void>('delete'),
 
-    // useCreatePost: useMutationApi<PostInput>(apiPosts<any>, )
+    useUpVote: postMutation<Vote>('put', 'upvote'),
+    useDeleteVote: postMutation<Vote>('delete', 'upvote'),
 
-    useCreatePost: (auth: string | null) => {
-      return useMutation(
-        (data: PostInput) => apiPosts<any>('post', undefined, data, auth),
-        {
-          // onSuccess method declared in component call
-        }
-      );
-    },
-
-    useUpdatePost: (auth: string | null, id: number) => {
-      return useMutation(
-        (data: PostInput) => apiPosts<any>('put', id, data, auth),
-        {
-          // onSuccess method declared in component call
-        }
-      );
-    },
-    useDeletePost: (auth: string | null, id: number) => {
-      return useMutation(() => apiPosts<any>('delete', id, undefined, auth), {
-        onSuccess: () => refreshCache(),
-      });
-    },
-
-    useUpVote: function (auth: string | null, onMutate?: () => void) {
-      return useMutation(
-        (data: Vote) => apiPosts<any>('put', 'upvote', data, auth),
-        {
-          onMutate: onMutate ? () => onMutate() : undefined,
-          onSuccess: () => refreshCache(),
-        }
-      );
-    },
-    useDeleteVote: function (auth: string | null, onMutate?: () => void) {
-      return useMutation(
-        (data: Vote) => apiPosts<any>('delete', 'upvote', data, auth),
-        {
-          onMutate: onMutate ? () => onMutate() : undefined,
-          onSuccess: () => refreshCache(),
-        }
-      );
-    },
-
-    useCreateComment: function (auth: string | null) {
-      return useMutation(
-        (data: CommentInput) => apiComments<any>('post', undefined, data, auth),
-        {
-          // onSuccess method declared in component call
-          onError: () => window.location.assign('/login'),
-        }
-      );
-    },
-    useUpdateComment: function (auth: string | null, id: number) {
-      return useMutation(
-        (data: CommentInput) => apiComments<any>('put', id, data, auth),
-        {
-          // onSuccess method declared in component call
-          onError: () => window.location.assign('/login'),
-        }
-      );
-    },
-    useDeleteComment: function (auth: string | null, id: number) {
-      return useMutation(
-        () => apiComments<any>('delete', id, undefined, auth),
-        {
-          onSuccess: () => refreshCache(),
-          onError: () => window.location.assign('/login'),
-        }
-      );
-    },
+    useCreateComment: commentMutation<CommentInput>('post'),
+    useUpdateComment: commentMutation<CommentInput>('put'),
+    useDeleteComment: commentMutation<void>('delete'),
 
     refreshCache,
   };

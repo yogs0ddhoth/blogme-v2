@@ -13,6 +13,12 @@ declare module 'custom-types' {
     posts?: Post[];
   }
 
+  interface UserPosts {
+    id: number;
+    name: string;
+    posts: Post[];
+  }
+
   interface PostInput {
     title: string;
     text: string;
@@ -52,6 +58,6 @@ declare module 'custom-types' {
   interface AuthContext {
     user: string;
     id: number;
-    auth: string | null;
+    auth: string;
   }
 }

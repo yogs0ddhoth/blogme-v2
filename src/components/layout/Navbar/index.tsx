@@ -38,7 +38,7 @@ export default function Navbar() {
     setValue(newValue);
 
   const { useLogout } = useControllers();
-  const logout = useLogout(dispatch);
+  const logout = useLogout({dispatch: dispatch});
 
   return (
     <AppBar position="static">

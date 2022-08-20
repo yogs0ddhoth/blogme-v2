@@ -23,7 +23,7 @@ import useControllers from '../../controllers';
 export default function LoginForm() {
   const { state, dispatch } = React.useContext(authContext);
   const { useLogin } = useControllers();
-  const login = useLogin(dispatch);
+  const login = useLogin({dispatch: dispatch});
   const {
     handleSubmit,
     reset,

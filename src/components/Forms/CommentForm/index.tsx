@@ -18,12 +18,7 @@ interface CommentFormProps {
   commentText?: string;
   closeEl?: React.ReactNode;
   handleClose?: () => void;
-  mutation: UseMutationResult<
-    AxiosResponse<any, any>,
-    unknown,
-    CommentInput,
-    unknown
-  >;
+  mutation: UseMutationResult<AxiosResponse<any, any>, unknown, CommentInput, void>;
 }
 export default function CommentForm({
   id,
@@ -32,7 +27,6 @@ export default function CommentForm({
   handleClose,
   mutation,
 }: CommentFormProps) {
-  const { refreshCache } = useControllers();
   const [commentState, setCommentState] = React.useState(
     commentText !== undefined ? commentText : ''
   );
@@ -43,7 +37,6 @@ export default function CommentForm({
       { post_id: id, text: commentState },
       {
         onSuccess: () => {
-          refreshCache();
           setCommentState('');
           if (handleClose) {
             handleClose();

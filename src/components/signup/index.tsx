@@ -22,7 +22,7 @@ import useControllers from '../../controllers';
 export default function SignupForm() {
   const { state, dispatch } = React.useContext(authContext);
   const { useSignup } = useControllers();
-  const signup = useSignup(dispatch);
+  const signup = useSignup({dispatch: dispatch});
   const {
     handleSubmit,
     reset,

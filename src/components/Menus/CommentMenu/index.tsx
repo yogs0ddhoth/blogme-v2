@@ -24,7 +24,7 @@ export default function CommentMenu({
 }: CommentMenuProps) {
   const { state, dispatch } = React.useContext(authContext);
   const { useDeleteComment } = useControllers();
-  const deleteComment = useDeleteComment(state.auth, comment.id);
+  const deleteComment = useDeleteComment({auth: state.auth, id: comment.id});
   // Delete action state
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const handleDeleteOpen = () => setDeleteOpen(true);
