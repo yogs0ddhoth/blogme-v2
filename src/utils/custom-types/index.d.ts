@@ -1,4 +1,7 @@
 declare module 'custom-types' {
+  import { UseMutationResult } from '@tanstack/react-query';
+  import { AxiosResponse } from 'axios';
+
   interface Login {
     email: string;
     password: string;
@@ -60,4 +63,10 @@ declare module 'custom-types' {
     id: number;
     auth: string;
   }
+  type MutationInstance<InputType> = UseMutationResult<
+    AxiosResponse<any, any>,
+    unknown,
+    InputType,
+    void
+  >;
 }
