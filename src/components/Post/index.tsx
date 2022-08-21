@@ -52,7 +52,7 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
   const handleExpandClick = () => setExpanded(!expanded);
 
   return (
-    <Card color="secondary">
+    <Card className='mt-5'>
       <CardHeader
         avatar={
           <UserAvatar
@@ -66,7 +66,7 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
         }
         action={post.user.id == state.id ? <PostMenu post={post} /> : <></>}
       />
-      <Divider color="primary" />
+      <Divider variant='fullWidth' />
       <CardContent>
         <Link to={`/post/${post.id}`}>
           <Typography variant="h5">{post.title}</Typography>

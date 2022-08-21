@@ -16,7 +16,7 @@ export default function Home() {
 
   // TODO: create loading spinner modal for refetching
   return (
-    <div className="mb-6 box-content text-center min-h-full bg-react-background flex flex-col">
+    <div className="mb-6 box-content text-center min-h-full flex flex-col">
       {data.data.map((post: Post) => (
         <PostCard key={post.id} post={post} />
       ))}
