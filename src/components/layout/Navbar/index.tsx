@@ -52,7 +52,7 @@ export default function Navbar() {
           >
             <NavTab value="/" label="Home" />
             <NavTab value="/dashboard" label="Dashboard" />
-            {state.auth === null ? (
+            {state.auth === '' ? (
               <NavTab value="/login" label="Login" />
             ) : (
               <LogoutButton
