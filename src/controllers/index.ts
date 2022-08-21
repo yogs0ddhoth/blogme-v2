@@ -123,7 +123,12 @@ export default function useControllers() {
                     payload: { auth: data.access_token },
                   }
             );
-            (path === 'logout') ? window.location.assign('/login') : window.location.assign('/dashboard');
+            if (path === 'logout' && window.location.pathname === '/dashboard') {
+              window.location.assign('/');
+            }
+            if (path === 'login') {
+              window.location.assign('/dashboard');
+            }
           } : () => refreshCache(),
           onError: () => window.location.assign('/login'),
         }
