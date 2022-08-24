@@ -1,7 +1,7 @@
-import { createTheme } from '@mui/material';
+
 const rootElement = document.getElementById('root') as HTMLElement;
 
-const theme = createTheme({
+const muiTheme = {
   components: {
     MuiPopover: {
       defaultProps: {
@@ -33,5 +33,5 @@ const theme = createTheme({
     borderRadius: 0,
   },
   spacing: 8,
-});
-export default theme;
+};
+export default muiTheme;
