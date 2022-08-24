@@ -11,12 +11,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 // import { ColorModeButton, LogoutButton } from '../../Buttons';
 
-import { authContext } from '../../utils/context/contexts';
+import { authContext } from '../../../utils/context/contexts';
 // import theme from '../../../utils/mui-theme';
 import useTheme from '@mui/material/styles/useTheme';
 
-import useControllers from '../../controllers/index';
-import AppMenu from '../Menus/AppMenu';
+import useControllers from '../../../controllers/index';
+import AppMenu from '../../Menus/AppMenu';
 
 interface NavTabProps {
   label?: string;
