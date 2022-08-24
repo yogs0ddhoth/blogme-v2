@@ -37,12 +37,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         palette: {
           ...defaultTheme.palette,
           mode,
-          // primary: {
-          //   main: (mode === 'light') ? '#212121' : '#69f0ae'
-          // },
-          // secondary: {
-          //   main: (mode === 'light') ? '#69f0ae' : '#212121'
-          // }
         },
       }),
     [mode]
