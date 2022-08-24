@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlined from '@mui/icons-material/EditOutlined';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { CloseButton } from '../../Buttons';
 import DeleteCard from '../../Delete';
@@ -31,7 +32,8 @@ export default function PostMenu({ post }: { post: Post }) {
   const handleDeleteClose = () => setDeleteOpen(false);
 
   return (
-    <ActionsMenu
+    <ActionsMenu 
+      icon={<MoreVertIcon />}
       modals={[
         <Popup open={editOpen} onClose={handleEditClose}>
           <PostForm

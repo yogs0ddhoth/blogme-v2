@@ -2,12 +2,14 @@ import * as React from 'react';
 
 import IconButton from '@mui/material/IconButton';
 
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import LogoutIcon from '@mui/icons-material/Logout';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { PaletteMode } from '@mui/material';
 
 export const CloseButton = (props: { onClick: () => void }) => (
   <IconButton onClick={props.onClick}>
@@ -15,23 +17,14 @@ export const CloseButton = (props: { onClick: () => void }) => (
   </IconButton>
 );
 
-interface LogoutButtonProps {
-  className: string;
-  onClick: () => void;
-}
-export const LogoutButton = (props: LogoutButtonProps) => (
-  <IconButton onClick={props.onClick}>
-    <LogoutIcon className={props.className} />
-  </IconButton>
-);
-
 interface MenuButtonProps {
   className: string;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  icon: React.ReactElement
 }
 export const MenuButton = (props: MenuButtonProps) => (
   <IconButton id="button" className={props.className} onClick={props.onClick}>
-    <MoreVertIcon />
+    {props.icon}
   </IconButton>
 );
 
