@@ -20,7 +20,7 @@ export default function Dashboard() {
   if (status === 'error') {
     return <span>Your session has timed out. Redirecting to login..</span>;
   }
-  console.log(data);
+  // console.log(data);
 
   // TODO: create loading spinner modal for refetching
   return (

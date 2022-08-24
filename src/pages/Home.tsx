@@ -12,7 +12,7 @@ export default function Home() {
   if (status === 'error') {
     return <span>Error: {`${error}`}</span>;
   }
-  console.log(data);
+  // console.log(data);
 
   // TODO: create loading spinner modal for refetching
   return (
