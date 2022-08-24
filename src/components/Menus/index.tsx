@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
@@ -33,34 +32,36 @@ export const MenuAction = ({
 );
 
 interface ActionMenuProps {
-  className?: string;
-  anchorEl?: {
-    className?: string;
-  };
   children: React.ReactNode;
+  className?: string;
+  icon: React.ReactElement;
   modals?: React.ReactNode;
 }
-export const ActionsMenu = (props: ActionMenuProps) => {
+export const ActionsMenu = ({
+  children,
+  className,  
+  icon, 
+  modals
+}: ActionMenuProps) => {
   // Menu state
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
-    setAnchorEl(event.currentTarget);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
   return (
-    <div className={props.className !== undefined ? props.className : ''}>
-      <MenuButton
+    <div className={className !== undefined ? className : ''}>
+      <MenuButton icon={icon}
         className={
-          props.anchorEl !== undefined && props.anchorEl.className !== undefined
-            ? props.anchorEl.className
+          className !== undefined
+            ? className
             : ''
         }
         onClick={handleClick}
       />
 
       <Menu id="menu" open={open} anchorEl={anchorEl} onClose={handleClose}>
-        {React.Children.map(props.children, (child) => {
+        {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
             return React.cloneElement(child, {
               onClick: handleClose,
@@ -69,7 +70,7 @@ export const ActionsMenu = (props: ActionMenuProps) => {
           return child;
         })}
       </Menu>
-      {React.Children.map(props.modals, (child) => {
+      {React.Children.map(modals, (child) => {
         if (React.isValidElement(child)) {
           return child;
         }

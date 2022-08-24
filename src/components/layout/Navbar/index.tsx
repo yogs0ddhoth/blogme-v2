@@ -7,60 +7,99 @@ import Tab from '@mui/material/Tab';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { LogoutButton } from '../../Buttons';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+// import { ColorModeButton, LogoutButton } from '../../Buttons';
 
 import { authContext } from '../../../utils/context/contexts';
-import theme from '../../../utils/mui-theme';
-import useControllers from '../../../controllers';
+// import theme from '../../../utils/mui-theme';
+import useTheme from '@mui/material/styles/useTheme';
+
+import useControllers from '../../../controllers/index';
+import AppMenu from '../../Menus/AppMenu';
 
 interface NavTabProps {
-  label: string;
+  label?: string;
+  icon?: JSX.Element;
   value: string;
+  onClick: () => void;
+  darkMode: boolean; 
+  className?: string
 }
-const NavTab = (props: NavTabProps) => {
-  const navigate = useNavigate();
-  return (
-    <Tab
-      {...props}
-      onClick={() => navigate(props.value)}
-      sx={{ color: theme.palette.primary.contrastText }}
-    />
-  );
-};
+const NavTab = (props: NavTabProps) => (
+  <Tab
+    {...props}
+    onClick={props.onClick}
+    sx={{color: 
+      !props.darkMode
+        ? "primary.contrastText"
+        : "secondary.dark"
+    }}
+  />
+);
 
-export default function Navbar() {
+interface NavbarProps {
+  menu: JSX.Element;
+}
+export default function Navbar({menu}: NavbarProps) {
   const { state, dispatch } = React.useContext(authContext);
 
   const { pathname } = useLocation();
   const [value, setValue] = React.useState(pathname);
-  const handleChange = (event: React.SyntheticEvent, newValue: string) =>
-    setValue(newValue);
 
-  const { useLogout } = useControllers();
-  const logout = useLogout({ dispatch: dispatch });
+  React.useEffect(() => setValue(pathname), [pathname]);
+  const handleChange = (
+    event: React.SyntheticEvent, 
+    newValue: string
+  ) => setValue(newValue);
+
+  const theme = useTheme();
+  const darkMode = theme.palette.mode === "dark";
+
+  const navigate = useNavigate();
+  const tabsColor = !darkMode ? "secondary" : "primary";
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" enableColorOnDark
+      color={
+        !darkMode 
+          ? "primary"
+          : "secondary"
+      }
+    >
       <Toolbar className="">
-        <Typography className="w-1/2">BLOGME</Typography>
-        <div className="w-1/2 flex flex-row justify-end">
+        <div className="w-1/2 pl-4 flex flex-row">
+          <Typography variant='h4'>BLOGME</Typography>
+          <Typography variant="caption" className="pl-1">v2</Typography>
+        </div>
+        
+        <div className="w-1/2 flex flex-row justify-end items-center">
           <Tabs
             value={value}
             onChange={handleChange}
-            textColor="secondary"
-            indicatorColor="secondary"
+            textColor={tabsColor}
+            indicatorColor={tabsColor}
           >
-            <NavTab value="/" label="Home" />
-            <NavTab value="/dashboard" label="Dashboard" />
+            <NavTab value="/" label="Home" 
+              onClick={() => navigate("/")}
+              darkMode={darkMode}
+            />
+            <NavTab value="/dashboard" label="Dashboard" 
+              onClick={() => navigate("/dashboard")}
+              darkMode={darkMode} 
+            />
             {state.auth === '' ? (
-              <NavTab value="/login" label="Login" />
-            ) : (
-              <LogoutButton
-                className="text-[#fff]"
-                onClick={() => logout.mutate()}
+              <NavTab value="/login" label="Login" 
+                onClick={() => navigate("/login")}
+                darkMode={darkMode} 
               />
+            ) : (
+              <></>
             )}
+
           </Tabs>
+
+          {menu}
         </div>
       </Toolbar>
     </AppBar>
