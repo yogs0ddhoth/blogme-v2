@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import Container from '@mui/material/Container';
-import { ColorModeButton } from '../Buttons';
 
 import AppMenu from '../Menus/AppMenu';
 import Navbar from './Navbar';
