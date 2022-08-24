@@ -70,22 +70,23 @@ export default function useControllers() {
         auth?: string;
         id?: number;
       }
-      return ({ auth, id }: QueryArgs) => useQuery(
-        [key],
-        () =>
-          api<number, void, ResponseData>(
-            'get',
-            url,
-            id ? id : undefined,
-            undefined,
-            auth ? auth : undefined
-          ),
-        {
-          retry: false,
-          onError: () => navigate('/login')
-        }
-      );
-    }
+      return ({ auth, id }: QueryArgs) =>
+        useQuery(
+          [key],
+          () =>
+            api<number, void, ResponseData>(
+              'get',
+              url,
+              id ? id : undefined,
+              undefined,
+              auth ? auth : undefined
+            ),
+          {
+            retry: false,
+            onError: () => navigate('/login'),
+          }
+        );
+    };
   };
   const userQuery = apiQuery('/users/');
   const postQuery = apiQuery('/posts/');
@@ -109,37 +110,43 @@ export default function useControllers() {
         dispatch?: React.Dispatch<AuthAction>;
         onMutate?: () => void;
       }
-      return ({ id, auth, dispatch, onMutate }: MutationArgs) => useMutation(
-        (data: DataType) =>
-          api<string | number, DataType, any>(
-            method,
-            url,
-            path ? path : id ? id : undefined,
-            data,
-            auth ? auth : undefined
-          ),
-        {
-          onMutate: onMutate ? () => onMutate() : undefined,
-          onSuccess: dispatch ? ({ data }) => {
-            dispatch(
-              path === 'logout'
-                ? { type: LOGOUT }
-                : {
-                    type: LOGIN,
-                    payload: { auth: data.access_token },
+      return ({ id, auth, dispatch, onMutate }: MutationArgs) =>
+        useMutation(
+          (data: DataType) =>
+            api<string | number, DataType, any>(
+              method,
+              url,
+              path ? path : id ? id : undefined,
+              data,
+              auth ? auth : undefined
+            ),
+          {
+            onMutate: onMutate ? () => onMutate() : undefined,
+            onSuccess: dispatch
+              ? ({ data }) => {
+                  dispatch(
+                    path === 'logout'
+                      ? { type: LOGOUT }
+                      : {
+                          type: LOGIN,
+                          payload: { auth: data.access_token },
+                        }
+                  );
+                  if (
+                    path === 'logout' &&
+                    window.location.pathname === '/dashboard'
+                  ) {
+                    navigate('/');
                   }
-            );
-            if (path === 'logout' && window.location.pathname === '/dashboard') {
-              navigate('/');
-            }
-            if (path === 'login') {
-              navigate('/dashboard');
-            }
-          } : () => refreshCache(),
-          onError: () => navigate('/login'),
-        }
-      );
-    }
+                  if (path === 'login') {
+                    navigate('/dashboard');
+                  }
+                }
+              : () => refreshCache(),
+            onError: () => navigate('/login'),
+          }
+        );
+    };
   };
   const userMutation = apiMutation('/users/');
   const postMutation = apiMutation('/posts/');

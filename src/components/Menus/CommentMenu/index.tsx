@@ -32,7 +32,7 @@ export default function CommentMenu({
   const handleDeleteClose = () => setDeleteOpen(false);
 
   return (
-    <ActionsMenu 
+    <ActionsMenu
       icon={<MoreVertIcon />}
       className={hover ? '' : 'sm:invisible'}
       modals={[

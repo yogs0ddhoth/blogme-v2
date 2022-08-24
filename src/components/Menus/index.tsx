@@ -39,24 +39,22 @@ interface ActionMenuProps {
 }
 export const ActionsMenu = ({
   children,
-  className,  
-  icon, 
-  modals
+  className,
+  icon,
+  modals,
 }: ActionMenuProps) => {
   // Menu state
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
+    setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
   return (
     <div className={className !== undefined ? className : ''}>
-      <MenuButton icon={icon}
-        className={
-          className !== undefined
-            ? className
-            : ''
-        }
+      <MenuButton
+        icon={icon}
+        className={className !== undefined ? className : ''}
         onClick={handleClick}
       />
 

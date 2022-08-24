@@ -1,4 +1,3 @@
-
 const rootElement = document.getElementById('root') as HTMLElement;
 
 const muiTheme = {

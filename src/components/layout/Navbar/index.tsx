@@ -23,56 +23,50 @@ interface NavTabProps {
   icon?: JSX.Element;
   value: string;
   onClick: () => void;
-  darkMode: boolean; 
-  className?: string
+  darkMode: boolean;
+  className?: string;
 }
 const NavTab = (props: NavTabProps) => (
   <Tab
     {...props}
     onClick={props.onClick}
-    sx={{color: 
-      !props.darkMode
-        ? "primary.contrastText"
-        : "secondary.dark"
-    }}
+    sx={{ color: !props.darkMode ? 'primary.contrastText' : 'secondary.dark' }}
   />
 );
 
 interface NavbarProps {
   menu: JSX.Element;
 }
-export default function Navbar({menu}: NavbarProps) {
+export default function Navbar({ menu }: NavbarProps) {
   const { state, dispatch } = React.useContext(authContext);
 
   const { pathname } = useLocation();
   const [value, setValue] = React.useState(pathname);
 
   React.useEffect(() => setValue(pathname), [pathname]);
-  const handleChange = (
-    event: React.SyntheticEvent, 
-    newValue: string
-  ) => setValue(newValue);
+  const handleChange = (event: React.SyntheticEvent, newValue: string) =>
+    setValue(newValue);
 
   const theme = useTheme();
-  const darkMode = theme.palette.mode === "dark";
+  const darkMode = theme.palette.mode === 'dark';
 
   const navigate = useNavigate();
-  const tabsColor = !darkMode ? "secondary" : "primary";
+  const tabsColor = !darkMode ? 'secondary' : 'primary';
 
   return (
-    <AppBar position="static" enableColorOnDark
-      color={
-        !darkMode 
-          ? "primary"
-          : "secondary"
-      }
+    <AppBar
+      position="static"
+      enableColorOnDark
+      color={!darkMode ? 'primary' : 'secondary'}
     >
       <Toolbar className="">
         <div className="w-1/2 pl-4 flex flex-row">
-          <Typography variant='h4'>BLOGME</Typography>
-          <Typography variant="caption" className="pl-1">v2</Typography>
+          <Typography variant="h4">BLOGME</Typography>
+          <Typography variant="caption" className="pl-1">
+            v2
+          </Typography>
         </div>
-        
+
         <div className="w-1/2 flex flex-row justify-end items-center">
           <Tabs
             value={value}
@@ -80,23 +74,28 @@ export default function Navbar({menu}: NavbarProps) {
             textColor={tabsColor}
             indicatorColor={tabsColor}
           >
-            <NavTab value="/" label="Home" 
-              onClick={() => navigate("/")}
+            <NavTab
+              value="/"
+              label="Home"
+              onClick={() => navigate('/')}
               darkMode={darkMode}
             />
-            <NavTab value="/dashboard" label="Dashboard" 
-              onClick={() => navigate("/dashboard")}
-              darkMode={darkMode} 
+            <NavTab
+              value="/dashboard"
+              label="Dashboard"
+              onClick={() => navigate('/dashboard')}
+              darkMode={darkMode}
             />
             {state.auth === '' ? (
-              <NavTab value="/login" label="Login" 
-                onClick={() => navigate("/login")}
-                darkMode={darkMode} 
+              <NavTab
+                value="/login"
+                label="Login"
+                onClick={() => navigate('/login')}
+                darkMode={darkMode}
               />
             ) : (
               <></>
             )}
-
           </Tabs>
 
           {menu}

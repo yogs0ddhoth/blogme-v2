@@ -6,6 +6,7 @@ import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
+import useTheme from '@mui/material/styles/useTheme';
 import theme from '../../../utils/mui-theme';
 
 import { CommentInput, MutationInstance } from 'custom-types';
@@ -27,6 +28,7 @@ export default function CommentForm({
   const [commentState, setCommentState] = React.useState(
     commentText !== undefined ? commentText : ''
   );
+  const theme = useTheme();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();

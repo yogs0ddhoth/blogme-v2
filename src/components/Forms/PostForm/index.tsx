@@ -15,7 +15,7 @@ interface PostFormProps {
   action?: React.ReactElement;
   post?: Post;
   handleClose?: () => void;
-  mutation: MutationInstance<PostInput>
+  mutation: MutationInstance<PostInput>;
 }
 
 export default function PostForm({

@@ -20,7 +20,7 @@ export const CloseButton = (props: { onClick: () => void }) => (
 interface MenuButtonProps {
   className: string;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  icon: React.ReactElement
+  icon: React.ReactElement;
 }
 export const MenuButton = (props: MenuButtonProps) => (
   <IconButton id="button" className={props.className} onClick={props.onClick}>
@@ -54,7 +54,7 @@ interface VisibilityButtonProps {
   show: boolean;
   dispatch: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export const VisibilityButton = ({show, dispatch}: VisibilityButtonProps) => {
+export const VisibilityButton = ({ show, dispatch }: VisibilityButtonProps) => {
   const handleClickShowPassword = () => dispatch(!show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>

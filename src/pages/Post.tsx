@@ -15,7 +15,5 @@ export default function PostPage() {
   const post = data.data;
 
   // TODO: create loading spinner modal for refetching
-  return (
-    <PostCard post={post} />
-  );
+  return <PostCard post={post} />;
 }

@@ -97,7 +97,10 @@ export default function SignupForm() {
                 label="Password *"
                 type={showPassword ? 'text' : 'password'}
                 endAdornment={
-                  <VisibilityButton show={showPassword} dispatch={setShowPassword} />
+                  <VisibilityButton
+                    show={showPassword}
+                    dispatch={setShowPassword}
+                  />
                 }
               />
               <FormHelperText>{errors.password?.message}</FormHelperText>

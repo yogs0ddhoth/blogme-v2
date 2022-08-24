@@ -14,33 +14,38 @@ import ThemeProvider from '@mui/system/ThemeProvider';
 import useControllers from '../../controllers';
 import { authContext } from '../../utils/context/contexts';
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {''} })
+const ColorModeContext = React.createContext({
+  toggleColorMode: () => {
+    ('');
+  },
+});
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [mode, setMode] = React.useState<'light' | 'dark'>('light');
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode(mode => (mode === 'light') ? 'dark' : 'light')
-      }
+        setMode((mode) => (mode === 'light' ? 'dark' : 'light'));
+      },
     }),
     []
   );
 
   const theme = React.useMemo(
-    () => createTheme({
-      ...defaultTheme,
-      palette: {
-        ...defaultTheme.palette,
-        mode,
-        // primary: {
-        //   main: (mode === 'light') ? '#212121' : '#69f0ae'
-        // },
-        // secondary: {
-        //   main: (mode === 'light') ? '#69f0ae' : '#212121'
-        // }
-      },
-    }),
+    () =>
+      createTheme({
+        ...defaultTheme,
+        palette: {
+          ...defaultTheme.palette,
+          mode,
+          // primary: {
+          //   main: (mode === 'light') ? '#212121' : '#69f0ae'
+          // },
+          // secondary: {
+          //   main: (mode === 'light') ? '#69f0ae' : '#212121'
+          // }
+        },
+      }),
     [mode]
   );
 
@@ -52,11 +57,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <StyledEngineProvider injectFirst>
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
-
-          <Container maxWidth={false}
-            className='h-[100vh] min-w-[100vw] flex flex-col p-0 overflow-x-hidden'
+          <Container
+            maxWidth={false}
+            className="h-[100vh] min-w-[100vw] flex flex-col p-0 overflow-x-hidden"
             sx={{
-              bgcolor: 'background.default'
+              bgcolor: 'background.default',
             }}
           >
             <Navbar
@@ -65,7 +70,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   logout={() => logout.mutate()}
                   mode={mode}
                   toggleMode={colorMode.toggleColorMode}
-
                 />
               }
             />
@@ -81,7 +85,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </a>
             </footer>
           </Container>
-
         </ThemeProvider>
       </ColorModeContext.Provider>
     </StyledEngineProvider>

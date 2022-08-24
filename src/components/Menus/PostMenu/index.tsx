@@ -32,7 +32,7 @@ export default function PostMenu({ post }: { post: Post }) {
   const handleDeleteClose = () => setDeleteOpen(false);
 
   return (
-    <ActionsMenu 
+    <ActionsMenu
       icon={<MoreVertIcon />}
       modals={[
         <Popup open={editOpen} onClose={handleEditClose}>

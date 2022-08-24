@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+import AppBar from '@mui/material/AppBar';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -52,8 +53,9 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
   const handleExpandClick = () => setExpanded(!expanded);
 
   return (
-    <Card className='mt-5'>
+    <Card className="mt-5" elevation={2}>
       <CardHeader
+        sx={{ bgcolor: 'secondary.main' }}
         avatar={
           <UserAvatar
             name={post.user.name}
@@ -64,12 +66,28 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
             }}
           />
         }
+        // subheader={
+        //   <Link to={`/post/${post.id}`}>
+        //     <Typography variant="h5">{post.title}</Typography>
+        //   </Link>
+        // }
         action={post.user.id == state.id ? <PostMenu post={post} /> : <></>}
       />
-      <Divider variant='fullWidth' />
+      {/* <Divider variant='fullWidth' /> */}
       <CardContent>
         <Link to={`/post/${post.id}`}>
-          <Typography variant="h5">{post.title}</Typography>
+          <Typography
+            variant="h5"
+            // onClick={
+            //   () => {
+            //     // e.preventDefault();
+            //     const navigate = useNavigate();
+            //     navigate(`/post/${post.id}`);
+            //   }
+            // }
+          >
+            {post.title}
+          </Typography>
         </Link>
 
         <Typography variant="body1">{post.text}</Typography>
@@ -125,9 +143,7 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
 
       <CardContent>
         {state.auth !== null ? (
-          <CommentForm id={post.id as number} 
-            mutation={createComment} 
-          />
+          <CommentForm id={post.id as number} mutation={createComment} />
         ) : (
           <></>
         )}

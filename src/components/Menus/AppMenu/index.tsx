@@ -16,34 +16,25 @@ interface AppMenuProps {
   mode: PaletteMode;
   toggleMode: () => void;
 }
-export default function AppMenu({logout, mode, toggleMode}: AppMenuProps) {
+export default function AppMenu({ logout, mode, toggleMode }: AppMenuProps) {
   const { state, dispatch } = React.useContext(authContext);
 
   const theme = useTheme();
-  const darkMode = theme.palette.mode === "dark";
-  const color = !darkMode ? "primary.contrastText" : "secondary.dark";
+  const darkMode = theme.palette.mode === 'dark';
+  const color = !darkMode ? 'primary.contrastText' : 'secondary.dark';
 
   return (
-    <ActionsMenu
-      icon={<MenuIcon sx={{color: color}} />}
-    >
-      {state.auth !== ""
-        ? <MenuAction
-            label='Logout'
-            icon={<LogoutIcon />}
-            action={logout}
-          />
-        : <></>
-      }
+    <ActionsMenu icon={<MenuIcon sx={{ color: color }} />}>
+      {state.auth !== '' ? (
+        <MenuAction label="Logout" icon={<LogoutIcon />} action={logout} />
+      ) : (
+        <></>
+      )}
       <MenuAction
-        label='Toggle Dark Mode'
-        icon={
-          mode === 'dark' 
-            ? <Brightness4Icon /> 
-            : <Brightness7Icon />
-        }
+        label="Toggle Dark Mode"
+        icon={mode === 'dark' ? <Brightness4Icon /> : <Brightness7Icon />}
         action={toggleMode}
       />
     </ActionsMenu>
-  )
+  );
 }
