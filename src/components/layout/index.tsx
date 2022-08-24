@@ -3,7 +3,7 @@ import * as React from 'react';
 import Container from '@mui/material/Container';
 
 import AppMenu from '../Menus/AppMenu';
-import Navbar from './Navbar';
+import Navbar from '../Navbar';
 
 import { StyledEngineProvider } from '@mui/material/styles';
 import createTheme from '@mui/material/styles/createTheme';
