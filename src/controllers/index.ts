@@ -12,8 +12,10 @@ import {
 import React from 'react';
 import api from './api';
 import { LOGIN, LOGOUT } from '../utils/context/actions';
+import { useNavigate } from 'react-router-dom';
 
 export default function useControllers() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const getLastQuery = () => {
@@ -42,14 +44,18 @@ export default function useControllers() {
     return [queries[index].key];
   };
   const refreshCache = async () => {
-    const lastQuery = getLastQuery();
-    lastQuery !== null
-      ? await queryClient.refetchQueries(lastQuery)
-      : window.location.reload();
+    try {
+      const lastQuery = getLastQuery();
+      if (lastQuery !== null) {
+        await queryClient.refetchQueries(lastQuery);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   /**
-   * Api Factory
+   * Query Factory
    * @param url root api path
    * @returns further config
    */
@@ -76,7 +82,7 @@ export default function useControllers() {
           ),
         {
           retry: false,
-          onError: () => window.location.assign('/login'),
+          onError: () => navigate('/login')
         }
       );
     }
@@ -85,7 +91,7 @@ export default function useControllers() {
   const postQuery = apiQuery('/posts/');
 
   /**
-   * Api Factory
+   * Mutation Factory
    * @param url root api path
    * @returns further config
    */
@@ -124,13 +130,13 @@ export default function useControllers() {
                   }
             );
             if (path === 'logout' && window.location.pathname === '/dashboard') {
-              window.location.assign('/');
+              navigate('/');
             }
             if (path === 'login') {
-              window.location.assign('/dashboard');
+              navigate('/dashboard');
             }
           } : () => refreshCache(),
-          onError: () => window.location.assign('/login'),
+          onError: () => navigate('/login'),
         }
       );
     }
