@@ -21,6 +21,7 @@ import UserAvatar from '../UserAvatar';
 import Votes from '../Vote';
 
 import { Post } from 'custom-types';
+import { useTheme } from '@mui/material/styles';
 import { authContext } from '../../utils/context/contexts';
 import useControllers from '../../controllers';
 
@@ -46,6 +47,10 @@ interface PostCardProps {
 }
 export default function PostCard({ post, menu, comment }: PostCardProps) {
   const { state, dispatch } = React.useContext(authContext);
+
+  const theme = useTheme();
+  const darkMode = theme.palette.mode === 'dark';
+
   const { useCreateComment } = useControllers();
   const createComment = useCreateComment({ auth: state.auth });
 
@@ -53,13 +58,17 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
   const handleExpandClick = () => setExpanded(!expanded);
 
   return (
-    <Card className="mt-5" elevation={2}>
+    <Card 
+      className="mt-5" 
+      elevation={2} 
+      // sx={{ bgcolor: darkMode ? 'primary.dark' : '' }}
+    >
       <CardHeader
-        sx={{ bgcolor: 'secondary.main' }}
+        sx={{ bgcolor: darkMode ? '' : 'secondary.main' }}
         avatar={
           <UserAvatar
             name={post.user.name}
-            color="#69f0ae"
+            color={darkMode ? 'secondary.main' : 'primary.light'}
             timestamps={{
               created_at: post.created_at,
               updated_at: post.updated_at,
@@ -71,10 +80,17 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
         //     <Typography variant="h5">{post.title}</Typography>
         //   </Link>
         // }
-        action={post.user.id == state.id ? <PostMenu post={post} /> : <></>}
+        action={
+          post.user.id == state.id 
+          ? <PostMenu post={post} darkMode={darkMode} /> 
+          : <></>
+        }
       />
-      {/* <Divider variant='fullWidth' /> */}
-      <CardContent>
+      <Divider sx={{bgcolor: 'secondary.main'}} variant='fullWidth' />
+      {/* { darkMode ? <Divider sx={{color: 'secondary.main'}} variant='fullWidth' /> : <></>} */}
+      <CardContent 
+        // sx={{ bgcolor: darkMode ? 'primary.dark' : '' }}
+      >
         <Link to={`/post/${post.id}`}>
           <Typography
             variant="h5"
@@ -93,9 +109,11 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
         <Typography variant="body1">{post.text}</Typography>
       </CardContent>
 
-      <Divider variant="middle" />
+      <Divider sx={{ bgcolor: darkMode ? 'secondary.main' : '' }} variant="middle" />
 
-      <CardActions disableSpacing>
+      <CardActions disableSpacing 
+        // sx={{ bgcolor: darkMode ? 'primary.dark' : '' }}
+      >
         <Votes
           post_id={post.id}
           vote_count={post.vote_count}
@@ -107,10 +125,27 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
             onClick={handleExpandClick}
             aria-expanded={expanded}
             aria-label="show more"
+            sx={{
+              '&:hover': {
+                color: darkMode ? 'secondary.main' : ''
+              }
+            }}
           >
-            <ExpandMoreIcon />
+            <ExpandMoreIcon 
+              // sx={{
+              //   '&:hover': {
+              //     color: darkMode ? 'secondary.main' : ''
+              //   }
+              // }}
+            />
             {!expanded ? (
-              <Typography>
+              <Typography
+                // sx={{
+                //   '&:hover': {
+                //     color: darkMode ? 'secondary.main' : ''
+                //   }
+                // }}
+              >
                 {post.comments.length} Comment
                 {post.comments.length > 1 ? 's' : ''}
               </Typography>
@@ -123,7 +158,7 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
         )}
       </CardActions>
 
-      <Divider />
+      {/* <Divider sx={{ bgcolor: darkMode ? 'secondary.main' : '' }} /> */}
 
       {post.comments.length ? (
         <Collapse in={expanded} timeout="auto" unmountOnExit>

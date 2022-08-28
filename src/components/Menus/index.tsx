@@ -7,18 +7,21 @@ import MenuItem from '@mui/material/MenuItem';
 import { MenuButton } from '../Buttons';
 
 interface MenuActionProps {
+  className?: string;
   label: string;
   icon: React.ReactElement;
   onClick?: () => void;
   action: () => void;
 }
 export const MenuAction = ({
+  className,
   onClick,
   label,
   icon,
   action,
 }: MenuActionProps) => (
   <MenuItem
+    className={className}
     onClick={() => {
       if (onClick !== undefined) {
         onClick();
@@ -35,12 +38,14 @@ interface ActionMenuProps {
   children: React.ReactNode;
   className?: string;
   icon: React.ReactElement;
+  iconColor?: string;
   modals?: React.ReactNode;
 }
 export const ActionsMenu = ({
   children,
   className,
   icon,
+  iconColor,
   modals,
 }: ActionMenuProps) => {
   // Menu state
@@ -51,10 +56,10 @@ export const ActionsMenu = ({
   const handleClose = () => setAnchorEl(null);
 
   return (
-    <div className={className !== undefined ? className : ''}>
+    <div>
       <MenuButton
         icon={icon}
-        className={className !== undefined ? className : ''}
+        className={className ? className : ''}
         onClick={handleClick}
       />
 

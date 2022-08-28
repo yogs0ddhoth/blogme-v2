@@ -10,9 +10,11 @@ import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 
 import { PostInput, Post, MutationInstance } from 'custom-types';
+import { useTheme } from '@mui/system';
 
 interface PostFormProps {
   action?: React.ReactElement;
+  className?: string;
   post?: Post;
   handleClose?: () => void;
   mutation: MutationInstance<PostInput>;
@@ -20,6 +22,7 @@ interface PostFormProps {
 
 export default function PostForm({
   action,
+  className,
   post,
   handleClose,
   mutation,
@@ -35,9 +38,11 @@ export default function PostForm({
         ? { title: post.title, text: post.text }
         : { title: '', text: '' },
   });
+  const theme = useTheme();
+  const darkMode = theme.palette.mode == 'dark';
 
   return (
-    <Card className="w-full">
+    <Card className={'w-full mt-5' + className ? className : ''}>
       <form
         className="flex flex-col gap-3 w-full"
         onSubmit={handleSubmit((data) =>
@@ -51,7 +56,7 @@ export default function PostForm({
           })
         )}
       >
-        <CardHeader action={action} />
+        {action ? <CardHeader action={action} /> : <></>}
 
         {/* <Divider color='primary' variant='middle'/> */}
 
@@ -65,7 +70,7 @@ export default function PostForm({
                   {...field}
                   className="w-full"
                   label="Title:"
-                  color="primary"
+                  color={ darkMode ? 'secondary' : 'primary' }
                   error={errors.title?.message !== undefined}
                   helperText={errors.title?.message}
                 />
@@ -80,7 +85,7 @@ export default function PostForm({
                   {...field}
                   className="w-full"
                   label="Post:"
-                  color="primary"
+                  color={ darkMode ? 'secondary' : 'primary' }
                   multiline
                   rows={4}
                   error={errors.text?.message !== undefined}
@@ -92,10 +97,21 @@ export default function PostForm({
           </div>
         </CardContent>
 
-        <Divider color="primary" variant="middle" />
+        <Divider sx={{ bgcolor: darkMode ? 'secondary.main' : '' }} variant="middle" />
 
         <CardActions className="flex flex-row justify-end">
-          <Button type="submit" variant="outlined">
+          <Button 
+            type="submit" 
+            variant={darkMode ? "contained" : "outlined"}
+            sx={{ 
+              bgcolor: darkMode ? "secondary.main" : "",
+              color: darkMode ? "primary.main" : "",
+              '&:hover': {
+                // bgcolor: darkMode ? 'primary.contrast' : '',
+                color: darkMode ? 'secondary.main' : '',
+              }
+            }}
+          >
             Submit
           </Button>
         </CardActions>

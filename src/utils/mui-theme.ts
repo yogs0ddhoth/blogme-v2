@@ -23,7 +23,7 @@ const muiTheme = {
     info: {
       main: '#18ffff',
     },
-    divider: '#f5f5f5',
+    // divider: '#f5f5f5',
   },
   typography: {
     // fontFamily: 'Lato',

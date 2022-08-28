@@ -29,6 +29,7 @@ export default function CommentForm({
     commentText !== undefined ? commentText : ''
   );
   const theme = useTheme();
+  const darkMode = theme.palette.mode === 'dark';
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -55,13 +56,24 @@ export default function CommentForm({
             label="comment"
             variant="standard"
             multiline
+            color={ darkMode ? 'secondary' : 'primary' }
             value={commentState}
             onChange={(e) => setCommentState(e.target.value)}
           />
           {closeEl}
-        </Stack>
-        <IconButton type="submit">
-          <SendIcon />
+        </Stack>  
+        <IconButton 
+          type="submit" 
+          sx={{
+            '&:hover': {
+              color: darkMode ? 'secondary.main' : 'secondary.dark' 
+            }
+          }}
+        >
+          <SendIcon 
+            // sx={{':hover': {bgcolor:  darkMode ? 'secondary' : 'primary' }}}
+            // color={  } 
+          />
         </IconButton>
       </Stack>
     </form>

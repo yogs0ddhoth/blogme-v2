@@ -13,8 +13,9 @@ import { authContext } from '../../../utils/context/contexts';
 import { Post } from 'custom-types';
 import { ActionsMenu, MenuAction } from '..';
 import useControllers from '../../../controllers';
+import { useTheme } from '@mui/material';
 
-export default function PostMenu({ post }: { post: Post }) {
+export default function PostMenu({ post, darkMode }: { post: Post, darkMode: boolean }) {
   const { useDeletePost, useUpdatePost } = useControllers();
   const { state, dispatch } = React.useContext(authContext);
 
@@ -32,8 +33,12 @@ export default function PostMenu({ post }: { post: Post }) {
   const handleDeleteClose = () => setDeleteOpen(false);
 
   return (
-    <ActionsMenu
-      icon={<MoreVertIcon />}
+    <ActionsMenu 
+      // sx={{'&:hover': {color: darkMode ? 'secondary.main' : 'primary.dark'}}}
+      className={`hover:text-[${darkMode ?'#69f0ae' : '#171717'}]`}
+      icon={
+        <MoreVertIcon />
+      }
       modals={[
         <Popup open={editOpen} onClose={handleEditClose}>
           <PostForm

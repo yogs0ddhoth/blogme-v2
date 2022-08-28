@@ -13,6 +13,7 @@ import Timestamp from '../Timestamp';
 import { Comment, Post } from 'custom-types';
 import { authContext } from '../../utils/context/contexts';
 import useControllers from '../../controllers';
+import { useTheme } from '@mui/system';
 
 interface CommentCardProps {
   post_user_id: Post['user']['id'];
@@ -32,10 +33,12 @@ const CommentView = ({
   state,
   editOpen,
 }: CommentViewProps) => {
+  const theme = useTheme();
+  const darkMode = theme.palette.mode === 'dark';
+
   // hover state - for rendering menu
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-  const handleMouseEnter = (e: React.MouseEvent<HTMLElement | null>) =>
-    setAnchorEl(e.currentTarget);
+  const handleMouseEnter = (e: React.MouseEvent<HTMLElement | null>) => setAnchorEl(e.currentTarget);
   const handleMouseLeave = () => setAnchorEl(null);
   const hover = Boolean(anchorEl);
 
@@ -48,7 +51,7 @@ const CommentView = ({
     >
       <UserAvatar name={comment.user.name} color="#18ffff" />
       <Stack>
-        <Card color="secondary-light" elevation={4}>
+        <Card color="secondary-light" elevation={darkMode ? 5 : 1}>
           <CardContent>
             <Typography>{comment.text}</Typography>
           </CardContent>
@@ -58,12 +61,17 @@ const CommentView = ({
           updated_at={comment.updated_at}
         />
       </Stack>
-      {/* IF className='sm:' <-- media query */}
-      {post_user_id === state.id || comment.user.id === state.id ? (
-        <CommentMenu comment={comment} editOpen={editOpen} hover={hover} />
-      ) : (
-        <></>
-      )}
+      {post_user_id === state.id || comment.user.id === state.id 
+        ? (
+          <CommentMenu 
+            comment={comment} 
+            darkMode={darkMode}
+            editOpen={editOpen} 
+            hover={hover} 
+          />
+        ) 
+        : <></>
+      }
     </Stack>
   );
 };

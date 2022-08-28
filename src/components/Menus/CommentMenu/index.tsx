@@ -14,12 +14,16 @@ import { Comment } from 'custom-types';
 import useControllers from '../../../controllers';
 
 interface CommentMenuProps {
+  className?: string
   comment: Comment;
+  darkMode: boolean;
   editOpen: () => void;
   hover: boolean;
 }
 export default function CommentMenu({
+  className,
   comment,
+  darkMode,
   editOpen,
   hover,
 }: CommentMenuProps) {
@@ -31,10 +35,12 @@ export default function CommentMenu({
   const handleDeleteOpen = () => setDeleteOpen(true);
   const handleDeleteClose = () => setDeleteOpen(false);
 
+  const highlight = `hover:text-[${darkMode ?'#69f0ae' : '#171717'}]`;
+
   return (
     <ActionsMenu
       icon={<MoreVertIcon />}
-      className={hover ? '' : 'sm:invisible'}
+      className={`${highlight} ${hover ? 'visible' : 'sm:invisible'}`}
       modals={[
         <Popup open={deleteOpen} onClose={handleDeleteClose}>
           <DeleteCard
@@ -53,10 +59,11 @@ export default function CommentMenu({
           action={editOpen}
         />
       ) : (
-        <div></div>
+        <></>
       )}
       <MenuAction
         label="Delete"
+        className={highlight}
         icon={<DeleteOutlinedIcon fontSize="medium" />}
         action={handleDeleteOpen}
       />
