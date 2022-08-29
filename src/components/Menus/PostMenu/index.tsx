@@ -6,12 +6,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { CloseButton } from '../../Buttons';
 import DeleteCard from '../../Delete';
-import Popup from '../../StyledModal';
 import PostForm from '../../Forms/PostForm';
 
 import { authContext } from '../../../utils/context/contexts';
 import { Post } from 'custom-types';
-import { ActionsMenu, MenuAction } from '..';
+import { ActionsMenu, MenuAction, Popup } from '..';
 import useControllers from '../../../controllers';
 import { useTheme } from '@mui/material';
 

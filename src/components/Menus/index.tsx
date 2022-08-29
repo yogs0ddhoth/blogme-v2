@@ -4,6 +4,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Modal from '@mui/material/Modal';
 import { MenuButton } from '../Buttons';
 
 interface MenuActionProps {
@@ -56,7 +57,7 @@ export const ActionsMenu = ({
   const handleClose = () => setAnchorEl(null);
 
   return (
-    <div>
+    <>
       <MenuButton
         icon={icon}
         className={className ? className : ''}
@@ -78,6 +79,19 @@ export const ActionsMenu = ({
           return child;
         }
       })}
-    </div>
+    </>
   );
 };
+
+interface PopupProps {
+  children: React.ReactElement;
+  open: boolean;
+  onClose: () => void;
+}
+export function Popup(props: PopupProps) {
+  return (
+    <Modal {...props} className='styled-modal'>
+      {props.children}
+    </Modal>
+  )
+}

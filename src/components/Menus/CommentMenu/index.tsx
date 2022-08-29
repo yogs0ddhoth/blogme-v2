@@ -6,8 +6,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { CloseButton } from '../../Buttons';
 import DeleteCard from '../../Delete';
-import { ActionsMenu, MenuAction } from '..';
-import Popup from '../../StyledModal';
+import { ActionsMenu, MenuAction, Popup } from '..';
 
 import { authContext } from '../../../utils/context/contexts';
 import { Comment } from 'custom-types';
