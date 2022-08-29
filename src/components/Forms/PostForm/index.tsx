@@ -38,63 +38,59 @@ export default function PostForm({
         ? { title: post.title, text: post.text }
         : { title: '', text: '' },
   });
-  const theme = useTheme();
-  const darkMode = theme.palette.mode == 'dark';
+  const darkMode = useTheme().palette.mode == 'dark';
 
   return (
-    <Card className={'w-full mt-5' + className ? className : ''}>
-      <form
-        className="flex flex-col gap-3 w-full"
-        onSubmit={handleSubmit((data) =>
-          mutation.mutate(data, {
-            onSuccess: () => {
-              reset();
-              if (handleClose) {
-                handleClose();
-              }
-            },
-          })
-        )}
-      >
+    <form onSubmit={
+      handleSubmit((data) => mutation.mutate(
+        data, 
+        {onSuccess: () => {
+          reset();
+          if (handleClose) {
+            handleClose();
+          }
+        }}
+      ))
+      }
+    >
+      <Card className={'flex flex-col w-full gap-3 mt-5' + className ? className : ''}>
         {action ? <CardHeader action={action} /> : <></>}
 
         {/* <Divider color='primary' variant='middle'/> */}
 
-        <CardContent>
-          <div className="">
-            <Controller
-              name="title"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  className="w-full"
-                  label="Title:"
-                  color={ darkMode ? 'secondary' : 'primary' }
-                  error={errors.title?.message !== undefined}
-                  helperText={errors.title?.message}
-                />
-              )}
-              rules={{ required: 'This field is required.' }}
-            />
-            <Controller
-              name="text"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  className="w-full"
-                  label="Post:"
-                  color={ darkMode ? 'secondary' : 'primary' }
-                  multiline
-                  rows={4}
-                  error={errors.text?.message !== undefined}
-                  helperText={errors.text?.message}
-                />
-              )}
-              rules={{ required: 'This field is required.' }}
-            />
-          </div>
+        <CardContent className='flex flex-col gap-3 justify-center'>
+          <Controller
+            name="title"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Title:"
+                color={ darkMode ? 'secondary' : 'primary' }
+                error={errors.title?.message !== undefined}
+                helperText={errors.title?.message}
+                sx={{pb: 2, minWidth: '80%'}}
+              />
+            )}
+            rules={{ required: 'This field is required.' }}
+          />
+          <Controller
+            name="text"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Post:"
+                color={ darkMode ? 'secondary' : 'primary' }
+                multiline
+                rows={4}
+                error={errors.text?.message !== undefined}
+                helperText={errors.text?.message}
+                sx={{minWidth: '80%'}}
+              />
+            )}
+            rules={{ required: 'This field is required.' }}
+          />
         </CardContent>
 
         <Divider sx={{ bgcolor: darkMode ? 'secondary.main' : '' }} variant="middle" />
@@ -115,7 +111,7 @@ export default function PostForm({
             Submit
           </Button>
         </CardActions>
-      </form>
-    </Card>
+      </Card>
+    </form>
   );
 }
