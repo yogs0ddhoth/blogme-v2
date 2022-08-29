@@ -19,23 +19,67 @@ interface CommentCardProps {
   post_user_id: Post['user']['id'];
   comment: Comment;
 }
+export default function CommentCard({
+  post_user_id,
+  comment,
+}: CommentCardProps) {
+  const { state, dispatch } = React.useContext(authContext);
+  const { useUpdateComment } = useControllers();
+  const updateComment = useUpdateComment({ auth: state.auth, id: comment.id });
+
+  // edit state
+  const [editOpen, setEditOpen] = React.useState(false);
+  const handleEditOpen = () => setEditOpen(true);
+  const handleEditClose = () => setEditOpen(false);
+
+  const darkMode = useTheme().palette.mode === 'dark';
+
+  return !editOpen ? (
+    <CommentView
+      post_user_id={post_user_id}
+      comment={comment}
+      darkMode={darkMode}
+      state={state}
+      editOpen={handleEditOpen}
+    />
+  ) : (
+    <CommentForm
+      id={comment.id}
+      mutation={updateComment}
+      commentText={comment.text}
+      closeEl={
+        <Typography
+          className="hover:underline hover:cursor-pointer"
+          onClick={handleEditClose}
+          sx={{
+            "&:hover": {
+              color: darkMode ? "secondary.main" : ""
+            }
+          }}
+        >
+          Cancel
+        </Typography>
+      }
+    />
+  );
+}
+
 interface CommentViewProps extends CommentCardProps {
   state: {
     id: number;
     user: string;
     auth: string | null;
   };
+  darkMode: boolean;
   editOpen: () => void;
 }
 const CommentView = ({
   post_user_id,
   comment,
+  darkMode,
   state,
   editOpen,
 }: CommentViewProps) => {
-  const theme = useTheme();
-  const darkMode = theme.palette.mode === 'dark';
-
   // hover state - for rendering menu
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const handleMouseEnter = (e: React.MouseEvent<HTMLElement | null>) => setAnchorEl(e.currentTarget);
@@ -75,40 +119,3 @@ const CommentView = ({
     </Stack>
   );
 };
-
-export default function CommentCard({
-  post_user_id,
-  comment,
-}: CommentCardProps) {
-  const { state, dispatch } = React.useContext(authContext);
-  const { useUpdateComment } = useControllers();
-  const updateComment = useUpdateComment({ auth: state.auth, id: comment.id });
-
-  // edit state
-  const [editOpen, setEditOpen] = React.useState(false);
-  const handleEditOpen = () => setEditOpen(true);
-  const handleEditClose = () => setEditOpen(false);
-
-  return !editOpen ? (
-    <CommentView
-      post_user_id={post_user_id}
-      comment={comment}
-      state={state}
-      editOpen={handleEditOpen}
-    />
-  ) : (
-    <CommentForm
-      id={comment.id}
-      mutation={updateComment}
-      commentText={comment.text}
-      closeEl={
-        <Typography
-          className="hover:underline hover:cursor-pointer"
-          onClick={handleEditClose}
-        >
-          Cancel
-        </Typography>
-      }
-    />
-  );
-}
