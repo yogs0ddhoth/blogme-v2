@@ -57,7 +57,7 @@ export const ActionsMenu = ({
   const handleClose = () => setAnchorEl(null);
 
   return (
-    <>
+    <div>
       <MenuButton
         icon={icon}
         className={className ? className : ''}
@@ -67,9 +67,9 @@ export const ActionsMenu = ({
       <Menu id="menu" open={open} anchorEl={anchorEl} onClose={handleClose}>
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
-            return React.cloneElement(child, {
-              onClick: handleClose,
-            });
+            return React.cloneElement(child, [
+              {onClick: handleClose}
+            ]);
           }
           return child;
         })}
@@ -79,7 +79,7 @@ export const ActionsMenu = ({
           return child;
         }
       })}
-    </>
+    </div>
   );
 };
 

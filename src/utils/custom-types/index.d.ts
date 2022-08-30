@@ -9,6 +9,10 @@ declare module 'custom-types' {
   interface Signup extends Login {
     name: string;
   }
+  
+  interface UserAuth {
+    access_token: string;
+  }
 
   interface User {
     id: number;

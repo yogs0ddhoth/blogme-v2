@@ -14,11 +14,12 @@ import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { authContext } from '../../utils/context/contexts';
 import useControllers from '../../controllers';
 import { VisibilityButton } from '../Buttons';
+import { LOGIN } from '../../utils/context/actions';
 
 export default function LoginForm() {
   const { state, dispatch } = React.useContext(authContext);
-  const { useLogin } = useControllers();
-  const login = useLogin({ dispatch: dispatch });
+  const { login } = useControllers();
+  const useLogin = login.init();
   const {
     handleSubmit,
     reset,
@@ -38,7 +39,19 @@ export default function LoginForm() {
 
       <form
         className="flex flex-col gap-3 w-full items-center"
-        onSubmit={handleSubmit((data) => login.mutate(data))}
+        onSubmit={
+          handleSubmit(
+            (data) => useLogin.mutate(data, {
+              onSuccess: ({data}) => {
+                dispatch({
+                  type: LOGIN,
+                  payload: {auth: data.access_token}
+                });
+                // login.navigate('/dashboard');
+              }
+            })
+          )
+        }
       >
         <Controller
           name="email"

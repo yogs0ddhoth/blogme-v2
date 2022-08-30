@@ -14,11 +14,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { authContext } from '../../utils/context/contexts';
 import useControllers from '../../controllers';
 import { VisibilityButton } from '../Buttons';
+import { LOGIN } from '../../utils/context/actions';
 
 export default function SignupForm() {
   const { state, dispatch } = React.useContext(authContext);
-  const { useSignup } = useControllers();
-  const signup = useSignup({ dispatch: dispatch });
+  const { signup } = useControllers();
+  const useSignup = signup.init();
   const {
     handleSubmit,
     reset,
@@ -36,9 +37,17 @@ export default function SignupForm() {
       <Typography variant="h4" className="text-center">
         Signup
       </Typography>
-      <form
-        className="flex flex-col gap-3 w-full items-center"
-        onSubmit={handleSubmit((data) => signup.mutate(data))}
+      <form className="flex flex-col gap-3 w-full items-center"
+        onSubmit={
+          handleSubmit(
+            (data) => useSignup.mutate(data, {
+              onSuccess: ({ data}) => dispatch({
+                type: LOGIN,
+                payload: { auth: data.access_token}
+              })
+            })
+          )
+        }
       >
         <Controller
           name="name"

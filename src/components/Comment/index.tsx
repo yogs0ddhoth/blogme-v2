@@ -24,8 +24,10 @@ export default function CommentCard({
   comment,
 }: CommentCardProps) {
   const { state, dispatch } = React.useContext(authContext);
-  const { useUpdateComment } = useControllers();
-  const updateComment = useUpdateComment({ auth: state.auth, id: comment.id });
+  const {auth} = state;
+  const {id} = comment;
+  const { updateComment } = useControllers();
+  const useUpdateComment = updateComment.init(auth, id);
 
   // edit state
   const [editOpen, setEditOpen] = React.useState(false);
@@ -45,7 +47,7 @@ export default function CommentCard({
   ) : (
     <CommentForm
       id={comment.id}
-      mutation={updateComment}
+      mutation={useUpdateComment}
       commentText={comment.text}
       closeEl={
         <Typography

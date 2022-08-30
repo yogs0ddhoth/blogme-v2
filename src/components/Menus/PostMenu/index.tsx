@@ -15,17 +15,18 @@ import useControllers from '../../../controllers';
 import { useTheme } from '@mui/material';
 
 export default function PostMenu({ post, darkMode }: { post: Post, darkMode: boolean }) {
-  const { useDeletePost, useUpdatePost } = useControllers();
+  const { deletePost, updatePost } = useControllers();
   const { state, dispatch } = React.useContext(authContext);
+  const {auth} = state;
+  const {id} = post;
 
   // Edit action state
   const [editOpen, setEditOpen] = React.useState(false);
   const handleEditOpen = () => setEditOpen(true);
   const handleEditClose = () => setEditOpen(false);
-
-  const mutationArgs = { auth: state.auth, id: post.id };
-  const editPost = useUpdatePost(mutationArgs);
-  const deletePost = useDeletePost(mutationArgs);
+  
+  const useUpdatePost = updatePost.init(auth, id);
+  const useDeletePost = deletePost.init(auth, id);
   // Delete action state
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const handleDeleteOpen = () => setDeleteOpen(true);
@@ -44,13 +45,13 @@ export default function PostMenu({ post, darkMode }: { post: Post, darkMode: boo
             post={post}
             action={<CloseButton onClick={handleEditClose} />}
             handleClose={handleEditClose}
-            mutation={editPost}
+            mutation={useUpdatePost}
           />
         </Popup>,
         <Popup open={deleteOpen} onClose={handleDeleteClose}>
           <DeleteCard
             id={post.id}
-            mutation={deletePost}
+            mutation={useDeletePost}
             action={<CloseButton onClick={handleDeleteClose} />}
             cancel={handleDeleteClose}
           />

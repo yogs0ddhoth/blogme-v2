@@ -27,8 +27,10 @@ export default function CommentMenu({
   hover,
 }: CommentMenuProps) {
   const { state, dispatch } = React.useContext(authContext);
-  const { useDeleteComment } = useControllers();
-  const deleteComment = useDeleteComment({ auth: state.auth, id: comment.id });
+  const {auth} = state;
+  const {id} = comment;
+  const { deleteComment } = useControllers();
+  const useDeleteComment = deleteComment.init(auth, id);
   // Delete action state
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const handleDeleteOpen = () => setDeleteOpen(true);
@@ -44,7 +46,7 @@ export default function CommentMenu({
         <Popup open={deleteOpen} onClose={handleDeleteClose}>
           <DeleteCard
             id={comment.id}
-            mutation={deleteComment}
+            mutation={useDeleteComment}
             action={<CloseButton onClick={handleDeleteClose} />}
             cancel={handleDeleteClose}
           />

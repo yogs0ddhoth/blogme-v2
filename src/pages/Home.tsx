@@ -3,8 +3,8 @@ import PostCard from '../components/Post';
 import useControllers from '../controllers';
 
 export default function Home() {
-  const { useAllPosts } = useControllers();
-  const { status, data, error } = useAllPosts({});
+  const { allPosts } = useControllers();
+  const { status, data, error } = allPosts.init();
 
   if (status === 'loading') {
     return <div className="loader" />;

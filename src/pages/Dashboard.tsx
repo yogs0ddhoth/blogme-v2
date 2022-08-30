@@ -9,11 +9,11 @@ import useControllers from '../controllers';
 
 export default function Dashboard() {
   const { state } = React.useContext(authContext);
+  const { auth } = state;
 
-  const { usePosts, useCreatePost } = useControllers();
-  const createPost = useCreatePost({ auth: state.auth });
-
-  const { status, data } = usePosts({ auth: state.auth });
+  const { userPosts, createPost } = useControllers();
+  const useCreatePost = createPost.init(auth);
+  const { status, data } = userPosts.init(auth);
   if (status === 'loading') {
     return <div className="loader" />;
   }
@@ -40,7 +40,7 @@ export default function Dashboard() {
         className="lg:col-span-6 lg:px-2 flex flex-col"
       >
         <h3>Create a New Post:</h3>
-        <PostForm mutation={createPost} className="mt-5" />
+        <PostForm mutation={useCreatePost} className="mt-5" />
       </div>
 
       <div 

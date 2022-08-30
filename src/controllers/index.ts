@@ -1,4 +1,4 @@
-import { useQueryClient, useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import {
   Post,
   AuthAction,
@@ -8,20 +8,24 @@ import {
   PostInput,
   CommentInput,
   UserPosts,
+  UserAuth,
 } from 'custom-types';
 import React from 'react';
 import api from './api';
 import { LOGIN, LOGOUT } from '../utils/context/actions';
-import { Navigate, NavigateFunction, useNavigate } from 'react-router-dom';
-import { AxiosResponse } from 'axios';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 
+/** Parent Class */
 class Controller {
   #url;
-  #navigate = useNavigate();
-  
-
-  constructor(url: string) {
+  #navigate;
+  /**
+   * @param url base url
+   * @param navigate instance of useNavigate()
+   */
+  constructor(url: string, navigate: NavigateFunction) {
     this.#url = url;
+    this.#navigate = navigate;
   }
   get url() {
     return this.#url;
@@ -31,19 +35,17 @@ class Controller {
   }
 }
 
-class Query<ResponseData> extends Controller {
+class Query<ResponseDataType> extends Controller {
+  static #method = 'get';
   #key;
-  #method = 'get';
-
-  constructor(key: string, url: string) {
-    super(url);
+  /**
+   * @param url base url
+   * @param key query key
+   * @param navigate instance of useNavigate()
+   */
+  constructor(url: string, key: string, navigate: NavigateFunction) {
+    super(url, navigate);
     this.#key = key;
-  }
-  get key() {
-    return this.#key;
-  }
-  get method() {
-    return this.#method;
   }
   /**
    * Query Controller
@@ -52,11 +54,11 @@ class Query<ResponseData> extends Controller {
    * @returns instance of useQuery()
    */
   init(auth?: string, id?: string) {
-    const { key, method, navigate, url } = this;
+    const {url, navigate} = this;
     return useQuery(
-      [key], 
-      () => api<string, void, ResponseData>(
-        method, 
+      [this.#key], 
+      () => api<string, void, ResponseDataType>(
+        Query.#method, 
         url, 
         id, 
         undefined,
@@ -66,29 +68,33 @@ class Query<ResponseData> extends Controller {
         retry: false, 
         onError: () => navigate('/login')
       }
-    )
+    );
   }
 }
 
-class Mutation<DataType> extends Controller {
+class Mutation<DataType, ResponseDataType> extends Controller {
   #method;
   #path;
-  #onSuccess;
-
-  constructor(method: string, url: string, path?: string, onSuccess?: () => Promise<void>) {
-    super(url);
+  #refreshCache;
+  /**
+   * Mutation Controller
+   * @param url base url
+   * @param method http method
+   * @param navigate instance of useNavigate()
+   * @param refreshCache instance of refreshCache()
+   * @param path path
+   */
+  constructor(
+    url: string, 
+    method: string, 
+    navigate: NavigateFunction, 
+    refreshCache: () => Promise<void>, 
+    path?: string
+  ) {
+    super(url, navigate);
     this.#method = method;
     this.#path = path;
-    this.#onSuccess = onSuccess;
-  }
-  get method() {
-    return this.#method;
-  }
-  get path() {
-    return this.#path;
-  }
-  get onSuccess() {
-    return this.#onSuccess;
+    this.#refreshCache = refreshCache;
   }
   /**
    * Mutation Controller
@@ -97,12 +103,13 @@ class Mutation<DataType> extends Controller {
    * @param onMutate hook to be called on Mutate 
    * @returns instance of useMutation()
    */
-  init(auth?: string, id?: string, onMutate?: () => void) {
-    const { path, method, url, onSuccess, navigate } = this;
+  init(auth?: string, id?: number, onMutate?: () => void) {
+    const { url, navigate } = this;
+    const path = this.#path;
 
     return useMutation(
-      (data: DataType) => api<string, DataType, any>(
-        method,
+      (data: DataType) => api<string | number, DataType, ResponseDataType>(
+        this.#method,
         url,
         path ? path : id ? id : undefined,
         data,
@@ -110,10 +117,14 @@ class Mutation<DataType> extends Controller {
       ),
       {
         onMutate: onMutate ? () => onMutate() : undefined,
-        onSuccess : onSuccess ? () => onSuccess() : undefined,
+        onSuccess : path === 'signup' || path === 'login' 
+          ? () => navigate('/dashboard') 
+          : path === 'logout' && window.location.pathname === '/dashboard' 
+            ? () => navigate('/')
+            : () => this.#refreshCache(),
         onError: () => navigate('/login')
       }
-    )
+    );
   }
 }
 
@@ -121,167 +132,54 @@ export default function useControllers() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const getLastQuery = () => {
-    // get the last updated query data - corresponds to current page
-    const keys = ['userPosts', 'allPosts', 'post'];
-    const queries = keys.map((query) => ({
-      key: query,
-      state: queryClient.getQueryState([query]),
-    }));
-
-    let lastUpdated = -Infinity;
-    let index = null;
-    for (let i = 0; i < queries.length; i++) {
-      const state = queries[i].state;
-      if (state === undefined) {
-        continue;
-      }
-      if (state.dataUpdatedAt > lastUpdated) {
-        lastUpdated = state.dataUpdatedAt;
-        index = i;
-      }
-    }
-    if (index === null) {
-      return null;
-    }
-    return [queries[index].key];
-  };
+  /** get and refetch the last query; update cache */
   const refreshCache = async () => {
     try {
-      const lastQuery = getLastQuery();
-      if (lastQuery !== null) {
-        await queryClient.refetchQueries(lastQuery);
+      // get the last updated query data - corresponds to current page
+      const keys = ['userPosts', 'allPosts', 'post'];
+      const queries = keys.map((query) => ({
+        key: query,
+        state: queryClient.getQueryState([query]),
+      }));
+
+      let lastUpdated = -Infinity;
+      let index = null;
+      for (let i = 0; i < queries.length; i++) {
+        const state = queries[i].state;
+        if (state === undefined) {
+          continue;
+        }
+        if (state.dataUpdatedAt > lastUpdated) {
+          lastUpdated = state.dataUpdatedAt;
+          index = i;
+        }
+      }
+      if (index !== null) {
+        await queryClient.refetchQueries([queries[index].key]);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  /**
-   * Query Factory
-   * @param url root api path
-   * @returns further config
-   */
-  const apiQuery = (url: string) => {
-    /**
-     * Query Factory
-     * @param key queryKey - see react-query docs
-     * @returns Query Hook
-     */
-    return <ResponseData>(key: string) => {
-      interface QueryArgs {
-        auth?: string;
-        id?: number;
-      }
-      return ({ auth, id }: QueryArgs) =>
-        useQuery(
-          [key],
-          () =>
-            api<number, void, ResponseData>(
-              'get',
-              url,
-              id ? id : undefined,
-              undefined,
-              auth ? auth : undefined
-            ),
-          {
-            retry: false,
-            onError: () => navigate('/login'),
-          }
-        );
-    };
-  };
-  const userQuery = apiQuery('/users/');
-  const postQuery = apiQuery('/posts/');
-
-  /**
-   * Mutation Factory
-   * @param url root api path
-   * @returns further config
-   */
-  const apiMutation = (url: string) => {
-    /**
-     * Mutation Factory
-     * @param method request method
-     * @param path optional additional path
-     * @returns Mutation Hook
-     */
-    return <DataType>(method: string, path?: string) => {
-      interface MutationArgs {
-        id?: number;
-        auth?: string;
-        dispatch?: React.Dispatch<AuthAction>;
-        onMutate?: () => void;
-      }
-      return ({ id, auth, dispatch, onMutate }: MutationArgs) =>
-        useMutation(
-          (data: DataType) =>
-            api<string | number, DataType, any>(
-              method,
-              url,
-              path ? path : id ? id : undefined,
-              data,
-              auth ? auth : undefined
-            ),
-          {
-            onMutate: onMutate ? () => onMutate() : undefined,
-            onSuccess: 
-              dispatch
-              ? ({ data }) => {
-                  dispatch(
-                    path === 'logout'
-                      ? { type: LOGOUT }
-                      : {
-                          type: LOGIN,
-                          payload: { auth: data.access_token },
-                        }
-                  );
-                  if (
-                    path === 'logout' &&
-                    window.location.pathname === '/dashboard'
-                  ) {
-                    navigate('/');
-                  }
-                  if (path === 'login') {
-                    navigate('/dashboard');
-                  }
-                }
-              : () => refreshCache(),
-            onError: () => navigate('/login'),
-          }
-        );
-    };
-  };
-  const userMutation = apiMutation('/users/');
-  const postMutation = apiMutation('/posts/');
-  const commentMutation = apiMutation('/comments/');
-
-  const redirectLogin = () => navigate('/login');
-
   return {
-    // usePosts: userQuery<UserPosts>('userPosts'),
-    userPosts: new Query<UserPosts>('userPosts', '/users/'),
+    allPosts: new Query<Post[]>('/posts/', 'allPosts', navigate),
+    userPosts: new Query<UserPosts>('/users/', 'userPosts', navigate),
+    post: new Query<Post>('/users/', 'post', navigate),
 
-    // useAllPosts: postQuery<Post[]>('allPosts'),
-    allPosts: new Query<Post[]>('allPosts', '/posts/'),
-    // usePost: postQuery<Post>('post'),
-    post: new Query<Post>('post', '/users/'),
+    signup: new Mutation<Signup, UserAuth>('/users/', 'post', navigate, refreshCache, 'signup'),
+    login: new Mutation<Login, UserAuth>('/users/', 'post', navigate, refreshCache, 'login'),
+    logout: new Mutation<void, any>('/users/', 'post', navigate, refreshCache, 'logout'),
 
-    useSignup: userMutation<Signup>('post', 'signup'),
-    useLogin: userMutation<Login>('post', 'login'),
-    useLogout: userMutation<void>('post', 'logout'),
+    createPost: new Mutation<PostInput, void>('/posts/', 'post', navigate, refreshCache),
+    updatePost: new Mutation<PostInput, any>('/posts/', 'put', navigate, refreshCache),
+    deletePost: new Mutation<void, any>('/posts/', 'delete', navigate, refreshCache),
 
-    useCreatePost: postMutation<PostInput>('post'),
-    useUpdatePost: postMutation<PostInput>('put'),
-    useDeletePost: postMutation<void>('delete'),
+    upVote: new Mutation<Vote, any>('/posts/', 'put', navigate, refreshCache, 'upvote'),
+    deleteVote: new Mutation<Vote, any>('/posts/', 'delete', navigate, refreshCache, 'upvote'),
 
-    useUpVote: postMutation<Vote>('put', 'upvote'),
-    useDeleteVote: postMutation<Vote>('delete', 'upvote'),
-
-    useCreateComment: commentMutation<CommentInput>('post'),
-    useUpdateComment: commentMutation<CommentInput>('put'),
-    useDeleteComment: commentMutation<void>('delete'),
-
-    refreshCache,
+    createComment: new Mutation<CommentInput, any>('/comments/', 'post', navigate, refreshCache),
+    updateComment: new Mutation<CommentInput, any>('/comments/', 'put', navigate, refreshCache),
+    deleteComment: new Mutation<void, any>('/comments/', 'delete', navigate, refreshCache)
   };
 }

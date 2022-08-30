@@ -47,12 +47,13 @@ interface PostCardProps {
 }
 export default function PostCard({ post, menu, comment }: PostCardProps) {
   const { state, dispatch } = React.useContext(authContext);
+  const {auth} = state;
 
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
 
-  const { useCreateComment } = useControllers();
-  const createComment = useCreateComment({ auth: state.auth });
+  const { createComment } = useControllers();
+  const useCreateComment = createComment.init(auth);
 
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => setExpanded(!expanded);
@@ -178,7 +179,7 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
 
       <CardContent>
         {state.auth !== null ? (
-          <CommentForm id={post.id as number} mutation={createComment} />
+          <CommentForm id={post.id as number} mutation={useCreateComment} />
         ) : (
           <></>
         )}

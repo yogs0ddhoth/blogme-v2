@@ -12,6 +12,7 @@ import ThemeProvider from '@mui/system/ThemeProvider';
 
 import useControllers from '../../controllers';
 import { authContext } from '../../utils/context/contexts';
+import { LOGOUT } from '../../utils/context/actions';
 
 const ColorModeContext = React.createContext({
   toggleColorMode: () => {
@@ -43,8 +44,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   );
 
   const { state, dispatch } = React.useContext(authContext);
-  const { useLogout } = useControllers();
-  const logout = useLogout({ dispatch: dispatch });
+  const { logout } = useControllers();
+  const useLogout = logout.init();
 
   return (
     <StyledEngineProvider injectFirst>
@@ -60,7 +61,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Navbar
               menu={
                 <AppMenu
-                  logout={() => logout.mutate()}
+                  logout={
+                    () => useLogout.mutate(undefined, {
+                      onSuccess: () => dispatch({type: LOGOUT})
+                    })
+                  }
                   mode={mode}
                   toggleMode={colorMode.toggleColorMode}
                 />

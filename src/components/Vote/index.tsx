@@ -15,19 +15,21 @@ interface VoteButtonProps {
 }
 export default function Votes({ post_id, vote_count, votes }: VoteButtonProps) {
   const { state, dispatch } = React.useContext(authContext);
+  const {user, id, auth} = state;
+  
   const [voteCount, setVoteCount] = React.useState(vote_count);
   const [userVote, setUserVote] = React.useState(
-    votes.find((v) => v.post_id === post_id && v.user.id === state.id)
+    votes.find((v) => v.post_id === post_id && v.user.id === id)
       ? true
       : false
   );
-  const { useUpVote, useDeleteVote } = useControllers();
+  const { upVote, deleteVote } = useControllers();
 
   const vote = {
     post_id: post_id,
     user: {
-      id: state.id,
-      name: state.user,
+      id: id,
+      name: user,
     },
   };
 
@@ -36,10 +38,10 @@ export default function Votes({ post_id, vote_count, votes }: VoteButtonProps) {
     setVoteCount(userVote ? voteCount - 1 : voteCount + 1);
   };
 
-  const mutationArgs = { auth: state.auth, onMutate: updateVote };
+  const mutationArgs = { auth: auth, onMutate: updateVote };
   const mutation = userVote
-    ? useDeleteVote(mutationArgs)
-    : useUpVote(mutationArgs);
+    ? deleteVote.init(auth, undefined, updateVote)
+    : upVote.init(auth, undefined, updateVote);
 
   return (
     <>
