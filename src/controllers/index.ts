@@ -1,4 +1,4 @@
-import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
+import { useQueryClient, useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
 import {
   Post,
   AuthAction,
@@ -12,7 +12,110 @@ import {
 import React from 'react';
 import api from './api';
 import { LOGIN, LOGOUT } from '../utils/context/actions';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, NavigateFunction, useNavigate } from 'react-router-dom';
+import { AxiosResponse } from 'axios';
+
+class Controller {
+  #url;
+  #navigate = useNavigate();
+  
+
+  constructor(url: string) {
+    this.#url = url;
+  }
+  get url() {
+    return this.#url;
+  }
+  get navigate() {
+    return this.#navigate;
+  }
+}
+
+class Query<ResponseData> extends Controller {
+  #key;
+  #method = 'get';
+
+  constructor(key: string, url: string) {
+    super(url);
+    this.#key = key;
+  }
+  get key() {
+    return this.#key;
+  }
+  get method() {
+    return this.#method;
+  }
+  /**
+   * Query Controller
+   * @param auth token
+   * @param id user_id
+   * @returns instance of useQuery()
+   */
+  init(auth?: string, id?: string) {
+    const { key, method, navigate, url } = this;
+    return useQuery(
+      [key], 
+      () => api<string, void, ResponseData>(
+        method, 
+        url, 
+        id, 
+        undefined,
+        auth
+      ),
+      {
+        retry: false, 
+        onError: () => navigate('/login')
+      }
+    )
+  }
+}
+
+class Mutation<DataType> extends Controller {
+  #method;
+  #path;
+  #onSuccess;
+
+  constructor(method: string, url: string, path?: string, onSuccess?: () => Promise<void>) {
+    super(url);
+    this.#method = method;
+    this.#path = path;
+    this.#onSuccess = onSuccess;
+  }
+  get method() {
+    return this.#method;
+  }
+  get path() {
+    return this.#path;
+  }
+  get onSuccess() {
+    return this.#onSuccess;
+  }
+  /**
+   * Mutation Controller
+   * @param auth token
+   * @param id post_id | comment_id
+   * @param onMutate hook to be called on Mutate 
+   * @returns instance of useMutation()
+   */
+  init(auth?: string, id?: string, onMutate?: () => void) {
+    const { path, method, url, onSuccess, navigate } = this;
+
+    return useMutation(
+      (data: DataType) => api<string, DataType, any>(
+        method,
+        url,
+        path ? path : id ? id : undefined,
+        data,
+        auth
+      ),
+      {
+        onMutate: onMutate ? () => onMutate() : undefined,
+        onSuccess : onSuccess ? () => onSuccess() : undefined,
+        onError: () => navigate('/login')
+      }
+    )
+  }
+}
 
 export default function useControllers() {
   const navigate = useNavigate();
@@ -122,7 +225,8 @@ export default function useControllers() {
             ),
           {
             onMutate: onMutate ? () => onMutate() : undefined,
-            onSuccess: dispatch
+            onSuccess: 
+              dispatch
               ? ({ data }) => {
                   dispatch(
                     path === 'logout'
@@ -152,11 +256,16 @@ export default function useControllers() {
   const postMutation = apiMutation('/posts/');
   const commentMutation = apiMutation('/comments/');
 
-  return {
-    usePosts: userQuery<UserPosts>('userPosts'),
+  const redirectLogin = () => navigate('/login');
 
-    useAllPosts: postQuery<Post[]>('allPosts'),
-    usePost: postQuery<Post>('post'),
+  return {
+    // usePosts: userQuery<UserPosts>('userPosts'),
+    userPosts: new Query<UserPosts>('userPosts', '/users/'),
+
+    // useAllPosts: postQuery<Post[]>('allPosts'),
+    allPosts: new Query<Post[]>('allPosts', '/posts/'),
+    // usePost: postQuery<Post>('post'),
+    post: new Query<Post>('post', '/users/'),
 
     useSignup: userMutation<Signup>('post', 'signup'),
     useLogin: userMutation<Login>('post', 'login'),
