@@ -12,7 +12,7 @@ import {
 } from 'custom-types';
 import React from 'react';
 import api from './api';
-import { LOGIN, LOGOUT } from '../utils/context/actions';
+import { LOGIN, LOGOUT } from '../context/actions';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 /** Parent Class */

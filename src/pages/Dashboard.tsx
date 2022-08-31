@@ -5,7 +5,7 @@ import PostForm from '../components/Forms/PostForm';
 import PostCard from '../components/Post';
 
 import { authContext } from '../utils/context/contexts';
-import useControllers from '../controllers';
+import useControllers from '../utils/api';
 
 export default function Dashboard() {
   const { state } = React.useContext(authContext);

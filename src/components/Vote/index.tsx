@@ -4,7 +4,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { authContext } from '../../utils/context/contexts';
-import useControllers from '../../controllers';
+import useControllers from '../../utils/api';
 import { Vote } from 'custom-types';
 import { VoteButton } from '../Buttons';
 

@@ -15,7 +15,7 @@ import { authContext } from '../../../utils/context/contexts';
 // import theme from '../../../utils/mui-theme';
 import useTheme from '@mui/material/styles/useTheme';
 
-import useControllers from '../../../controllers/index';
+import useControllers from '../../../utils/api/index';
 import AppMenu from '../../Menus/AppMenu';
 
 interface NavTabProps {

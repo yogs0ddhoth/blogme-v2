@@ -10,7 +10,7 @@ import { ActionsMenu, MenuAction, Popup } from '..';
 
 import { authContext } from '../../../utils/context/contexts';
 import { Comment } from 'custom-types';
-import useControllers from '../../../controllers';
+import useControllers from '../../../utils/api';
 
 interface CommentMenuProps {
   className?: string

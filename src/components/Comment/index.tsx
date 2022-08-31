@@ -12,7 +12,7 @@ import Timestamp from '../Timestamp';
 
 import { Comment, Post } from 'custom-types';
 import { authContext } from '../../utils/context/contexts';
-import useControllers from '../../controllers';
+import useControllers from '../../utils/api';
 import { useTheme } from '@mui/system';
 
 interface CommentCardProps {

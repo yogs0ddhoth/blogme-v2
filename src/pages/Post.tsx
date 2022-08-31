@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import PostCard from '../components/Post';
-import useControllers from '../controllers';
+import useControllers from '../utils/api';
 
 export default function PostPage() {
   const id = useParams().postId as string;

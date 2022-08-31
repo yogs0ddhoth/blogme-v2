@@ -23,7 +23,7 @@ import Votes from '../Vote';
 import { Post } from 'custom-types';
 import { useTheme } from '@mui/material/styles';
 import { authContext } from '../../utils/context/contexts';
-import useControllers from '../../controllers';
+import useControllers from '../../utils/api';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;

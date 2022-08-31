@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 
 import { authContext } from '../../utils/context/contexts';
-import useControllers from '../../controllers';
+import useControllers from '../../utils/api';
 import { VisibilityButton } from '../Buttons';
 import { LOGIN } from '../../utils/context/actions';
 

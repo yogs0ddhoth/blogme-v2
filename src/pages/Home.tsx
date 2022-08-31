@@ -1,6 +1,6 @@
 import { Post } from 'custom-types';
 import PostCard from '../components/Post';
-import useControllers from '../controllers';
+import useControllers from '../utils/api';
 
 export default function Home() {
   const { allPosts } = useControllers();

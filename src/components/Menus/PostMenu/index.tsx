@@ -11,7 +11,7 @@ import PostForm from '../../Forms/PostForm';
 import { authContext } from '../../../utils/context/contexts';
 import { Post } from 'custom-types';
 import { ActionsMenu, MenuAction, Popup } from '..';
-import useControllers from '../../../controllers';
+import useControllers from '../../../utils/api';
 import { useTheme } from '@mui/material';
 
 export default function PostMenu({ post, darkMode }: { post: Post, darkMode: boolean }) {

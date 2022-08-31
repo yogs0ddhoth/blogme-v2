@@ -10,7 +10,7 @@ import createTheme from '@mui/material/styles/createTheme';
 import defaultTheme from '../../utils/mui-theme';
 import ThemeProvider from '@mui/system/ThemeProvider';
 
-import useControllers from '../../controllers';
+import useControllers from '../../utils/api';
 import { authContext } from '../../utils/context/contexts';
 import { LOGOUT } from '../../utils/context/actions';
 
