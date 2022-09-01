@@ -10,7 +10,7 @@ declare module 'custom-types' {
     name: string;
   }
   
-  interface UserAuth {
+  interface UserAccess {
     access_token: string;
   }
 
@@ -62,7 +62,7 @@ declare module 'custom-types' {
       auth: string;
     };
   }
-  interface AuthContext {
+  interface UserAuth {
     user: string;
     id: number;
     auth: string;

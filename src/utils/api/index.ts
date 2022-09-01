@@ -1,18 +1,15 @@
 import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import {
   Post,
-  AuthAction,
   Vote,
   Signup,
   Login,
   PostInput,
   CommentInput,
   UserPosts,
-  UserAuth,
+  UserAccess,
 } from 'custom-types';
-import React from 'react';
 import api from './api';
-import { LOGIN, LOGOUT } from '../context/actions';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 /** Parent Class */
@@ -163,12 +160,12 @@ export default function useControllers() {
   };
 
   return {
-    allPosts: new Query<Post[]>('/posts/', 'allPosts', navigate),
     userPosts: new Query<UserPosts>('/users/', 'userPosts', navigate),
-    post: new Query<Post>('/users/', 'post', navigate),
+    allPosts: new Query<Post[]>('/posts/', 'allPosts', navigate),
+    post: new Query<Post>('/posts/', 'post', navigate),
 
-    signup: new Mutation<Signup, UserAuth>('/users/', 'post', navigate, refreshCache, 'signup'),
-    login: new Mutation<Login, UserAuth>('/users/', 'post', navigate, refreshCache, 'login'),
+    signup: new Mutation<Signup, UserAccess>('/users/', 'post', navigate, refreshCache, 'signup'),
+    login: new Mutation<Login, UserAccess>('/users/', 'post', navigate, refreshCache, 'login'),
     logout: new Mutation<void, any>('/users/', 'post', navigate, refreshCache, 'logout'),
 
     createPost: new Mutation<PostInput, void>('/posts/', 'post', navigate, refreshCache),
