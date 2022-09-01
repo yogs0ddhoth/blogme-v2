@@ -30,7 +30,10 @@ export default function CommentMenu({
   const {auth} = state;
   const {id} = comment;
   const { deleteComment } = useControllers();
+
+  // TODO: create seperate handler to initialize mutation with auth checked for expiration
   const useDeleteComment = deleteComment.init(auth, id);
+  
   // Delete action state
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const handleDeleteOpen = () => setDeleteOpen(true);

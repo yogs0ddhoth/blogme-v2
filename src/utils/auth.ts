@@ -1,3 +1,4 @@
+import { UserAuth } from 'custom-types';
 import decode from 'jwt-decode';
 
 type Token = {
@@ -10,21 +11,31 @@ type Token = {
   };
 };
 export default function Auth() {
-  function getUser() {
-    const token = localStorage.getItem('token');
+  function getToken() {
+    return localStorage.getItem('token');
+  }
+
+  function authExpired(token: string) {
+    const decodedToken = decode<Token>(token);
+    return (decodedToken.exp < Date.now()/1000) ? true : false;
+  }
+
+  function getUser(): UserAuth {
+    const token = getToken();
+    const emptyAuth = { user: '', id: 0, auth: '' };
     if (token === null) {
-      return { user: '', id: 0, auth: '' };
+      return emptyAuth;
     }
     const decodedToken = decode<Token>(token);
-
-    if (decodedToken.exp < Date.now() / 1000) {
-      return { user: '', id: 0, auth: '' };
-    }
-    return {
-      user: decodedToken.sub.user,
-      id: decodedToken.sub.id,
-      auth: token,
-    };
+    return (
+      decodedToken.exp < Date.now()/1000
+    ) 
+      ? emptyAuth 
+      : {
+          user: decodedToken.sub.user,
+          id: decodedToken.sub.id,
+          auth: token,
+        };
   }
 
   function saveUser(token: string) {
@@ -36,6 +47,7 @@ export default function Auth() {
   }
 
   return {
+    authExpired,
     saveUser,
     clearUser,
     getUser,

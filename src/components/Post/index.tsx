@@ -53,6 +53,7 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
   const darkMode = theme.palette.mode === 'dark';
 
   const { createComment } = useControllers();
+  // TODO: create seperate handler to initialize mutation with auth checked for expiration
   const useCreateComment = createComment.init(auth);
 
   const [expanded, setExpanded] = React.useState(false);

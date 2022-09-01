@@ -38,7 +38,7 @@ export default function Votes({ post_id, vote_count, votes }: VoteButtonProps) {
     setVoteCount(userVote ? voteCount - 1 : voteCount + 1);
   };
 
-  const mutationArgs = { auth: auth, onMutate: updateVote };
+  // TODO: create seperate handler to initialize mutation with auth checked for expiration
   const mutation = userVote
     ? deleteVote.init(auth, undefined, updateVote)
     : upVote.init(auth, undefined, updateVote);

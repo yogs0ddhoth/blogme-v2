@@ -27,6 +27,8 @@ export default function CommentCard({
   const {auth} = state;
   const {id} = comment;
   const { updateComment } = useControllers();
+
+  // TODO: create seperate handler to initialize mutation with auth checked for expiration
   const useUpdateComment = updateComment.init(auth, id);
 
   // edit state

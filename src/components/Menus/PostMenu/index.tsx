@@ -25,8 +25,10 @@ export default function PostMenu({ post, darkMode }: { post: Post, darkMode: boo
   const handleEditOpen = () => setEditOpen(true);
   const handleEditClose = () => setEditOpen(false);
   
+  // TODO: create seperate handler to initialize mutation with auth checked for expiration
   const useUpdatePost = updatePost.init(auth, id);
   const useDeletePost = deletePost.init(auth, id);
+  
   // Delete action state
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const handleDeleteOpen = () => setDeleteOpen(true);
