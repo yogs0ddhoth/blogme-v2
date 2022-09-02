@@ -47,22 +47,21 @@ interface PostCardProps {
 }
 export default function PostCard({ post, menu, comment }: PostCardProps) {
   const { state, dispatch } = React.useContext(authContext);
-  const {auth} = state;
+  const { auth } = state;
 
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
 
   const { createComment } = useControllers();
-  // TODO: create seperate handler to initialize mutation with auth checked for expiration
   const useCreateComment = createComment.init(auth);
 
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => setExpanded(!expanded);
 
   return (
-    <Card 
-      className="mt-5" 
-      elevation={2} 
+    <Card
+      className="mt-5"
+      elevation={2}
       // sx={{ bgcolor: darkMode ? 'primary.dark' : '' }}
     >
       <CardHeader
@@ -83,15 +82,17 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
         //   </Link>
         // }
         action={
-          post.user.id == state.id 
-          ? <PostMenu post={post} darkMode={darkMode} /> 
-          : <></>
+          post.user.id == state.id ? (
+            <PostMenu post={post} darkMode={darkMode} />
+          ) : (
+            <></>
+          )
         }
       />
-      <Divider sx={{bgcolor: 'secondary.main'}} variant='fullWidth' />
+      <Divider sx={{ bgcolor: 'secondary.main' }} variant="fullWidth" />
       {/* { darkMode ? <Divider sx={{color: 'secondary.main'}} variant='fullWidth' /> : <></>} */}
-      <CardContent 
-        // sx={{ bgcolor: darkMode ? 'primary.dark' : '' }}
+      <CardContent
+      // sx={{ bgcolor: darkMode ? 'primary.dark' : '' }}
       >
         <Link to={`/post/${post.id}`}>
           <Typography
@@ -111,9 +112,13 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
         <Typography variant="body1">{post.text}</Typography>
       </CardContent>
 
-      <Divider sx={{ bgcolor: darkMode ? 'secondary.main' : '' }} variant="middle" />
+      <Divider
+        sx={{ bgcolor: darkMode ? 'secondary.main' : '' }}
+        variant="middle"
+      />
 
-      <CardActions disableSpacing 
+      <CardActions
+        disableSpacing
         // sx={{ bgcolor: darkMode ? 'primary.dark' : '' }}
       >
         <Votes
@@ -129,24 +134,24 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
             aria-label="show more"
             sx={{
               '&:hover': {
-                color: darkMode ? 'secondary.main' : ''
-              }
+                color: darkMode ? 'secondary.main' : '',
+              },
             }}
           >
-            <ExpandMoreIcon 
+            <ExpandMoreIcon
+            // sx={{
+            //   '&:hover': {
+            //     color: darkMode ? 'secondary.main' : ''
+            //   }
+            // }}
+            />
+            {!expanded ? (
+              <Typography
               // sx={{
               //   '&:hover': {
               //     color: darkMode ? 'secondary.main' : ''
               //   }
               // }}
-            />
-            {!expanded ? (
-              <Typography
-                // sx={{
-                //   '&:hover': {
-                //     color: darkMode ? 'secondary.main' : ''
-                //   }
-                // }}
               >
                 {post.comments.length} Comment
                 {post.comments.length > 1 ? 's' : ''}

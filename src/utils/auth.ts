@@ -17,7 +17,7 @@ export default function Auth() {
 
   function authExpired(token: string) {
     const decodedToken = decode<Token>(token);
-    return (decodedToken.exp < Date.now()/1000) ? true : false;
+    return decodedToken.exp < Date.now() / 1000 ? true : false;
   }
 
   function getUser(): UserAuth {
@@ -27,10 +27,8 @@ export default function Auth() {
       return emptyAuth;
     }
     const decodedToken = decode<Token>(token);
-    return (
-      decodedToken.exp < Date.now()/1000
-    ) 
-      ? emptyAuth 
+    return decodedToken.exp < Date.now() / 1000
+      ? emptyAuth
       : {
           user: decodedToken.sub.user,
           id: decodedToken.sub.id,

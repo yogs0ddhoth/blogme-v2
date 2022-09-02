@@ -31,23 +31,28 @@ export default function DeleteCard({
         title={<Typography>Delete this post?</Typography>}
         action={action}
       />
-      <Divider variant="middle" sx={{ bgcolor: darkMode ? 'secondary.main' : '' }} />
+      <Divider
+        variant="middle"
+        sx={{ bgcolor: darkMode ? 'secondary.main' : '' }}
+      />
       <CardContent>
         <Typography>Are you sure you want to delete this post?</Typography>
       </CardContent>
 
       <CardActions>
-        <Button variant="outlined" 
-          color={darkMode ? "secondary" : "primary"}
+        <Button
+          variant="outlined"
+          color={darkMode ? 'secondary' : 'primary'}
           onClick={cancel}
         >
           Cancel
         </Button>
-        <Button variant={darkMode ? "contained" : "outlined"} 
+        <Button
+          variant={darkMode ? 'contained' : 'outlined'}
           // sx={{
           //   color: darkMode ? "secondary.main" : "primary"
           // }}
-          color={darkMode ? "secondary" : "primary"}
+          color={darkMode ? 'secondary' : 'primary'}
           onClick={() => mutation.mutate()}
         >
           Delete

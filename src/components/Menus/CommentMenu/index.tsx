@@ -13,7 +13,7 @@ import { Comment } from 'custom-types';
 import useControllers from '../../../utils/api';
 
 interface CommentMenuProps {
-  className?: string
+  className?: string;
   comment: Comment;
   darkMode: boolean;
   editOpen: () => void;
@@ -27,19 +27,18 @@ export default function CommentMenu({
   hover,
 }: CommentMenuProps) {
   const { state, dispatch } = React.useContext(authContext);
-  const {auth} = state;
-  const {id} = comment;
+  const { auth } = state;
+  const { id } = comment;
   const { deleteComment } = useControllers();
 
-  // TODO: create seperate handler to initialize mutation with auth checked for expiration
   const useDeleteComment = deleteComment.init(auth, id);
-  
+
   // Delete action state
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const handleDeleteOpen = () => setDeleteOpen(true);
   const handleDeleteClose = () => setDeleteOpen(false);
 
-  const highlight = `hover:text-[${darkMode ?'#69f0ae' : '#171717'}]`;
+  const highlight = `hover:text-[${darkMode ? '#69f0ae' : '#171717'}]`;
 
   return (
     <ActionsMenu

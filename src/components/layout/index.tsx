@@ -45,7 +45,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const { state, dispatch } = React.useContext(authContext);
   const { logout } = useControllers();
-  const useLogout = logout.init();
+  const useLogout = logout.init(state.auth);
 
   return (
     <StyledEngineProvider injectFirst>
@@ -61,9 +61,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Navbar
               menu={
                 <AppMenu
-                  logout={
-                    () => useLogout.mutate(undefined, {
-                      onSuccess: () => dispatch({type: LOGOUT})
+                  logout={() =>
+                    useLogout.mutate(undefined, {
+                      onSuccess: () => dispatch({ type: LOGOUT }),
                     })
                   }
                   mode={mode}

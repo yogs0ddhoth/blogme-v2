@@ -37,17 +37,17 @@ export default function SignupForm() {
       <Typography variant="h4" className="text-center">
         Signup
       </Typography>
-      <form className="flex flex-col gap-3 w-full items-center"
-        onSubmit={
-          handleSubmit(
-            (data) => useSignup.mutate(data, {
-              onSuccess: ({ data}) => dispatch({
+      <form
+        className="flex flex-col gap-3 w-full items-center"
+        onSubmit={handleSubmit((data) =>
+          useSignup.mutate(data, {
+            onSuccess: ({ data }) =>
+              dispatch({
                 type: LOGIN,
-                payload: { auth: data.access_token}
-              })
-            })
-          )
-        }
+                payload: { auth: data.access_token },
+              }),
+          })
+        )}
       >
         <Controller
           name="name"

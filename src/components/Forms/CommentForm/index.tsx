@@ -56,23 +56,23 @@ export default function CommentForm({
             label="comment"
             variant="standard"
             multiline
-            color={ darkMode ? 'secondary' : 'primary' }
+            color={darkMode ? 'secondary' : 'primary'}
             value={commentState}
             onChange={(e) => setCommentState(e.target.value)}
           />
           {closeEl}
-        </Stack>  
-        <IconButton 
-          type="submit" 
+        </Stack>
+        <IconButton
+          type="submit"
           sx={{
             '&:hover': {
-              color: darkMode ? 'secondary.main' : 'secondary.dark' 
-            }
+              color: darkMode ? 'secondary.main' : 'secondary.dark',
+            },
           }}
         >
-          <SendIcon 
-            // sx={{':hover': {bgcolor:  darkMode ? 'secondary' : 'primary' }}}
-            // color={  } 
+          <SendIcon
+          // sx={{':hover': {bgcolor:  darkMode ? 'secondary' : 'primary' }}}
+          // color={  }
           />
         </IconButton>
       </Stack>

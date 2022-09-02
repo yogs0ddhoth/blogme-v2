@@ -51,19 +51,20 @@ class Query<ResponseDataType> extends Controller {
    * @returns instance of useQuery()
    */
   init(auth?: string, id?: string) {
-    const {url, navigate} = this;
+    const { url, navigate } = this;
     return useQuery(
-      [this.#key], 
-      () => api<string, void, ResponseDataType>(
-        Query.#method, 
-        url, 
-        id, 
-        undefined,
-        auth
-      ),
+      [this.#key],
+      () =>
+        api<string, void, ResponseDataType>(
+          Query.#method,
+          url,
+          id,
+          undefined,
+          auth
+        ),
       {
-        retry: false, 
-        onError: () => navigate('/login')
+        retry: false,
+        onError: () => navigate('/login'),
       }
     );
   }
@@ -82,10 +83,10 @@ class Mutation<DataType, ResponseDataType> extends Controller {
    * @param path path
    */
   constructor(
-    url: string, 
-    method: string, 
-    navigate: NavigateFunction, 
-    refreshCache: () => Promise<void>, 
+    url: string,
+    method: string,
+    navigate: NavigateFunction,
+    refreshCache: () => Promise<void>,
     path?: string
   ) {
     super(url, navigate);
@@ -97,7 +98,7 @@ class Mutation<DataType, ResponseDataType> extends Controller {
    * Mutation Controller
    * @param auth token
    * @param id post_id | comment_id
-   * @param onMutate hook to be called on Mutate 
+   * @param onMutate hook to be called on Mutate
    * @returns instance of useMutation()
    */
   init(auth?: string, id?: number, onMutate?: () => void) {
@@ -105,21 +106,23 @@ class Mutation<DataType, ResponseDataType> extends Controller {
     const path = this.#path;
 
     return useMutation(
-      (data: DataType) => api<string | number, DataType, ResponseDataType>(
-        this.#method,
-        url,
-        path ? path : id ? id : undefined,
-        data,
-        auth
-      ),
+      (data: DataType) =>
+        api<string | number, DataType, ResponseDataType>(
+          this.#method,
+          url,
+          path ? path : id ? id : undefined,
+          data,
+          auth
+        ),
       {
         onMutate: onMutate ? () => onMutate() : undefined,
-        onSuccess : path === 'signup' || path === 'login' 
-          ? () => navigate('/dashboard') 
-          : path === 'logout' && window.location.pathname === '/dashboard' 
+        onSuccess:
+          path === 'signup' || path === 'login'
+            ? () => navigate('/dashboard')
+            : path === 'logout' && window.location.pathname === '/dashboard'
             ? () => navigate('/')
             : () => this.#refreshCache(),
-        onError: () => navigate('/login')
+        onError: () => navigate('/login'),
       }
     );
   }
@@ -164,19 +167,79 @@ export default function useControllers() {
     allPosts: new Query<Post[]>('/posts/', 'allPosts', navigate),
     post: new Query<Post>('/posts/', 'post', navigate),
 
-    signup: new Mutation<Signup, UserAccess>('/users/', 'post', navigate, refreshCache, 'signup'),
-    login: new Mutation<Login, UserAccess>('/users/', 'post', navigate, refreshCache, 'login'),
-    logout: new Mutation<void, any>('/users/', 'post', navigate, refreshCache, 'logout'),
+    signup: new Mutation<Signup, UserAccess>(
+      '/users/',
+      'post',
+      navigate,
+      refreshCache,
+      'signup'
+    ),
+    login: new Mutation<Login, UserAccess>(
+      '/users/',
+      'post',
+      navigate,
+      refreshCache,
+      'login'
+    ),
+    logout: new Mutation<void, any>(
+      '/users/',
+      'post',
+      navigate,
+      refreshCache,
+      'logout'
+    ),
 
-    createPost: new Mutation<PostInput, void>('/posts/', 'post', navigate, refreshCache),
-    updatePost: new Mutation<PostInput, any>('/posts/', 'put', navigate, refreshCache),
-    deletePost: new Mutation<void, any>('/posts/', 'delete', navigate, refreshCache),
+    createPost: new Mutation<PostInput, void>(
+      '/posts/',
+      'post',
+      navigate,
+      refreshCache
+    ),
+    updatePost: new Mutation<PostInput, any>(
+      '/posts/',
+      'put',
+      navigate,
+      refreshCache
+    ),
+    deletePost: new Mutation<void, any>(
+      '/posts/',
+      'delete',
+      navigate,
+      refreshCache
+    ),
 
-    upVote: new Mutation<Vote, any>('/posts/', 'put', navigate, refreshCache, 'upvote'),
-    deleteVote: new Mutation<Vote, any>('/posts/', 'delete', navigate, refreshCache, 'upvote'),
+    upVote: new Mutation<Vote, any>(
+      '/posts/',
+      'put',
+      navigate,
+      refreshCache,
+      'upvote'
+    ),
+    deleteVote: new Mutation<Vote, any>(
+      '/posts/',
+      'delete',
+      navigate,
+      refreshCache,
+      'upvote'
+    ),
 
-    createComment: new Mutation<CommentInput, any>('/comments/', 'post', navigate, refreshCache),
-    updateComment: new Mutation<CommentInput, any>('/comments/', 'put', navigate, refreshCache),
-    deleteComment: new Mutation<void, any>('/comments/', 'delete', navigate, refreshCache)
+    createComment: new Mutation<CommentInput, any>(
+      '/comments/',
+      'post',
+      navigate,
+      refreshCache
+    ),
+    updateComment: new Mutation<CommentInput, any>(
+      '/comments/',
+      'put',
+      navigate,
+      refreshCache
+    ),
+    deleteComment: new Mutation<void, any>(
+      '/comments/',
+      'delete',
+      navigate,
+      refreshCache
+    ),
   };
 }

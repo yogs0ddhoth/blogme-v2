@@ -24,28 +24,22 @@ export default function Dashboard() {
 
   // TODO: create loading spinner modal for refetching
   return (
-    <div 
+    <div
       className="
         mb-6 min-h-full box-content text-center 
         flex flex-col lg:grid lg:grid-cols-12
       "
     >
-      <div 
-        className="lg:col-span-12"
-      >
+      <div className="lg:col-span-12">
         <h2>Welcome, {data.data.name}!</h2>
       </div>
 
-      <div 
-        className="lg:col-span-6 lg:px-2 flex flex-col"
-      >
+      <div className="lg:col-span-6 lg:px-2 flex flex-col">
         <h3>Create a New Post:</h3>
         <PostForm mutation={useCreatePost} className="mt-5" />
       </div>
 
-      <div 
-        className="lg:col-span-6 lg:px-2 flex flex-col"
-      >
+      <div className="lg:col-span-6 lg:px-2 flex flex-col">
         <h3>Posts:</h3>
         {data.data.posts.map((post: Post) => (
           <PostCard key={post.id} post={post} />

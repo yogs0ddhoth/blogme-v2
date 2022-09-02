@@ -24,17 +24,16 @@ export default function CommentCard({
   comment,
 }: CommentCardProps) {
   const { state, dispatch } = React.useContext(authContext);
-  const {auth} = state;
-  const {id} = comment;
+  const { auth } = state;
+  const { id } = comment;
   const { updateComment } = useControllers();
-
-  // TODO: create seperate handler to initialize mutation with auth checked for expiration
-  const useUpdateComment = updateComment.init(auth, id);
 
   // edit state
   const [editOpen, setEditOpen] = React.useState(false);
   const handleEditOpen = () => setEditOpen(true);
   const handleEditClose = () => setEditOpen(false);
+
+  const useUpdateComment = updateComment.init(auth, id);
 
   const darkMode = useTheme().palette.mode === 'dark';
 
@@ -56,14 +55,15 @@ export default function CommentCard({
           className="hover:underline hover:cursor-pointer"
           onClick={handleEditClose}
           sx={{
-            "&:hover": {
-              color: darkMode ? "secondary.main" : ""
-            }
+            '&:hover': {
+              color: darkMode ? 'secondary.main' : '',
+            },
           }}
         >
           Cancel
         </Typography>
       }
+      handleClose={handleEditClose}
     />
   );
 }
@@ -86,7 +86,8 @@ const CommentView = ({
 }: CommentViewProps) => {
   // hover state - for rendering menu
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-  const handleMouseEnter = (e: React.MouseEvent<HTMLElement | null>) => setAnchorEl(e.currentTarget);
+  const handleMouseEnter = (e: React.MouseEvent<HTMLElement | null>) =>
+    setAnchorEl(e.currentTarget);
   const handleMouseLeave = () => setAnchorEl(null);
   const hover = Boolean(anchorEl);
 
@@ -109,17 +110,16 @@ const CommentView = ({
           updated_at={comment.updated_at}
         />
       </Stack>
-      {post_user_id === state.id || comment.user.id === state.id 
-        ? (
-          <CommentMenu 
-            comment={comment} 
-            darkMode={darkMode}
-            editOpen={editOpen} 
-            hover={hover} 
-          />
-        ) 
-        : <></>
-      }
+      {post_user_id === state.id || comment.user.id === state.id ? (
+        <CommentMenu
+          comment={comment}
+          darkMode={darkMode}
+          editOpen={editOpen}
+          hover={hover}
+        />
+      ) : (
+        <></>
+      )}
     </Stack>
   );
 };

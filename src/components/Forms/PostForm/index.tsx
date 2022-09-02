@@ -41,24 +41,28 @@ export default function PostForm({
   const darkMode = useTheme().palette.mode == 'dark';
 
   return (
-    <form onSubmit={
-      handleSubmit((data) => mutation.mutate(
-        data, 
-        {onSuccess: () => {
-          reset();
-          if (handleClose) {
-            handleClose();
-          }
-        }}
-      ))
-      }
+    <form
+      onSubmit={handleSubmit((data) =>
+        mutation.mutate(data, {
+          onSuccess: () => {
+            reset();
+            if (handleClose) {
+              handleClose();
+            }
+          },
+        })
+      )}
     >
-      <Card className={'flex flex-col w-full gap-3 mt-5' + className ? className : ''}>
+      <Card
+        className={
+          'flex flex-col w-full gap-3 mt-5' + className ? className : ''
+        }
+      >
         {action ? <CardHeader action={action} /> : <></>}
 
         {/* <Divider color='primary' variant='middle'/> */}
 
-        <CardContent className='flex flex-col gap-3 justify-center'>
+        <CardContent className="flex flex-col gap-3 justify-center">
           <Controller
             name="title"
             control={control}
@@ -66,10 +70,10 @@ export default function PostForm({
               <TextField
                 {...field}
                 label="Title:"
-                color={ darkMode ? 'secondary' : 'primary' }
+                color={darkMode ? 'secondary' : 'primary'}
                 error={errors.title?.message !== undefined}
                 helperText={errors.title?.message}
-                sx={{pb: 2, minWidth: '80%'}}
+                sx={{ pb: 2, minWidth: '80%' }}
               />
             )}
             rules={{ required: 'This field is required.' }}
@@ -81,31 +85,34 @@ export default function PostForm({
               <TextField
                 {...field}
                 label="Post:"
-                color={ darkMode ? 'secondary' : 'primary' }
+                color={darkMode ? 'secondary' : 'primary'}
                 multiline
                 rows={4}
                 error={errors.text?.message !== undefined}
                 helperText={errors.text?.message}
-                sx={{minWidth: '80%'}}
+                sx={{ minWidth: '80%' }}
               />
             )}
             rules={{ required: 'This field is required.' }}
           />
         </CardContent>
 
-        <Divider sx={{ bgcolor: darkMode ? 'secondary.main' : '' }} variant="middle" />
+        <Divider
+          sx={{ bgcolor: darkMode ? 'secondary.main' : '' }}
+          variant="middle"
+        />
 
         <CardActions className="flex flex-row justify-end">
-          <Button 
-            type="submit" 
-            variant={darkMode ? "contained" : "outlined"}
-            sx={{ 
-              bgcolor: darkMode ? "secondary.main" : "",
-              color: darkMode ? "primary.main" : "",
+          <Button
+            type="submit"
+            variant={darkMode ? 'contained' : 'outlined'}
+            sx={{
+              bgcolor: darkMode ? 'secondary.main' : '',
+              color: darkMode ? 'primary.main' : '',
               '&:hover': {
                 // bgcolor: darkMode ? 'primary.contrast' : '',
                 color: darkMode ? 'secondary.main' : '',
-              }
+              },
             }}
           >
             Submit

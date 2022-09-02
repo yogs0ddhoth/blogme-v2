@@ -67,9 +67,7 @@ export const ActionsMenu = ({
       <Menu id="menu" open={open} anchorEl={anchorEl} onClose={handleClose}>
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
-            return React.cloneElement(child, [
-              {onClick: handleClose}
-            ]);
+            return React.cloneElement(child, [{ onClick: handleClose }]);
           }
           return child;
         })}
@@ -90,8 +88,8 @@ interface PopupProps {
 }
 export function Popup(props: PopupProps) {
   return (
-    <Modal {...props} className='styled-modal'>
+    <Modal {...props} className="styled-modal">
       {props.children}
     </Modal>
-  )
+  );
 }

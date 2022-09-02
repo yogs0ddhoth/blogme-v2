@@ -15,13 +15,11 @@ interface VoteButtonProps {
 }
 export default function Votes({ post_id, vote_count, votes }: VoteButtonProps) {
   const { state, dispatch } = React.useContext(authContext);
-  const {user, id, auth} = state;
-  
+  const { user, id, auth } = state;
+
   const [voteCount, setVoteCount] = React.useState(vote_count);
   const [userVote, setUserVote] = React.useState(
-    votes.find((v) => v.post_id === post_id && v.user.id === id)
-      ? true
-      : false
+    votes.find((v) => v.post_id === post_id && v.user.id === id) ? true : false
   );
   const { upVote, deleteVote } = useControllers();
 
@@ -38,7 +36,6 @@ export default function Votes({ post_id, vote_count, votes }: VoteButtonProps) {
     setVoteCount(userVote ? voteCount - 1 : voteCount + 1);
   };
 
-  // TODO: create seperate handler to initialize mutation with auth checked for expiration
   const mutation = userVote
     ? deleteVote.init(auth, undefined, updateVote)
     : upVote.init(auth, undefined, updateVote);

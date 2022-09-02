@@ -112,7 +112,7 @@ def delete_upvote():
   user_id = data['user']['id']
   
   if user_id != identity['id']:
-    return jsonify(message = 'Update failed, User is unauthorized.'), 401
+    return jsonify(message='User is unauthorized.'), 401
 
   try:
     delete_vote(user_id, identity['id'])

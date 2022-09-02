@@ -9,7 +9,7 @@ declare module 'custom-types' {
   interface Signup extends Login {
     name: string;
   }
-  
+
   interface UserAccess {
     access_token: string;
   }

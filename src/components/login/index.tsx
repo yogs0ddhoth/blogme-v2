@@ -39,19 +39,17 @@ export default function LoginForm() {
 
       <form
         className="flex flex-col gap-3 w-full items-center"
-        onSubmit={
-          handleSubmit(
-            (data) => useLogin.mutate(data, {
-              onSuccess: ({data}) => {
-                dispatch({
-                  type: LOGIN,
-                  payload: {auth: data.access_token}
-                });
-                // login.navigate('/dashboard');
-              }
-            })
-          )
-        }
+        onSubmit={handleSubmit((data) =>
+          useLogin.mutate(data, {
+            onSuccess: ({ data }) => {
+              dispatch({
+                type: LOGIN,
+                payload: { auth: data.access_token },
+              });
+              // login.navigate('/dashboard');
+            },
+          })
+        )}
       >
         <Controller
           name="email"
