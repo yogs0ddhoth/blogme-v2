@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager, create_access_token, get_jwt
 from db import init_db, get_db
 # from flask_cors import CORS
 
-from controllers import comments, graphql, users, posts
+from routes import comments, users, posts
 
 load_dotenv()
 
