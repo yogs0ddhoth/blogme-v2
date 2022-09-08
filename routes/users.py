@@ -38,6 +38,7 @@ def refresh_expiring_jwt(response):
 @jwt_required()
 def get_posts():
   identity = get_jwt_identity()
+  print(f'```````````````````````` {identity} ````````````````````````') 
   try:
     user_posts = get_user_posts(identity['id'])
     return jsonify(user_posts), 200
@@ -118,7 +119,8 @@ def login():
 @bp.route('/logout', methods=['POST'])
 @jwt_required()
 def logout(): # remove session variables
-  print(f'```````````````````````` {get_jwt_identity().user} logged out. ````````````````````````')
+  identity = get_jwt_identity()
+  print(f'```````````````````````` {identity} logged out. ````````````````````````')
   session.clear()
   response = jsonify(message='Logged out')
   unset_jwt_cookies(response)
