@@ -60,7 +60,7 @@ export default function PostForm({
       >
         {action ? <CardHeader action={action} /> : <></>}
 
-        <CardContent className="flex flex-col gap-3 justify-center">
+        <CardContent className="flexCol gap-3 justify-center">
           <Controller
             name="title"
             control={control}
@@ -100,7 +100,7 @@ export default function PostForm({
           variant="middle"
         />
 
-        <CardActions className="flex flex-row justify-end">
+        <CardActions className="flexRow justify-end">
           <Button
             type="submit"
             variant={darkMode ? 'contained' : 'outlined'}

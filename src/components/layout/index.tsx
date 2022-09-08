@@ -53,7 +53,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <ThemeProvider theme={theme}>
           <Container
             maxWidth={false}
-            className="h-[100vh] min-w-[100vw] flex flex-col p-0 overflow-x-hidden"
+            className="layout"
             sx={{ bgcolor: 'background.default' }}
           >
             <Navbar
@@ -69,8 +69,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 />
               }
             />
-            <main className="container m-auto">{children}</main>
-            <footer className="mt-auto pl-2">
+
+            <main 
+              className='container m-auto'
+            >{children}</main>
+
+            <footer className="mt-auto pl-3 pb-1">
               <a
                 href="https://reactjs.org"
                 target="_blank"

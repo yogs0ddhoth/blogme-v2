@@ -153,7 +153,7 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
 
       {post.comments.length ? (
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent className='flex flex-col gap-2'>
+          <CardContent className='flexCol gap-2'>
             {post.comments.map((comment) => (
               <CommentCard
                 key={comment.id}

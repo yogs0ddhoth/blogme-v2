@@ -30,7 +30,7 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = React.useState(false);
 
   return (
-    <div className="container flex flex-col gap-3 justify-center items-center">
+    <div className="userAuth">
       <Avatar className="bg-[#69f0ae]">
         <LockOutlinedIcon className="text-[#212121]" />
       </Avatar>
@@ -38,7 +38,7 @@ export default function SignupForm() {
         Signup
       </Typography>
       <form
-        className="flex flex-col gap-3 w-full items-center"
+        className="authForm"
         onSubmit={handleSubmit((data) =>
           useSignup.mutate(data, {
             onSuccess: ({ data }) =>
@@ -54,7 +54,7 @@ export default function SignupForm() {
           control={control}
           render={({ field }) => (
             <FormControl
-              className="name w-2/3 sm:w-1/2 lg:w-[40%] xl:w-1/3"
+              className="name authField"
               error={errors.name?.message !== undefined}
             >
               <InputLabel htmlFor="name">Name *</InputLabel>
@@ -70,7 +70,7 @@ export default function SignupForm() {
           control={control}
           render={({ field }) => (
             <FormControl
-              className="email w-2/3 sm:w-1/2 lg:w-[40%] xl:w-1/3"
+              className="email authField"
               error={errors.email?.message !== undefined}
             >
               <InputLabel htmlFor="email">Email Address *</InputLabel>
@@ -96,7 +96,7 @@ export default function SignupForm() {
           control={control}
           render={({ field }) => (
             <FormControl
-              className="password w-2/3 sm:w-1/2 lg:w-[40%] xl:w-1/3"
+              className="password authField"
               error={errors.password?.message !== undefined}
             >
               <InputLabel htmlFor="password">Password *</InputLabel>
