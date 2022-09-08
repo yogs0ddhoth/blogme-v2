@@ -6,6 +6,8 @@ import PostCard from '../components/Post';
 
 import { authContext } from '../utils/context/contexts';
 import useControllers from '../utils/api';
+import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
 
 export default function Dashboard() {
   const { state } = React.useContext(authContext);
@@ -18,29 +20,37 @@ export default function Dashboard() {
     return <div className="loader" />;
   }
   if (status === 'error') {
-    return <span>Your session has timed out. Redirecting to login..</span>;
+    return (
+      <div>
+        <div className="loader" />
+        <span>Your session has timed out. Redirecting to login..</span>
+      </div>
+    );
   }
-  // console.log(data);
-
-  // TODO: create loading spinner modal for refetching
   return (
     <div
       className="
-        mb-6 min-h-full box-content text-center 
-        flex flex-col lg:grid lg:grid-cols-12
+        min-h-full box-content text-center
+        flex flex-col justify-start lg:grid lg:grid-cols-12 gap-2
       "
     >
       <div className="lg:col-span-12">
-        <h2>Welcome, {data.data.name}!</h2>
+        <Card>
+          <Typography>Welcome, {data.data.name}!</Typography>
+        </Card>
       </div>
 
-      <div className="lg:col-span-6 lg:px-2 flex flex-col">
-        <h3>Create a New Post:</h3>
-        <PostForm mutation={useCreatePost} className="mt-5" />
+      <div className="lg:col-span-6 flex flex-col gap-6">
+        <Card>
+          <Typography>Create a New Post:</Typography>
+        </Card>
+        <PostForm mutation={useCreatePost} />
       </div>
 
-      <div className="lg:col-span-6 lg:px-2 flex flex-col">
-        <h3>Posts:</h3>
+      <div className="lg:col-span-6 flex flex-col gap-3">
+        <Card>
+          <Typography>Posts:</Typography>
+        </Card>
         {data.data.posts.map((post: Post) => (
           <PostCard key={post.id} post={post} />
         ))}

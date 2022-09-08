@@ -60,8 +60,6 @@ export default function PostForm({
       >
         {action ? <CardHeader action={action} /> : <></>}
 
-        {/* <Divider color='primary' variant='middle'/> */}
-
         <CardContent className="flex flex-col gap-3 justify-center">
           <Controller
             name="title"
@@ -73,7 +71,7 @@ export default function PostForm({
                 color={darkMode ? 'secondary' : 'primary'}
                 error={errors.title?.message !== undefined}
                 helperText={errors.title?.message}
-                sx={{ pb: 2, minWidth: '80%' }}
+                sx={{ minWidth: '80%' }}
               />
             )}
             rules={{ required: 'This field is required.' }}

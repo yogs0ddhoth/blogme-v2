@@ -60,7 +60,7 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
 
   return (
     <Card
-      className="mt-5"
+      // className="mt-5"
       elevation={2}
       // sx={{ bgcolor: darkMode ? 'primary.dark' : '' }}
     >
@@ -76,11 +76,6 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
             }}
           />
         }
-        // subheader={
-        //   <Link to={`/post/${post.id}`}>
-        //     <Typography variant="h5">{post.title}</Typography>
-        //   </Link>
-        // }
         action={
           post.user.id == state.id ? (
             <PostMenu post={post} darkMode={darkMode} />
@@ -95,18 +90,7 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
       // sx={{ bgcolor: darkMode ? 'primary.dark' : '' }}
       >
         <Link to={`/post/${post.id}`}>
-          <Typography
-            variant="h5"
-            // onClick={
-            //   () => {
-            //     // e.preventDefault();
-            //     const navigate = useNavigate();
-            //     navigate(`/post/${post.id}`);
-            //   }
-            // }
-          >
-            {post.title}
-          </Typography>
+          <Typography variant="h5">{post.title}</Typography>
         </Link>
 
         <Typography variant="body1">{post.text}</Typography>
@@ -169,12 +153,13 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
 
       {post.comments.length ? (
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
+          <CardContent className='flex flex-col gap-2'>
             {post.comments.map((comment) => (
               <CommentCard
                 key={comment.id}
                 post_user_id={post.user.id}
                 comment={comment}
+                
               />
             ))}
           </CardContent>

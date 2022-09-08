@@ -5,7 +5,7 @@ interface TimestampProps {
   updated_at: string;
 }
 const Timestamp = ({ created_at, updated_at }: TimestampProps) => (
-  <Typography>
+  <Typography variant='caption'>
     {Date.parse(updated_at) > Date.parse(created_at)
       ? new Date(updated_at).toLocaleDateString('en-us')
       : new Date(created_at).toLocaleDateString('en-us')}

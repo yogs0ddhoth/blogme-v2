@@ -94,9 +94,10 @@ const CommentView = ({
   return (
     <Stack
       key={comment.id}
-      direction="row"
+      direction={comment.user.id === state.id ? "row-reverse" : "row"}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      spacing={1}
     >
       <UserAvatar name={comment.user.name} color="#18ffff" />
       <Stack>

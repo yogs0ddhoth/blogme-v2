@@ -54,9 +54,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Container
             maxWidth={false}
             className="h-[100vh] min-w-[100vw] flex flex-col p-0 overflow-x-hidden"
-            sx={{
-              bgcolor: 'background.default',
-            }}
+            sx={{ bgcolor: 'background.default' }}
           >
             <Navbar
               menu={
