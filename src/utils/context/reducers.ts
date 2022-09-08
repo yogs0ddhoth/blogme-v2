@@ -16,7 +16,7 @@ export const authReducer = (state: UserAuth, action: AuthAction) => {
       throw new Error('ERROR! PAYLOAD REQUIRED FOR LOGIN!');
     case LOGOUT:
       clearUser();
-      return { ...state, auth: '' };
+      return { ...state, user: '', id: 0, auth: '' };
     default:
       return state;
   }
