@@ -30,15 +30,26 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = React.useState(false);
 
   return (
-    <div className="userAuth">
+    <div 
+      className="
+        pt-3
+        flexCol items-center justify-center 
+        gap-3
+      "
+    >
       <Avatar className="bg-[#69f0ae]">
         <LockOutlinedIcon className="text-[#212121]" />
       </Avatar>
       <Typography variant="h4" className="text-center">
         Signup
       </Typography>
+
       <form
-        className="authForm"
+        className="
+          w-full
+          flexCol items-center 
+          gap-3
+        "
         onSubmit={handleSubmit((data) =>
           useSignup.mutate(data, {
             onSuccess: ({ data }) =>
@@ -54,7 +65,12 @@ export default function SignupForm() {
           control={control}
           render={({ field }) => (
             <FormControl
-              className="name authField"
+              className="name
+                w-2/3 
+                sm:w-1/2 
+                lg:w-[40%] 
+                xl:w-1/3
+              "
               error={errors.name?.message !== undefined}
             >
               <InputLabel htmlFor="name">Name *</InputLabel>
@@ -70,7 +86,12 @@ export default function SignupForm() {
           control={control}
           render={({ field }) => (
             <FormControl
-              className="email authField"
+              className="email
+                w-2/3 
+                sm:w-1/2 
+                lg:w-[40%] 
+                xl:w-1/3
+              "
               error={errors.email?.message !== undefined}
             >
               <InputLabel htmlFor="email">Email Address *</InputLabel>
@@ -96,7 +117,12 @@ export default function SignupForm() {
           control={control}
           render={({ field }) => (
             <FormControl
-              className="password authField"
+              className="password
+                w-2/3 
+                sm:w-1/2 
+                lg:w-[40%] 
+                xl:w-1/3
+              "
               error={errors.password?.message !== undefined}
             >
               <InputLabel htmlFor="password">Password *</InputLabel>

@@ -29,7 +29,13 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = React.useState(false);
 
   return (
-    <div className="userAuth">
+    <div 
+      className="
+        pt-3
+        flexCol items-center justify-center 
+        gap-3
+      "
+    >
       <Avatar className="bg-[#69f0ae]">
         <LockOpenOutlinedIcon />
       </Avatar>
@@ -56,7 +62,12 @@ export default function LoginForm() {
           control={control}
           render={({ field }) => (
             <FormControl
-              className="email authField"
+              className="email
+                w-2/3 
+                sm:w-1/2 
+                lg:w-[40%] 
+                xl:w-1/3
+              "
               error={errors.email?.message !== undefined}
             >
               <InputLabel htmlFor="email">Email Address *</InputLabel>
@@ -82,7 +93,12 @@ export default function LoginForm() {
           control={control}
           render={({ field }) => (
             <FormControl
-              className="password authField"
+              className="password
+                w-2/3 
+                sm:w-1/2 
+                lg:w-[40%] 
+                xl:w-1/3
+              "
               error={errors.password?.message !== undefined}
             >
               <InputLabel htmlFor="password">Password *</InputLabel>

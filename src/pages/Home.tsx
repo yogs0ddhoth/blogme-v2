@@ -16,7 +16,13 @@ export default function Home() {
 
   // TODO: create loading spinner modal for refetching
   return (
-    <div className="page">
+    <div 
+      className="
+        p-6 
+        flex flex-col text-center 
+        gap-5
+      "
+    >
       {data.data.map((post: Post) => (
         <PostCard key={post.id} post={post} />
       ))}

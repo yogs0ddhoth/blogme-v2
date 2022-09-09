@@ -60,14 +60,24 @@ export default function Navbar({ menu }: NavbarProps) {
       color={!darkMode ? 'primary' : 'secondary'}
     >
       <Toolbar className="">
-        <div className="w-1/2 pl-4 flexRow">
+        <div 
+          className="
+            w-1/2 pl-4 
+            flex flex-row
+          "
+        >
           <Typography variant="h4">BLOGME</Typography>
           <Typography variant="caption" className="pl-1">
             v2
           </Typography>
         </div>
 
-        <div className="w-1/2 flexRow justify-end items-center">
+        <div 
+          className="
+            w-1/2 
+            flex flex-row justify-end items-center
+          "
+        >
           <Tabs
             value={value}
             onChange={handleChange}

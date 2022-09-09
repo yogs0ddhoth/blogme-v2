@@ -88,7 +88,13 @@ interface PopupProps {
 }
 export function Popup(props: PopupProps) {
   return (
-    <Modal {...props} className="styled-modal">
+    <Modal {...props} 
+      className="
+        absolute top-1/2 left-1/2 w-[75vw]
+        translate-x-[-50%] translate-y-[-50%]
+        shadow-md
+      "
+    >
       {props.children}
     </Modal>
   );

@@ -53,7 +53,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <ThemeProvider theme={theme}>
           <Container
             maxWidth={false}
-            className="layout"
+            className="
+              h-[100vh] min-w-[100vw] overflow-x-hidden
+              p-0 
+              flex flex-col
+            "
             sx={{ bgcolor: 'background.default' }}
           >
             <Navbar
@@ -79,7 +83,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 href="https://reactjs.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="App-link text-react-blue text-[calc(5px+1vmin)] hover:underline"
+                className="
+                  App-link 
+                  text-react-blue 
+                  text-[calc(5px+1vmin)] 
+                  hover:underline
+                "
               >
                 Powered by React
               </a>

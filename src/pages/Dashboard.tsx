@@ -30,8 +30,10 @@ export default function Dashboard() {
   return (
     <div
       className="
-        page
-        lg:gridCols-12 
+        p-6 
+        flex flex-col text-center 
+        gap-5
+        lg:grid lg:grid-cols-12 
       "
     >
       <div className="lg:col-span-12">
@@ -40,14 +42,14 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <div className="lg:col-span-6 flexCol gap-6">
+      <div className="lg:col-span-6 flex flex-col gap-6">
         <Card>
           <Typography>Create a New Post:</Typography>
         </Card>
         <PostForm mutation={useCreatePost} />
       </div>
 
-      <div className="lg:col-span-6 flexCol gap-3">
+      <div className="lg:col-span-6 flex flex-col gap-3">
         <Card>
           <Typography>Posts:</Typography>
         </Card>
