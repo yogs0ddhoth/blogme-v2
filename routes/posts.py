@@ -97,7 +97,7 @@ def upvote():
   data = request.get_json()
   identity = get_jwt_identity()
   try:
-    create_vote(identity['user']['id'], data['post_id'])
+    create_vote(identity['id'], data['post_id'])
     return jsonify(message='Upvote success.'), 204
   except:
     print(f'```````````````````````` {sys.exc_info()[0]} ````````````````````````')
