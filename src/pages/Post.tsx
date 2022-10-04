@@ -7,7 +7,7 @@ export default function PostPage() {
   const { post } = useControllers();
   const { status, data, error } = post.init(undefined, id);
   if (status === 'loading') {
-    return <div className="loader" />;
+    return <div className="m-auto loader" />;
   }
   if (status === 'error') {
     return <span>Error: {`${error}`}</span>;

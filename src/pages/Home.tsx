@@ -7,7 +7,7 @@ export default function Home() {
   const { status, data, error } = allPosts.init();
 
   if (status === 'loading') {
-    return <div className="loader" />;
+    return <div className="m-auto loader" />;
   }
   if (status === 'error') {
     return <span>Error: {`${error}`}</span>;

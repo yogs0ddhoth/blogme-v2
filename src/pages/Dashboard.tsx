@@ -17,7 +17,7 @@ export default function Dashboard() {
   const useCreatePost = createPost.init(auth);
   const { status, data } = userPosts.init(auth);
   if (status === 'loading') {
-    return <div className="loader" />;
+    return <div className="m-auto loader" />;
   }
   if (status === 'error') {
     return (
