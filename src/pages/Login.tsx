@@ -1,7 +1,10 @@
-import LoginForm from '../components/login';
-import SignupForm from '../components/signup';
+import AuthForm from '../components/Forms/AuthForm';
+import useControllers from '../utils/api';
 
 export default function Login() {
+  const { login } = useControllers();
+  const useLogin = login.init();
+
   return (
     <div 
       className="
@@ -10,8 +13,10 @@ export default function Login() {
         gap-5
       "
     >
-      <LoginForm />
-      <SignupForm />
+      <AuthForm variant='Login' mutation={useLogin} />
+      <a href="/signup" className="" id="">
+        signup instead
+      </a>
     </div>
   );
 }

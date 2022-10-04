@@ -7,7 +7,7 @@ declare module 'custom-types' {
     password: string;
   }
   interface Signup extends Login {
-    name: string;
+    name?: string;
   }
 
   interface UserAccess {
