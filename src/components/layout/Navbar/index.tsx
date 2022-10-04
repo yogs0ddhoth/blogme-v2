@@ -90,12 +90,6 @@ export default function Navbar({ menu }: NavbarProps) {
               onClick={() => navigate('/')}
               darkMode={darkMode}
             />
-            <NavTab
-              value="/dashboard"
-              label="Dashboard"
-              onClick={() => navigate('/dashboard')}
-              darkMode={darkMode}
-            />
             {state.auth === '' ? (
               <NavTab
                 value="/login"
@@ -104,7 +98,12 @@ export default function Navbar({ menu }: NavbarProps) {
                 darkMode={darkMode}
               />
             ) : (
-              <></>
+              <NavTab
+                value="/dashboard"
+                label="Dashboard"
+                onClick={() => navigate('/dashboard')}
+                darkMode={darkMode}
+              />
             )}
           </Tabs>
 
