@@ -20,12 +20,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "dev": "npm run build && python -m flask run",
+    "seed": "python seeds.py",
+    "flask": "python -m flask run",
+    "dev": "npm run build && npm run flask",
     "lint": "npx eslint src",
     "prettier": "npx prettier --write src",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "setup": "npm run seed && npm run dev"
   },
   "eslintConfig": {
     "extends": [
