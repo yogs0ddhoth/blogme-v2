@@ -1,5 +1,4 @@
 import { UserAuth, AuthAction } from 'custom-types';
-import * as React from 'react';
 
 import Auth from '../auth';
 import { LOGIN, LOGOUT } from './actions';

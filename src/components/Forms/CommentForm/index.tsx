@@ -7,7 +7,6 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 import useTheme from '@mui/material/styles/useTheme';
-import theme from '../../../utils/mui-theme';
 
 import { CommentInput, MutationInstance } from 'custom-types';
 

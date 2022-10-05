@@ -12,7 +12,6 @@ import { authContext } from '../../../utils/context/contexts';
 import { Post } from 'custom-types';
 import { ActionsMenu, MenuAction, Popup } from '..';
 import useControllers from '../../../utils/api';
-import { useTheme } from '@mui/material';
 
 export default function PostMenu({
   post,
@@ -22,7 +21,7 @@ export default function PostMenu({
   darkMode: boolean;
 }) {
   const { deletePost, updatePost } = useControllers();
-  const { state, dispatch } = React.useContext(authContext);
+  const { state } = React.useContext(authContext);
   const { auth } = state;
   const { id } = post;
 

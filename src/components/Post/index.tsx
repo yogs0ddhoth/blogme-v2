@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import AppBar from '@mui/material/AppBar';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -28,10 +27,14 @@ import useControllers from '../../utils/api';
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
+const ExpandMore = styled(
+  // eslint-disable-next-line
+  (props: ExpandMoreProps) => {
+    // eslint-disable-next-line
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
+  }
+)(({ theme, expand }) => ({
   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
   marginLeft: 'auto',
   transition: theme.transitions.create('transform', {
@@ -45,8 +48,8 @@ interface PostCardProps {
   comment?: JSX.Element;
   // commentFormMutation?: UseMutationResult<AxiosResponse<any, any>, unknown, CommentInput, void>
 }
-export default function PostCard({ post, menu, comment }: PostCardProps) {
-  const { state, dispatch } = React.useContext(authContext);
+export default function PostCard({ post }: PostCardProps) {
+  const { state } = React.useContext(authContext);
   const { auth } = state;
 
   const theme = useTheme();
@@ -153,13 +156,12 @@ export default function PostCard({ post, menu, comment }: PostCardProps) {
 
       {post.comments.length ? (
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent className='flex flex-col gap-2'>
+          <CardContent className="flex flex-col gap-2">
             {post.comments.map((comment) => (
               <CommentCard
                 key={comment.id}
                 post_user_id={post.user.id}
                 comment={comment}
-                
               />
             ))}
           </CardContent>

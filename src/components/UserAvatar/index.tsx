@@ -13,7 +13,7 @@ interface UserAvatarProps {
   };
 }
 const UserAvatar = ({ name, color, timestamps }: UserAvatarProps) => (
-  <div 
+  <div
     className="
       flex flex-row items-center 
       gap-2
@@ -21,12 +21,16 @@ const UserAvatar = ({ name, color, timestamps }: UserAvatarProps) => (
   >
     <Stack>
       <Avatar sx={{ bgcolor: color }} />
-      {!timestamps ? <Typography variant='subtitle1'>{name}</Typography> : <></>}
+      {!timestamps ? (
+        <Typography variant="subtitle1">{name}</Typography>
+      ) : (
+        <></>
+      )}
     </Stack>
 
     {timestamps ? (
       <Stack>
-        <Typography variant='h6'>{name}</Typography>
+        <Typography variant="h6">{name}</Typography>
         <Timestamp
           created_at={timestamps.created_at}
           updated_at={timestamps.updated_at}

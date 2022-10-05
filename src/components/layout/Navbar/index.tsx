@@ -7,16 +7,8 @@ import Tab from '@mui/material/Tab';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import LogoutIcon from '@mui/icons-material/Logout';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-// import { ColorModeButton, LogoutButton } from '../../Buttons';
-
 import { authContext } from '../../../utils/context/contexts';
-// import theme from '../../../utils/mui-theme';
 import useTheme from '@mui/material/styles/useTheme';
-
-import useControllers from '../../../utils/api/index';
-import AppMenu from '../../Menus/AppMenu';
 
 interface NavTabProps {
   label?: string;
@@ -38,13 +30,13 @@ interface NavbarProps {
   menu: JSX.Element;
 }
 export default function Navbar({ menu }: NavbarProps) {
-  const { state, dispatch } = React.useContext(authContext);
+  const { state } = React.useContext(authContext);
 
   const { pathname } = useLocation();
   const [value, setValue] = React.useState(pathname);
 
   React.useEffect(() => setValue(pathname), [pathname]);
-  const handleChange = (event: React.SyntheticEvent, newValue: string) =>
+  const handleChange = (_: React.SyntheticEvent, newValue: string) =>
     setValue(newValue);
 
   const theme = useTheme();
@@ -60,7 +52,7 @@ export default function Navbar({ menu }: NavbarProps) {
       color={!darkMode ? 'primary' : 'secondary'}
     >
       <Toolbar className="">
-        <div 
+        <div
           className="
             w-1/2 pl-4 
             flex flex-row
@@ -72,7 +64,7 @@ export default function Navbar({ menu }: NavbarProps) {
           </Typography>
         </div>
 
-        <div 
+        <div
           className="
             w-1/2 
             flex flex-row justify-end items-center

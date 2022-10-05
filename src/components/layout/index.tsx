@@ -74,9 +74,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               }
             />
 
-            <main 
-              className='container m-auto'
-            >{children}</main>
+            <main className="container m-auto">{children}</main>
 
             <footer className="mt-auto pl-3 pb-1">
               <a

@@ -20,7 +20,7 @@ export default function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="post/:postId" element={<PostPage />} />
             <Route path="login" element={<Login />} />
-            <Route path='signup' element={<Signup />} />
+            <Route path="signup" element={<Signup />} />
           </Route>
         </Routes>
       </Layout>

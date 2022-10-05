@@ -16,7 +16,7 @@ export default function Home() {
 
   // TODO: create loading spinner modal for refetching
   return (
-    <div 
+    <div
       className="
         p-6 
         flex flex-col text-center 

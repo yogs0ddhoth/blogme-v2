@@ -23,7 +23,7 @@ export default function CommentCard({
   post_user_id,
   comment,
 }: CommentCardProps) {
-  const { state, dispatch } = React.useContext(authContext);
+  const { state } = React.useContext(authContext);
   const { auth } = state;
   const { id } = comment;
   const { updateComment } = useControllers();
@@ -94,7 +94,7 @@ const CommentView = ({
   return (
     <Stack
       key={comment.id}
-      direction={comment.user.id === state.id ? "row-reverse" : "row"}
+      direction={comment.user.id === state.id ? 'row-reverse' : 'row'}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       spacing={1}

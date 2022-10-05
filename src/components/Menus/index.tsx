@@ -46,7 +46,6 @@ export const ActionsMenu = ({
   children,
   className,
   icon,
-  iconColor,
   modals,
 }: ActionMenuProps) => {
   // Menu state

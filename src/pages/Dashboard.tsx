@@ -21,8 +21,8 @@ export default function Dashboard() {
   }
   if (status === 'error') {
     return (
-      <div>
-        <div className="loader" />
+      <div className='m-auto'>
+        <div className="m-auto loader" />
         <span>Your session has timed out. Redirecting to login..</span>
       </div>
     );
