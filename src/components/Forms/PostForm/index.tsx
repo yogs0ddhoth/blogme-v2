@@ -41,26 +41,33 @@ export default function PostForm({
   const darkMode = useTheme().palette.mode == 'dark';
 
   return (
-    <form
-      onSubmit={handleSubmit((data) =>
-        mutation.mutate(data, {
-          onSuccess: () => {
-            reset();
-            if (handleClose) {
-              handleClose();
-            }
-          },
-        })
-      )}
+    <Card
+      className={
+        'flex flex-col w-full gap-3 mt-5' + (className ? className : '')
+      }
     >
-      <Card
-        className={
-          'flex flex-col w-full gap-3 mt-5' + className ? className : ''
-        }
+      <form
+        onSubmit={handleSubmit((data) =>
+          mutation.mutate(data, {
+            onSuccess: () => {
+              reset();
+              if (handleClose) {
+                handleClose();
+              }
+            },
+          })
+        )}
       >
         {action ? <CardHeader action={action} /> : <></>}
 
-        <CardContent className="flex flex-col gap-3 justify-center">
+        <CardContent
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: '0.75rem',
+          }}
+        >
           <Controller
             name="title"
             control={control}
@@ -116,7 +123,7 @@ export default function PostForm({
             Submit
           </Button>
         </CardActions>
-      </Card>
-    </form>
+      </form>
+    </Card>
   );
 }
